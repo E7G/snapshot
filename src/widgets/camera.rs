@@ -281,6 +281,13 @@ mod imp {
                     obj.camera_switched();
                 }
             ));
+            self.camera_controls.connect_camera_rotated(glib::clone!(
+                #[weak]
+                obj,
+                move |_: &CameraControls| {
+                    obj.imp().viewfinder.rotate_clockwise();
+                }
+            ));
 
             self.settings()
                 .bind(
