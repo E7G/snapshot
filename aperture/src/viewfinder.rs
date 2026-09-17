@@ -63,6 +63,10 @@ mod imp {
         pub sink_paintable: OnceCell<gst::Element>,
         pub tee: OnceCell<crate::PipelineTee>,
         pub bus_watch: OnceCell<gst::bus::BusWatchGuard>,
+        pub viewfinder_flip: OnceCell<gst::Element>,
+        pub image_flip: OnceCell<gst::Element>,
+        pub video_flip: OnceCell<gst::Element>,
+        pub rotation: Cell<u8>,
 
         pub is_stopping_recording: Cell<bool>,
         pub is_taking_picture: Cell<bool>,
@@ -310,10 +314,16 @@ mod imp {
             tee.add_branch(&sink);
             camerabin.set_property("viewfinder-sink", &tee);
 
-            let videoconvert_video = gst::ElementFactory::make("videoconvert")
+            let viewfinder_flip = gst::ElementFactory::make("videoflip")
                 .build()
-                .expect("Missing GStreamer Base Plug-ins");
-            camerabin.set_property("video-filter", &videoconvert_video);
+                .expect("Missing GStreamer Good Plug-ins");
+            camerabin.set_property("viewfinder-filter", &viewfinder_flip);
+            self.viewfinder_flip.set(viewfinder_flip).unwrap();
+
+            let (video_filter, video_flip) =
+                create_rotation_filter().expect("Could not create video rotation filter");
+            camerabin.set_property("video-filter", &video_filter);
+            self.video_flip.set(video_flip).unwrap();
 
             let caps_video = gst_video::video_make_raw_caps(&[
                 gst_video::VideoFormat::I420,
@@ -322,10 +332,10 @@ mod imp {
             .build();
             camerabin.set_property("video-capture-caps", caps_video);
 
-            let videoconvert_image = gst::ElementFactory::make("videoconvert")
-                .build()
-                .expect("Missing GStreamer Base Plug-ins");
-            camerabin.set_property("image-filter", &videoconvert_image);
+            let (image_filter, image_flip) =
+                create_rotation_filter().expect("Could not create image rotation filter");
+            camerabin.set_property("image-filter", &image_filter);
+            self.image_flip.set(image_flip).unwrap();
 
             self.sink_paintable.set(paintablesink).unwrap();
 
@@ -711,6 +721,37 @@ impl Viewfinder {
                 f(obj, data);
             }),
         );
+    }
+
+    /// Rotates the preview, captured pictures and recorded video clockwise by 90 degrees.
+    pub fn rotate_clockwise(&self) {
+        let imp = self.imp();
+        let rotation = (imp.rotation.get() + 1) % 4;
+        imp.rotation.set(rotation);
+        let method = match rotation {
+            0 => "none",
+            1 => "clockwise",
+            2 => "rotate-180",
+            _ => "counterclockwise",
+        };
+        for flip in [
+            imp.viewfinder_flip.get(),
+            imp.image_flip.get(),
+            imp.video_flip.get(),
+        ]
+        .into_iter()
+        .flatten()
+        {
+            flip.set_property_from_str("method", method);
+        }
+    }
+
+    /// Overrides whether the current camera should be mirrored as a front camera.
+    /// This is useful for hardware exposing front and rear sensors as V4L2 inputs
+    /// on a single camera device.
+    pub fn set_front_camera(&self, is_front_camera: bool) {
+        self.imp().is_front_camera.set(is_front_camera);
+        self.queue_draw();
     }
 
     /// Starts the viewfinder.
@@ -1234,6 +1275,23 @@ impl Viewfinder {
             self.setup_recording();
         }
     }
+}
+
+fn create_rotation_filter() -> Result<(gst::Element, gst::Element), glib::BoolError> {
+    let bin = gst::Bin::new();
+    let flip = gst::ElementFactory::make("videoflip").build()?;
+    let convert = gst::ElementFactory::make("videoconvert").build()?;
+
+    bin.add_many([&flip, &convert])?;
+    flip.link(&convert)?;
+    bin.add_pad(&gst::GhostPad::with_target(
+        &flip.static_pad("sink").unwrap(),
+    )?)?;
+    bin.add_pad(&gst::GhostPad::with_target(
+        &convert.static_pad("src").unwrap(),
+    )?)?;
+
+    Ok((bin.upcast(), flip))
 }
 
 fn create_qrcode_bin() -> Result<gst::Element, glib::BoolError> {

@@ -64,5 +64,18 @@
         </child>
       </object>
     </child>
+    <child>
+      <object class="GtkButton" id="camera_rotate_button">
+        <property name="valign">center</property>
+        <property name="halign">center</property>
+        <property name="icon-name">object-rotate-right-symbolic</property>
+        <property name="tooltip-text" translatable="yes">Rotate Camera</property>
+        <signal name="clicked" handler="on_camera_rotate_button_clicked" swapped="yes" />
+        <style>
+          <class name="camerabutton" />
+          <class name="circular" />
+        </style>
+      </object>
+    </child>
   </template>
 </interface>

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 use std::os::unix::io::OwnedFd;
+use std::{fs, process::Command};
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
@@ -251,6 +252,13 @@ mod imp {
                     obj.camera_switched();
                 }
             ));
+            self.camera_controls.connect_camera_rotated(glib::clone!(
+                #[weak]
+                obj,
+                move |_: &CameraControls| {
+                    obj.imp().viewfinder.rotate_clockwise();
+                }
+            ));
 
             self.settings()
                 .bind(
@@ -311,6 +319,52 @@ mod imp {
 
     impl WidgetImpl for Camera {}
     impl BreakpointBinImpl for Camera {}
+}
+
+fn is_mipad2() -> bool {
+    let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
+    let product = fs::read_to_string("/sys/class/dmi/id/product_name").unwrap_or_default();
+    vendor.trim() == "Xiaomi Inc" && product.trim() == "Mipad2"
+}
+
+fn v4l2_output(args: &[&str]) -> Option<String> {
+    let output = Command::new("v4l2-ctl").args(args).output().ok()?;
+    output
+        .status
+        .success()
+        .then(|| String::from_utf8_lossy(&output.stdout).into_owned())
+}
+
+fn mipad2_has_multiple_v4l2_inputs() -> bool {
+    if !is_mipad2() {
+        return false;
+    }
+    v4l2_output(&["-d", "/dev/video0", "--list-inputs"])
+        .map(|out| {
+            out.lines()
+                .filter(|line| line.trim_start().starts_with("Input"))
+                .count()
+                > 1
+        })
+        .unwrap_or(false)
+}
+
+fn mipad2_current_v4l2_input() -> Option<u32> {
+    let out = v4l2_output(&["-d", "/dev/video0", "--get-input"])?;
+    let (_, rest) = out.split_once(':')?;
+    rest.trim().split_whitespace().next()?.parse().ok()
+}
+
+fn mipad2_toggle_v4l2_input() -> anyhow::Result<u32> {
+    let current = mipad2_current_v4l2_input().unwrap_or(0);
+    let next = if current == 0 { 1 } else { 0 };
+    let arg = format!("--set-input={next}");
+    let status = Command::new("v4l2-ctl")
+        .args(["-d", "/dev/video0", &arg])
+        .status()
+        .context("Failed to execute v4l2-ctl")?;
+    anyhow::ensure!(status.success(), "v4l2-ctl failed to switch input");
+    Ok(next)
 }
 
 glib::wrapper! {
@@ -441,8 +495,26 @@ impl Camera {
     fn camera_switched(&self) {
         let provider = self.imp().provider.get().unwrap();
 
-        let current = self.imp().viewfinder.camera();
+        if provider.n_items() == 1 && mipad2_has_multiple_v4l2_inputs() {
+            let imp = self.imp();
+            if imp.viewfinder.is_recording() {
+                self.stop_recording();
+            }
+            imp.viewfinder.stop_stream();
+            match mipad2_toggle_v4l2_input() {
+                Ok(input) => {
+                    imp.viewfinder.set_front_camera(input == 0);
+                    imp.viewfinder.start_stream();
+                }
+                Err(err) => {
+                    log::error!("Could not switch Mi Pad 2 camera input: {err}");
+                    imp.viewfinder.start_stream();
+                }
+            }
+            return;
+        }
 
+        let current = self.imp().viewfinder.camera();
         let mut pos = 0;
         if current == provider.camera(0) {
             pos += 1;
@@ -567,8 +639,12 @@ impl Camera {
     fn update_cameras_button(&self, provider: &aperture::DeviceProvider) {
         let imp = self.imp();
 
-        imp.camera_controls
-            .update_visible_camera_button(provider.n_items());
+        let n_cameras = if provider.n_items() == 1 && mipad2_has_multiple_v4l2_inputs() {
+            2
+        } else {
+            provider.n_items()
+        };
+        imp.camera_controls.update_visible_camera_button(n_cameras);
 
         // We need to set the correct selected item at least when loading. The
         // default camera might not be the first one. A similar thing happens
