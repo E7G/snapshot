@@ -1,0 +1,69 @@
+name: Build Mi Pad 2 Snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - mipad2-camera
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build in Arch Linux
+        shell: bash
+        run: |
+          set -euxo pipefail
+          docker run --rm \
+            -e CARGO_TERM_COLOR=always \
+            -v "$GITHUB_WORKSPACE:/work" \
+            -w /work \
+            archlinux:base-devel \
+            bash -lc '
+              set -euxo pipefail
+              pacman -Syu --noconfirm --needed \
+                git rust meson ninja pkgconf gettext desktop-file-utils appstream \
+                snapshot v4l-utils gst-plugins-good zstd
+
+              rustc --version
+              cargo --version
+              meson --version
+              pkg-config --modversion gtk4 libadwaita-1 gstreamer-1.0
+
+              meson setup build --prefix=/usr --buildtype=release
+              ninja -C build -j"$(nproc)"
+
+              rm -rf pkgroot dist
+              DESTDIR="$PWD/pkgroot" meson install -C build --no-rebuild
+              test -x pkgroot/usr/bin/snapshot
+
+              mkdir -p dist
+              tar --zstd -C pkgroot \
+                -cf dist/snapshot-mipad2-50.0-x86_64.tar.zst usr
+              sha256sum dist/snapshot-mipad2-50.0-x86_64.tar.zst \
+                > dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+            '
+
+      - name: Show artifact contents
+        shell: bash
+        run: |
+          ls -lh dist/
+          tar --zstd -tf dist/snapshot-mipad2-50.0-x86_64.tar.zst | sed -n '1,80p'
+
+      - name: Upload Mi Pad 2 build
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-mipad2-50.0-x86_64
+          path: |
+            dist/snapshot-mipad2-50.0-x86_64.tar.zst
+            dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+          if-no-files-found: error
+          compression-level: 0

@@ -61,6 +61,11 @@ mod imp {
             self.obj().emit_by_name::<()>("camera-switched", &[])
         }
 
+        #[template_callback]
+        fn on_camera_rotate_button_clicked(&self) {
+            self.obj().emit_by_name::<()>("camera-rotated", &[])
+        }
+
         fn set_layout(&self, layout: ControlsLayout) {
             if layout == self.layout.replace(layout) {
                 return;
@@ -100,8 +105,12 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            static SIGNALS: LazyLock<Vec<Signal>> =
-                LazyLock::new(|| vec![Signal::builder("camera-switched").build()]);
+            static SIGNALS: LazyLock<Vec<Signal>> = LazyLock::new(|| {
+                vec![
+                    Signal::builder("camera-switched").build(),
+                    Signal::builder("camera-rotated").build(),
+                ]
+            });
             SIGNALS.as_ref()
         }
     }
@@ -178,6 +187,16 @@ impl CameraControls {
     pub fn connect_camera_switched<F: Fn(&Self) + 'static>(&self, f: F) {
         self.connect_closure(
             "camera-switched",
+            false,
+            glib::closure_local!(|obj| {
+                f(obj);
+            }),
+        );
+    }
+
+    pub fn connect_camera_rotated<F: Fn(&Self) + 'static>(&self, f: F) {
+        self.connect_closure(
+            "camera-rotated",
             false,
             glib::closure_local!(|obj| {
                 f(obj);
