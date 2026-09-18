@@ -357,6 +357,28 @@ fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn mipad2_set_front_exposure() -> anyhow::Result<()> {
+    // The ov5693 driver comes up at exposure=12 / analogue_gain=8.
+    // With the current AtomISP/PipeWire path there is no working auto
+    // exposure control, so that default produces an almost-black preview.
+    // These values were measured on the Mi Pad 2 front sensor at 1616x916:
+    // they lift indoor luminance without materially clipping highlights.
+    let status = Command::new("v4l2-ctl")
+        .args([
+            "-d",
+            "/dev/v4l-subdev5",
+            "--set-ctrl",
+            "exposure=800,analogue_gain=32",
+        ])
+        .status()
+        .context("Failed to execute v4l2-ctl for Mi Pad 2 front exposure")?;
+    anyhow::ensure!(
+        status.success(),
+        "v4l2-ctl failed to set Mi Pad 2 front exposure"
+    );
+    Ok(())
+}
+
 glib::wrapper! {
     pub struct Camera(ObjectSubclass<imp::Camera>)
         @extends gtk::Widget, adw::BreakpointBin,
@@ -387,6 +409,11 @@ impl Camera {
         if is_mipad2() {
             match mipad2_set_v4l2_input(0) {
                 Ok(()) => {
+                    if let Err(err) = mipad2_set_front_exposure() {
+                        log::warn!("Could not set Mi Pad 2 front exposure: {err}");
+                    } else {
+                        log::info!("Set Mi Pad 2 front exposure to 800, analogue gain to 32");
+                    }
                     self.imp().mipad2_input.set(0);
                     self.imp().viewfinder.set_front_camera(true);
                     log::info!("Initialized Mi Pad 2 V4L2 camera input to 0");
@@ -539,6 +566,13 @@ impl Camera {
                             }
                         } else {
                             obj.imp().mipad2_vcm.replace(None);
+                            if let Err(err) = mipad2_set_front_exposure() {
+                                log::warn!("Could not set Mi Pad 2 front exposure: {err}");
+                            } else {
+                                log::info!(
+                                    "Set Mi Pad 2 front exposure to 800, analogue gain to 32"
+                                );
+                            }
                         }
 
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
