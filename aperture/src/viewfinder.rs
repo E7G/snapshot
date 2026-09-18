@@ -247,6 +247,15 @@ mod imp {
                 .expect("Missing GStreamer Bad Plug-ins");
             self.camerabin.set(camerabin.clone()).unwrap();
 
+            if is_mipad2() {
+                let preview_caps = gst::Caps::builder("video/x-raw")
+                    .field("width", 1280i32)
+                    .field("height", 720i32)
+                    .field("framerate", gst::Fraction::new(MIPAD2_PREVIEW_RATE, 1))
+                    .build();
+                camerabin.set_property("viewfinder-caps", &preview_caps);
+            }
+
             let bus = self.camerabin().bus().unwrap();
             let watch = bus
                 .add_watch_local(glib::clone!(
