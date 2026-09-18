@@ -354,6 +354,37 @@ fn mipad2_set_v4l2_input(input: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
+const MIPAD2_FRONT_RED_BALANCE: u32 = 1440;
+const MIPAD2_FRONT_BLUE_BALANCE: u32 = 1581;
+const MIPAD2_REAR_RED_BALANCE: u32 = 1441;
+const MIPAD2_REAR_BLUE_BALANCE: u32 = 1561;
+
+fn mipad2_set_color_balance(input: u32) -> anyhow::Result<()> {
+    let (device, red, blue) = if input == 0 {
+        (
+            "/dev/v4l-subdev4",
+            MIPAD2_FRONT_RED_BALANCE,
+            MIPAD2_FRONT_BLUE_BALANCE,
+        )
+    } else {
+        (
+            "/dev/v4l-subdev5",
+            MIPAD2_REAR_RED_BALANCE,
+            MIPAD2_REAR_BLUE_BALANCE,
+        )
+    };
+    let ctrl = format!("red_balance={red},blue_balance={blue}");
+    let status = Command::new("v4l2-ctl")
+        .args(["-d", device, "--set-ctrl", &ctrl])
+        .status()
+        .context("Failed to execute v4l2-ctl for Mi Pad 2 white balance")?;
+    anyhow::ensure!(
+        status.success(),
+        "v4l2-ctl failed to set Mi Pad 2 color balance"
+    );
+    Ok(())
+}
+
 fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
     let ctrl = format!("focus_absolute={position}");
     let status = Command::new("v4l2-ctl")
@@ -609,7 +640,7 @@ fn mipad2_set_front_exposure() -> anyhow::Result<()> {
     let status = Command::new("v4l2-ctl")
         .args([
             "-d",
-            "/dev/v4l-subdev5",
+            "/dev/v4l-subdev4",
             "--set-ctrl",
             "exposure=800,analogue_gain=32",
         ])
@@ -656,6 +687,13 @@ impl Camera {
                         log::warn!("Could not set Mi Pad 2 front exposure: {err}");
                     } else {
                         log::info!("Set Mi Pad 2 front exposure to 800, analogue gain to 32");
+                    }
+                    if let Err(err) = mipad2_set_color_balance(0) {
+                        log::warn!("Could not set Mi Pad 2 front OTP white balance: {err}");
+                    } else {
+                        log::info!(
+                            "Applied Mi Pad 2 front OTP white balance R={MIPAD2_FRONT_RED_BALANCE} B={MIPAD2_FRONT_BLUE_BALANCE}"
+                        );
                     }
                     self.imp().mipad2_input.set(0);
                     self.imp().viewfinder.set_front_camera(true);
@@ -822,6 +860,14 @@ impl Camera {
                                     "Set Mi Pad 2 front exposure to 800, analogue gain to 32"
                                 );
                             }
+                        }
+
+                        if let Err(err) = mipad2_set_color_balance(next_input) {
+                            log::warn!(
+                                "Could not set Mi Pad 2 camera {next_input} OTP white balance: {err}"
+                            );
+                        } else {
+                            log::info!("Applied Mi Pad 2 camera {next_input} OTP white balance");
                         }
 
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
