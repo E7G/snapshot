@@ -32,6 +32,7 @@ mod imp {
         pub players: RefCell<Option<gtk::MediaFile>>,
         settings: OnceCell<gio::Settings>,
         pub permission_denied: Cell<bool>,
+        pub mipad2_input: Cell<u32>,
 
         pub recording_duration: Cell<u32>,
         pub recording_source: RefCell<Option<glib::source::SourceId>>,
@@ -335,22 +336,14 @@ fn v4l2_output(args: &[&str]) -> Option<String> {
         .then(|| String::from_utf8_lossy(&output.stdout).into_owned())
 }
 
-fn mipad2_current_v4l2_input() -> Option<u32> {
-    let out = v4l2_output(&["-d", "/dev/video0", "--get-input"])?;
-    let (_, rest) = out.split_once(':')?;
-    rest.trim().split_whitespace().next()?.parse().ok()
-}
-
-fn mipad2_toggle_v4l2_input() -> anyhow::Result<u32> {
-    let current = mipad2_current_v4l2_input().unwrap_or(0);
-    let next = if current == 0 { 1 } else { 0 };
-    let arg = format!("--set-input={next}");
+fn mipad2_set_v4l2_input(input: u32) -> anyhow::Result<()> {
+    let arg = format!("--set-input={input}");
     let status = Command::new("v4l2-ctl")
         .args(["-d", "/dev/video0", &arg])
         .status()
         .context("Failed to execute v4l2-ctl")?;
     anyhow::ensure!(status.success(), "v4l2-ctl failed to switch input");
-    Ok(next)
+    Ok(())
 }
 
 glib::wrapper! {
@@ -379,6 +372,19 @@ impl Camera {
 
     pub async fn start(&self) {
         let provider = self.imp().provider.get().unwrap();
+
+        if is_mipad2() {
+            match mipad2_set_v4l2_input(0) {
+                Ok(()) => {
+                    self.imp().mipad2_input.set(0);
+                    self.imp().viewfinder.set_front_camera(true);
+                    log::info!("Initialized Mi Pad 2 V4L2 camera input to 0");
+                }
+                Err(err) => {
+                    log::warn!("Could not initialize Mi Pad 2 camera input: {err}");
+                }
+            }
+        }
 
         glib::spawn_future_local(glib::clone!(
             #[weak(rename_to = obj)]
@@ -493,13 +499,16 @@ impl Camera {
             imp.viewfinder.stop_stream();
 
             let viewfinder = imp.viewfinder.clone();
+            let obj = self.clone();
+            let next_input = if imp.mipad2_input.get() == 0 { 1 } else { 0 };
             let mut attempts = 0u8;
             glib::timeout_add_local(std::time::Duration::from_millis(100), move || {
                 attempts += 1;
-                match mipad2_toggle_v4l2_input() {
-                    Ok(input) => {
-                        log::info!("Switched Mi Pad 2 V4L2 camera input to {input}");
-                        viewfinder.set_front_camera(input == 0);
+                match mipad2_set_v4l2_input(next_input) {
+                    Ok(()) => {
+                        obj.imp().mipad2_input.set(next_input);
+                        log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
+                        viewfinder.set_front_camera(next_input == 0);
                         viewfinder.start_stream();
                         glib::ControlFlow::Break
                     }
