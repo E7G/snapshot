@@ -543,6 +543,7 @@ impl Camera {
 
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
                         viewfinder.set_front_camera(next_input == 0);
+                        viewfinder.set_mipad2_rear_color_correction(next_input == 1);
                         viewfinder.start_stream();
                         glib::ControlFlow::Break
                     }
