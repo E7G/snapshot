@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
 use std::sync::LazyLock;
@@ -18,6 +19,13 @@ use crate::code_detector::QrCodeDetector;
 /// quality and file size. Candidate for a preference.
 const DEFAULT_BITRATE: u32 = 2048;
 const PROVIDER_TIMEOUT: u64 = 2;
+const MIPAD2_PREVIEW_RATE: i32 = 20;
+
+fn is_mipad2() -> bool {
+    let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
+    let product = fs::read_to_string("/sys/class/dmi/id/product_name").unwrap_or_default();
+    vendor.trim() == "Xiaomi Inc" && product.trim() == "Mipad2"
+}
 
 #[derive(Debug)]
 enum StateChangeState {
@@ -272,7 +280,57 @@ mod imp {
                     .intersect(&yuv_caps)
                     .is_empty()
             };
-            let sink = if is_yuv_natively_supported {
+            let sink = if is_mipad2() {
+                // Cherry Trail's HASVK path mishandles multi-planar YUV DMA-BUF
+                // imports and the software videoconvert fallback is very costly.
+                // Keep preview frames in GLMemory and cap only the display branch
+                // to 20fps; picture/video capture keeps the original camera caps.
+                let bin = gst::Bin::default();
+                let videorate = gst::ElementFactory::make("videorate")
+                    .property("drop-only", true)
+                    .property("max-rate", MIPAD2_PREVIEW_RATE)
+                    .build()
+                    .expect("Missing GStreamer Base Plug-ins");
+                let glupload = gst::ElementFactory::make("glupload")
+                    .build()
+                    .expect("Missing GStreamer GL Plug-ins");
+                let glconvert = gst::ElementFactory::make("glcolorconvert")
+                    .build()
+                    .expect("Missing GStreamer GL Plug-ins");
+                let capsfilter = gst::ElementFactory::make("capsfilter")
+                    .build()
+                    .expect("Missing GStreamer Base Plug-ins");
+                let caps = gst::Caps::builder("video/x-raw")
+                    .features(["memory:GLMemory"])
+                    .field("format", "RGBA")
+                    .field("framerate", gst::Fraction::new(MIPAD2_PREVIEW_RATE, 1))
+                    .field("texture-target", "2D")
+                    .build();
+                capsfilter.set_property("caps", &caps);
+
+                bin.add_many([
+                    &videorate,
+                    &glupload,
+                    &glconvert,
+                    &capsfilter,
+                    &paintablesink,
+                ])
+                .unwrap();
+                gst::Element::link_many([
+                    &videorate,
+                    &glupload,
+                    &glconvert,
+                    &capsfilter,
+                    &paintablesink,
+                ])
+                .unwrap();
+                bin.add_pad(
+                    &gst::GhostPad::with_target(&videorate.static_pad("sink").unwrap()).unwrap(),
+                )
+                .unwrap();
+
+                bin.upcast()
+            } else if is_yuv_natively_supported {
                 let bin = gst::Bin::default();
 
                 bin.add(&paintablesink).unwrap();

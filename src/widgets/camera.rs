@@ -33,6 +33,7 @@ mod imp {
         settings: OnceCell<gio::Settings>,
         pub permission_denied: Cell<bool>,
         pub mipad2_input: Cell<u32>,
+        pub mipad2_vcm: RefCell<Option<fs::File>>,
 
         pub recording_duration: Cell<u32>,
         pub recording_source: RefCell<Option<glib::source::SourceId>>,
@@ -346,6 +347,16 @@ fn mipad2_set_v4l2_input(input: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
+    let ctrl = format!("focus_absolute={position}");
+    let status = Command::new("v4l2-ctl")
+        .args(["-d", "/dev/v4l-subdev6", "--set-ctrl", &ctrl])
+        .status()
+        .context("Failed to execute v4l2-ctl for Mi Pad 2 VCM")?;
+    anyhow::ensure!(status.success(), "v4l2-ctl failed to set Mi Pad 2 focus");
+    Ok(())
+}
+
 glib::wrapper! {
     pub struct Camera(ObjectSubclass<imp::Camera>)
         @extends gtk::Widget, adw::BreakpointBin,
@@ -507,6 +518,29 @@ impl Camera {
                 match mipad2_set_v4l2_input(next_input) {
                     Ok(()) => {
                         obj.imp().mipad2_input.set(next_input);
+
+                        if next_input == 1 {
+                            match fs::File::open("/dev/v4l-subdev6") {
+                                Ok(vcm) => {
+                                    // Keep the VCM subdev open for the whole rear-camera
+                                    // session. dw9719 parks the lens back at 0 when its
+                                    // last fd closes, which otherwise makes every focus
+                                    // command effectively transient.
+                                    obj.imp().mipad2_vcm.replace(Some(vcm));
+                                    if let Err(err) = mipad2_set_focus(512) {
+                                        log::warn!("Could not set Mi Pad 2 rear focus: {err}");
+                                    } else {
+                                        log::info!("Set Mi Pad 2 rear focus to 512");
+                                    }
+                                }
+                                Err(err) => {
+                                    log::warn!("Could not keep Mi Pad 2 VCM active: {err}");
+                                }
+                            }
+                        } else {
+                            obj.imp().mipad2_vcm.replace(None);
+                        }
+
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
                         viewfinder.set_front_camera(next_input == 0);
                         viewfinder.start_stream();
