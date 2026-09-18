@@ -335,20 +335,6 @@ fn v4l2_output(args: &[&str]) -> Option<String> {
         .then(|| String::from_utf8_lossy(&output.stdout).into_owned())
 }
 
-fn mipad2_has_multiple_v4l2_inputs() -> bool {
-    if !is_mipad2() {
-        return false;
-    }
-    v4l2_output(&["-d", "/dev/video0", "--list-inputs"])
-        .map(|out| {
-            out.lines()
-                .filter(|line| line.trim_start().starts_with("Input"))
-                .count()
-                > 1
-        })
-        .unwrap_or(false)
-}
-
 fn mipad2_current_v4l2_input() -> Option<u32> {
     let out = v4l2_output(&["-d", "/dev/video0", "--get-input"])?;
     let (_, rest) = out.split_once(':')?;
@@ -495,22 +481,43 @@ impl Camera {
     fn camera_switched(&self) {
         let provider = self.imp().provider.get().unwrap();
 
-        if provider.n_items() == 1 && mipad2_has_multiple_v4l2_inputs() {
+        if provider.n_items() == 1 && is_mipad2() {
             let imp = self.imp();
             if imp.viewfinder.is_recording() {
                 self.stop_recording();
             }
+
+            // PipeWire owns /dev/video0 while the preview is active. Moving
+            // camerabin to NULL releases that fd asynchronously, so retry the
+            // V4L2 input switch for a short period instead of racing it.
             imp.viewfinder.stop_stream();
-            match mipad2_toggle_v4l2_input() {
-                Ok(input) => {
-                    imp.viewfinder.set_front_camera(input == 0);
-                    imp.viewfinder.start_stream();
+
+            let viewfinder = imp.viewfinder.clone();
+            let mut attempts = 0u8;
+            glib::timeout_add_local(std::time::Duration::from_millis(100), move || {
+                attempts += 1;
+                match mipad2_toggle_v4l2_input() {
+                    Ok(input) => {
+                        log::info!("Switched Mi Pad 2 V4L2 camera input to {input}");
+                        viewfinder.set_front_camera(input == 0);
+                        viewfinder.start_stream();
+                        glib::ControlFlow::Break
+                    }
+                    Err(err) if attempts < 10 => {
+                        log::debug!(
+                            "Mi Pad 2 camera input still busy (attempt {attempts}/10): {err}"
+                        );
+                        glib::ControlFlow::Continue
+                    }
+                    Err(err) => {
+                        log::error!(
+                            "Could not switch Mi Pad 2 camera input after {attempts} attempts: {err}"
+                        );
+                        viewfinder.start_stream();
+                        glib::ControlFlow::Break
+                    }
                 }
-                Err(err) => {
-                    log::error!("Could not switch Mi Pad 2 camera input: {err}");
-                    imp.viewfinder.start_stream();
-                }
-            }
+            });
             return;
         }
 
@@ -639,7 +646,7 @@ impl Camera {
     fn update_cameras_button(&self, provider: &aperture::DeviceProvider) {
         let imp = self.imp();
 
-        let n_cameras = if provider.n_items() == 1 && mipad2_has_multiple_v4l2_inputs() {
+        let n_cameras = if provider.n_items() == 1 && is_mipad2() {
             2
         } else {
             provider.n_items()
