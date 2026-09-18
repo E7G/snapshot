@@ -359,23 +359,34 @@ const MIPAD2_FRONT_BLUE_BALANCE: u32 = 1581;
 const MIPAD2_REAR_RED_BALANCE: u32 = 1441;
 const MIPAD2_REAR_BLUE_BALANCE: u32 = 1561;
 
+fn mipad2_find_subdev(name_prefix: &str) -> anyhow::Result<String> {
+    for index in 0..16 {
+        let name_path = format!("/sys/class/video4linux/v4l-subdev{index}/name");
+        let Ok(name) = fs::read_to_string(&name_path) else {
+            continue;
+        };
+        if name.trim().starts_with(name_prefix) {
+            return Ok(format!("/dev/v4l-subdev{index}"));
+        }
+    }
+
+    anyhow::bail!("Could not find V4L2 subdev matching {name_prefix}")
+}
+
 fn mipad2_set_color_balance(input: u32) -> anyhow::Result<()> {
-    let (device, red, blue) = if input == 0 {
+    let (sensor_name, red, blue) = if input == 0 {
         (
-            "/dev/v4l-subdev4",
+            "ov5693",
             MIPAD2_FRONT_RED_BALANCE,
             MIPAD2_FRONT_BLUE_BALANCE,
         )
     } else {
-        (
-            "/dev/v4l-subdev5",
-            MIPAD2_REAR_RED_BALANCE,
-            MIPAD2_REAR_BLUE_BALANCE,
-        )
+        ("t4ka3", MIPAD2_REAR_RED_BALANCE, MIPAD2_REAR_BLUE_BALANCE)
     };
+    let device = mipad2_find_subdev(sensor_name)?;
     let ctrl = format!("red_balance={red},blue_balance={blue}");
     let status = Command::new("v4l2-ctl")
-        .args(["-d", device, "--set-ctrl", &ctrl])
+        .args(["-d", &device, "--set-ctrl", &ctrl])
         .status()
         .context("Failed to execute v4l2-ctl for Mi Pad 2 white balance")?;
     anyhow::ensure!(
@@ -386,9 +397,10 @@ fn mipad2_set_color_balance(input: u32) -> anyhow::Result<()> {
 }
 
 fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
+    let device = mipad2_find_subdev("dw9719")?;
     let ctrl = format!("focus_absolute={position}");
     let status = Command::new("v4l2-ctl")
-        .args(["-d", "/dev/v4l-subdev6", "--set-ctrl", &ctrl])
+        .args(["-d", &device, "--set-ctrl", &ctrl])
         .status()
         .context("Failed to execute v4l2-ctl for Mi Pad 2 VCM")?;
     anyhow::ensure!(status.success(), "v4l2-ctl failed to set Mi Pad 2 focus");
@@ -637,13 +649,9 @@ fn mipad2_set_front_exposure() -> anyhow::Result<()> {
     // exposure control, so that default produces an almost-black preview.
     // These values were measured on the Mi Pad 2 front sensor at 1616x916:
     // they lift indoor luminance without materially clipping highlights.
+    let device = mipad2_find_subdev("ov5693")?;
     let status = Command::new("v4l2-ctl")
-        .args([
-            "-d",
-            "/dev/v4l-subdev4",
-            "--set-ctrl",
-            "exposure=800,analogue_gain=32",
-        ])
+        .args(["-d", &device, "--set-ctrl", "exposure=800,analogue_gain=32"])
         .status()
         .context("Failed to execute v4l2-ctl for Mi Pad 2 front exposure")?;
     anyhow::ensure!(
@@ -832,7 +840,9 @@ impl Camera {
                         obj.imp().mipad2_input.set(next_input);
 
                         if next_input == 1 {
-                            match fs::File::open("/dev/v4l-subdev6") {
+                            match mipad2_find_subdev("dw9719")
+                                .and_then(|device| fs::File::open(device).map_err(Into::into))
+                            {
                                 Ok(vcm) => {
                                     // Keep the VCM subdev open for the whole rear-camera
                                     // session. dw9719 parks the lens back at 0 when its
