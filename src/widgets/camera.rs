@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 use std::os::unix::io::OwnedFd;
-use std::{fs, process::Command};
+use std::process::{Command, Stdio};
+use std::sync::{
+    Arc,
+    atomic::{AtomicU32, Ordering},
+};
+use std::time::Duration;
+use std::{env, fs};
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
@@ -34,6 +40,7 @@ mod imp {
         pub permission_denied: Cell<bool>,
         pub mipad2_input: Cell<u32>,
         pub mipad2_vcm: RefCell<Option<fs::File>>,
+        pub mipad2_af_generation: Arc<AtomicU32>,
 
         pub recording_duration: Cell<u32>,
         pub recording_source: RefCell<Option<glib::source::SourceId>>,
@@ -357,6 +364,242 @@ fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
+const MIPAD2_AF_INFINITY: u32 = 237;
+const MIPAD2_AF_MACRO: u32 = 366;
+const MIPAD2_AF_DEFAULT: u32 = 253;
+
+// The target tablet's factory DW9761 OTP stores infinity=0x00ed (237)
+// and macro=0x016e (366). Android's original T4KA3/DW9761 stack passes
+// these values to the Intel ISP autofocus data instead of treating the
+// whole 0..1023 actuator range as a useful optical focus range.
+fn mipad2_frame_focus_score(frame: &[u8]) -> anyhow::Result<f64> {
+    const WIDTH: usize = 320;
+    const HEIGHT: usize = 180;
+    const FRAME_SIZE: usize = WIDTH * HEIGHT;
+    const KERNEL: [f64; 5] = [1.0, 4.0, 6.0, 4.0, 1.0];
+
+    anyhow::ensure!(
+        frame.len() == FRAME_SIZE,
+        "Mi Pad 2 autofocus frame has unexpected size: {}",
+        frame.len()
+    );
+
+    let mut blurred = vec![0.0f64; FRAME_SIZE];
+    for y in 2..(HEIGHT - 2) {
+        for x in 2..(WIDTH - 2) {
+            let mut sum = 0.0;
+            for (ky, wy) in KERNEL.iter().enumerate() {
+                for (kx, wx) in KERNEL.iter().enumerate() {
+                    let yy = y + ky - 2;
+                    let xx = x + kx - 2;
+                    sum += frame[yy * WIDTH + xx] as f64 * wy * wx;
+                }
+            }
+            blurred[y * WIDTH + x] = sum / 256.0;
+        }
+    }
+
+    let x0 = WIDTH / 3;
+    let x1 = WIDTH * 2 / 3;
+    let y0 = HEIGHT / 3;
+    let y1 = HEIGHT * 2 / 3;
+    let mut magnitudes = Vec::with_capacity((x1 - x0) * (y1 - y0));
+
+    for y in (y0 + 1)..(y1 - 1) {
+        for x in (x0 + 1)..(x1 - 1) {
+            let tl = blurred[(y - 1) * WIDTH + x - 1];
+            let tc = blurred[(y - 1) * WIDTH + x];
+            let tr = blurred[(y - 1) * WIDTH + x + 1];
+            let ml = blurred[y * WIDTH + x - 1];
+            let mr = blurred[y * WIDTH + x + 1];
+            let bl = blurred[(y + 1) * WIDTH + x - 1];
+            let bc = blurred[(y + 1) * WIDTH + x];
+            let br = blurred[(y + 1) * WIDTH + x + 1];
+
+            let gx = -tl + tr - 2.0 * ml + 2.0 * mr - bl + br;
+            let gy = -tl - 2.0 * tc - tr + bl + 2.0 * bc + br;
+            magnitudes.push((gx * gx + gy * gy).sqrt());
+        }
+    }
+
+    anyhow::ensure!(!magnitudes.is_empty(), "Mi Pad 2 autofocus ROI is empty");
+    magnitudes.sort_by(|a, b| a.total_cmp(b));
+    let p95_index = (magnitudes.len() * 95 / 100).min(magnitudes.len() - 1);
+    let cap = magnitudes[p95_index];
+    Ok(magnitudes
+        .iter()
+        .map(|value| (*value).min(cap))
+        .sum::<f64>()
+        / magnitudes.len() as f64)
+}
+
+fn mipad2_focus_score(generation: u32) -> anyhow::Result<f64> {
+    const WIDTH: usize = 320;
+    const HEIGHT: usize = 180;
+    const FRAME_SIZE: usize = WIDTH * HEIGHT;
+    const BUFFERS: usize = 5;
+    const SCORE_FRAMES: usize = 3;
+
+    let path = env::temp_dir().join(format!(
+        "snapshot-mipad2-autofocus-{}-{generation}.gray",
+        std::process::id()
+    ));
+    let _ = fs::remove_file(&path);
+    let location = format!("location={}", path.display());
+    let num_buffers = format!("num-buffers={BUFFERS}");
+
+    let status = Command::new("timeout")
+        .arg("3")
+        .arg("gst-launch-1.0")
+        .args([
+            "-q",
+            "pipewiresrc",
+            "target-object=v4l2_input.pci-0000_00_03.0",
+            num_buffers.as_str(),
+            "!",
+            "videoconvert",
+            "!",
+            "videoscale",
+            "!",
+            "video/x-raw,format=GRAY8,width=320,height=180",
+            "!",
+            "filesink",
+        ])
+        .arg(&location)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .context("Failed to run GStreamer for Mi Pad 2 autofocus")?;
+
+    anyhow::ensure!(
+        status.success(),
+        "GStreamer autofocus capture failed with {status}"
+    );
+
+    let data = fs::read(&path).context("Failed to read Mi Pad 2 autofocus frames")?;
+    let _ = fs::remove_file(&path);
+    let frame_count = data.len() / FRAME_SIZE;
+    anyhow::ensure!(
+        frame_count >= SCORE_FRAMES,
+        "Mi Pad 2 autofocus capture has only {frame_count} complete frames ({} bytes)",
+        data.len()
+    );
+
+    let first = frame_count - SCORE_FRAMES;
+    let mut scores = Vec::with_capacity(SCORE_FRAMES);
+    for frame_index in first..frame_count {
+        let start = frame_index * FRAME_SIZE;
+        scores.push(mipad2_frame_focus_score(&data[start..start + FRAME_SIZE])?);
+    }
+    scores.sort_by(|a, b| a.total_cmp(b));
+    Ok(scores[SCORE_FRAMES / 2])
+}
+
+fn mipad2_evaluate_focus(
+    cancel: &AtomicU32,
+    generation: u32,
+    focus: u32,
+) -> anyhow::Result<Option<f64>> {
+    if cancel.load(Ordering::SeqCst) != generation {
+        return Ok(None);
+    }
+
+    let focus = focus.clamp(MIPAD2_AF_INFINITY, MIPAD2_AF_MACRO);
+    mipad2_set_focus(focus)?;
+    std::thread::sleep(Duration::from_millis(120));
+
+    if cancel.load(Ordering::SeqCst) != generation {
+        return Ok(None);
+    }
+
+    let score = mipad2_focus_score(generation)?;
+    log::debug!("Mi Pad 2 autofocus focus={focus} score={score:.4}");
+    Ok(Some(score))
+}
+
+fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
+    const COARSE: [u32; 9] = [237, 253, 269, 285, 301, 317, 333, 349, 366];
+    const COARSE_ACCEPT_RATIO: f64 = 1.08;
+    const REFINE_ACCEPT_RATIO: f64 = 1.025;
+
+    let baseline_score = match mipad2_evaluate_focus(&cancel, generation, MIPAD2_AF_DEFAULT) {
+        Ok(Some(score)) => score,
+        Ok(None) => return,
+        Err(err) => {
+            log::warn!(
+                "Mi Pad 2 autofocus baseline capture failed, keeping OTP-safe focus at {MIPAD2_AF_DEFAULT}: {err}"
+            );
+            if cancel.load(Ordering::SeqCst) == generation {
+                let _ = mipad2_set_focus(MIPAD2_AF_DEFAULT);
+            }
+            return;
+        }
+    };
+
+    let mut best_focus = MIPAD2_AF_DEFAULT;
+    let mut best_score = baseline_score;
+
+    for focus in COARSE {
+        if focus == MIPAD2_AF_DEFAULT {
+            continue;
+        }
+        match mipad2_evaluate_focus(&cancel, generation, focus) {
+            Ok(Some(score)) if score > best_score => {
+                best_focus = focus;
+                best_score = score;
+            }
+            Ok(Some(_)) => {}
+            Ok(None) => return,
+            Err(err) => log::debug!("Mi Pad 2 autofocus coarse sample skipped at {focus}: {err}"),
+        }
+    }
+
+    if best_focus != MIPAD2_AF_DEFAULT && best_score < baseline_score * COARSE_ACCEPT_RATIO {
+        log::info!(
+            "Mi Pad 2 autofocus peak at {best_focus} was marginal ({best_score:.4} vs baseline {baseline_score:.4}); keeping {MIPAD2_AF_DEFAULT}"
+        );
+        best_focus = MIPAD2_AF_DEFAULT;
+        best_score = baseline_score;
+    } else if best_focus != MIPAD2_AF_DEFAULT {
+        for step in [8u32, 4u32] {
+            let center = best_focus;
+            let candidates = [
+                center.saturating_sub(step).max(MIPAD2_AF_INFINITY),
+                center.saturating_add(step).min(MIPAD2_AF_MACRO),
+            ];
+
+            for focus in candidates {
+                if focus == best_focus {
+                    continue;
+                }
+                match mipad2_evaluate_focus(&cancel, generation, focus) {
+                    Ok(Some(score)) if score > best_score * REFINE_ACCEPT_RATIO => {
+                        best_focus = focus;
+                        best_score = score;
+                    }
+                    Ok(Some(_)) => {}
+                    Ok(None) => return,
+                    Err(err) => {
+                        log::debug!("Mi Pad 2 autofocus refinement skipped at {focus}: {err}")
+                    }
+                }
+            }
+        }
+    }
+
+    if cancel.load(Ordering::SeqCst) != generation {
+        return;
+    }
+
+    if let Err(err) = mipad2_set_focus(best_focus) {
+        log::warn!("Could not apply Mi Pad 2 autofocus result: {err}");
+    } else {
+        log::info!(
+            "Mi Pad 2 rear autofocus selected focus {best_focus} within OTP range {MIPAD2_AF_INFINITY}-{MIPAD2_AF_MACRO} (score {best_score:.4})"
+        );
+    }
+}
+
 fn mipad2_set_front_exposure() -> anyhow::Result<()> {
     // The ov5693 driver comes up at exposure=12 / analogue_gain=8.
     // With the current AtomISP/PipeWire path there is no working auto
@@ -539,6 +782,10 @@ impl Camera {
             let viewfinder = imp.viewfinder.clone();
             let obj = self.clone();
             let next_input = if imp.mipad2_input.get() == 0 { 1 } else { 0 };
+            let af_generation = imp
+                .mipad2_af_generation
+                .fetch_add(1, Ordering::SeqCst)
+                .wrapping_add(1);
             let mut attempts = 0u8;
             glib::timeout_add_local(std::time::Duration::from_millis(100), move || {
                 attempts += 1;
@@ -554,10 +801,12 @@ impl Camera {
                                     // last fd closes, which otherwise makes every focus
                                     // command effectively transient.
                                     obj.imp().mipad2_vcm.replace(Some(vcm));
-                                    if let Err(err) = mipad2_set_focus(512) {
+                                    if let Err(err) = mipad2_set_focus(MIPAD2_AF_DEFAULT) {
                                         log::warn!("Could not set Mi Pad 2 rear focus: {err}");
                                     } else {
-                                        log::info!("Set Mi Pad 2 rear focus to 512");
+                                        log::info!(
+                                            "Set Mi Pad 2 rear focus to OTP-safe default {MIPAD2_AF_DEFAULT} before autofocus"
+                                        );
                                     }
                                 }
                                 Err(err) => {
@@ -578,6 +827,19 @@ impl Camera {
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
                         viewfinder.set_front_camera(next_input == 0);
                         viewfinder.start_stream();
+
+                        if next_input == 1 {
+                            let cancel = obj.imp().mipad2_af_generation.clone();
+                            std::thread::spawn(move || {
+                                // Give the restarted PipeWire/AtomISP stream enough
+                                // time to settle before sampling autofocus frames.
+                                std::thread::sleep(Duration::from_millis(700));
+                                if cancel.load(Ordering::SeqCst) == af_generation {
+                                    mipad2_autofocus(cancel, af_generation);
+                                }
+                            });
+                        }
+
                         glib::ControlFlow::Break
                     }
                     Err(err) if attempts < 10 => {
