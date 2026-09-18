@@ -20,25 +20,6 @@ use crate::code_detector::QrCodeDetector;
 const DEFAULT_BITRATE: u32 = 2048;
 const PROVIDER_TIMEOUT: u64 = 2;
 const MIPAD2_PREVIEW_RATE: i32 = 15;
-const MIPAD2_WB_SHADER: &str = r#"
-#version 100
-#ifdef GL_ES
-precision mediump float;
-#endif
-varying vec2 v_texcoord;
-uniform sampler2D tex;
-uniform float r_gain;
-uniform float b_gain;
-void main () {
-    vec4 c = texture2D(tex, v_texcoord);
-    gl_FragColor = vec4(
-        clamp(c.r * r_gain, 0.0, 1.0),
-        c.g,
-        clamp(c.b * b_gain, 0.0, 1.0),
-        c.a
-    );
-}
-"#;
 
 fn is_mipad2() -> bool {
     let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
@@ -93,7 +74,6 @@ mod imp {
         pub viewfinder_flip: OnceCell<gst::Element>,
         pub image_flip: OnceCell<gst::Element>,
         pub video_flip: OnceCell<gst::Element>,
-        pub mipad2_wb_shader: OnceCell<gst::Element>,
         pub rotation: Cell<u8>,
 
         pub is_stopping_recording: Cell<bool>,
@@ -317,16 +297,6 @@ mod imp {
                 let glconvert = gst::ElementFactory::make("glcolorconvert")
                     .build()
                     .expect("Missing GStreamer GL Plug-ins");
-                let wb_shader = gst::ElementFactory::make("glshader")
-                    .property("fragment", MIPAD2_WB_SHADER)
-                    .build()
-                    .expect("Missing GStreamer GL Plug-ins");
-                let uniforms = gst::Structure::builder("mipad2-wb")
-                    .field("r_gain", 1.0f32)
-                    .field("b_gain", 1.0f32)
-                    .build();
-                wb_shader.set_property("uniforms", &uniforms);
-                self.mipad2_wb_shader.set(wb_shader.clone()).unwrap();
                 let capsfilter = gst::ElementFactory::make("capsfilter")
                     .build()
                     .expect("Missing GStreamer Base Plug-ins");
@@ -342,7 +312,6 @@ mod imp {
                     &videorate,
                     &glupload,
                     &glconvert,
-                    &wb_shader,
                     &capsfilter,
                     &paintablesink,
                 ])
@@ -351,7 +320,6 @@ mod imp {
                     &videorate,
                     &glupload,
                     &glconvert,
-                    &wb_shader,
                     &capsfilter,
                     &paintablesink,
                 ])
@@ -842,23 +810,6 @@ impl Viewfinder {
     pub fn set_front_camera(&self, is_front_camera: bool) {
         self.imp().is_front_camera.set(is_front_camera);
         self.queue_draw();
-    }
-
-    /// Applies a small rear-camera RGB gain correction for the Mi Pad 2.
-    pub fn set_mipad2_rear_color_correction(&self, rear: bool) {
-        let Some(shader) = self.imp().mipad2_wb_shader.get() else {
-            return;
-        };
-        let (r_gain, b_gain) = if rear {
-            (1.07f32, 1.10f32)
-        } else {
-            (1.0f32, 1.0f32)
-        };
-        let uniforms = gst::Structure::builder("mipad2-wb")
-            .field("r_gain", r_gain)
-            .field("b_gain", b_gain)
-            .build();
-        shader.set_property("uniforms", &uniforms);
     }
 
     /// Starts the viewfinder.
