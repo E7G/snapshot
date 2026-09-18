@@ -19,7 +19,7 @@ use crate::code_detector::QrCodeDetector;
 /// quality and file size. Candidate for a preference.
 const DEFAULT_BITRATE: u32 = 2048;
 const PROVIDER_TIMEOUT: u64 = 2;
-const MIPAD2_PREVIEW_RATE: i32 = 20;
+const MIPAD2_PREVIEW_RATE: i32 = 15;
 
 fn is_mipad2() -> bool {
     let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
@@ -246,15 +246,6 @@ mod imp {
                 .build()
                 .expect("Missing GStreamer Bad Plug-ins");
             self.camerabin.set(camerabin.clone()).unwrap();
-
-            if is_mipad2() {
-                let preview_caps = gst::Caps::builder("video/x-raw")
-                    .field("width", 1280i32)
-                    .field("height", 720i32)
-                    .field("framerate", gst::Fraction::new(MIPAD2_PREVIEW_RATE, 1))
-                    .build();
-                camerabin.set_property("viewfinder-caps", &preview_caps);
-            }
 
             let bus = self.camerabin().bus().unwrap();
             let watch = bus
