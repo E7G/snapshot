@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 use std::os::unix::io::OwnedFd;
-use std::{fs, process::Command};
+use std::process::{Command, Stdio};
+use std::sync::{
+    Arc,
+    atomic::{AtomicU32, Ordering},
+};
+use std::time::Duration;
+use std::{env, fs};
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
@@ -34,6 +40,7 @@ mod imp {
         pub permission_denied: Cell<bool>,
         pub mipad2_input: Cell<u32>,
         pub mipad2_vcm: RefCell<Option<fs::File>>,
+        pub mipad2_af_generation: Arc<AtomicU32>,
 
         pub recording_duration: Cell<u32>,
         pub recording_source: RefCell<Option<glib::source::SourceId>>,
@@ -357,6 +364,172 @@ fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn mipad2_focus_score(generation: u32) -> anyhow::Result<f64> {
+    const WIDTH: usize = 320;
+    const HEIGHT: usize = 180;
+    const FRAME_SIZE: usize = WIDTH * HEIGHT;
+
+    let path = env::temp_dir().join(format!(
+        "snapshot-mipad2-autofocus-{}-{generation}.gray",
+        std::process::id()
+    ));
+    let _ = fs::remove_file(&path);
+    let location = format!("location={}", path.display());
+
+    // Use a second PipeWire client while Snapshot owns the main preview.
+    // This keeps the AtomISP pipeline initialized exactly as the user sees it,
+    // but reduces the analysis frame to a tiny 320x180 luma image.
+    let status = Command::new("timeout")
+        .arg("2")
+        .arg("gst-launch-1.0")
+        .args([
+            "-q",
+            "pipewiresrc",
+            "target-object=v4l2_input.pci-0000_00_03.0",
+            "num-buffers=3",
+            "!",
+            "video/x-raw,format=I420,width=1920,height=1080,framerate=30/1",
+            "!",
+            "videoconvert",
+            "!",
+            "videoscale",
+            "!",
+            "video/x-raw,format=GRAY8,width=320,height=180",
+            "!",
+            "filesink",
+        ])
+        .arg(&location)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .context("Failed to run GStreamer for Mi Pad 2 autofocus")?;
+
+    anyhow::ensure!(
+        status.success(),
+        "GStreamer autofocus capture failed with {status}"
+    );
+
+    let data = fs::read(&path).context("Failed to read Mi Pad 2 autofocus frame")?;
+    let _ = fs::remove_file(&path);
+    anyhow::ensure!(
+        data.len() >= FRAME_SIZE,
+        "Mi Pad 2 autofocus frame is too small: {} bytes",
+        data.len()
+    );
+
+    // Score only the final frame and the center third of the image.  A
+    // Laplacian-variance style metric is inexpensive and avoids the tablet's
+    // soft/noisy frame edges dominating the autofocus decision.
+    let frame = &data[data.len() - FRAME_SIZE..];
+    let x0 = WIDTH / 3;
+    let x1 = WIDTH * 2 / 3;
+    let y0 = HEIGHT / 3;
+    let y1 = HEIGHT * 2 / 3;
+
+    let mut count = 0.0f64;
+    let mut sum = 0.0f64;
+    let mut sum_sq = 0.0f64;
+
+    for y in (y0 + 1)..(y1 - 1) {
+        for x in (x0 + 1)..(x1 - 1) {
+            let i = y * WIDTH + x;
+            let laplacian = frame[i - 1] as f64
+                + frame[i + 1] as f64
+                + frame[i - WIDTH] as f64
+                + frame[i + WIDTH] as f64
+                - 4.0 * frame[i] as f64;
+            count += 1.0;
+            sum += laplacian;
+            sum_sq += laplacian * laplacian;
+        }
+    }
+
+    anyhow::ensure!(count > 0.0, "Mi Pad 2 autofocus ROI is empty");
+    let mean = sum / count;
+    Ok(sum_sq / count - mean * mean)
+}
+
+fn mipad2_evaluate_focus(
+    cancel: &AtomicU32,
+    generation: u32,
+    focus: u32,
+    best_focus: &mut u32,
+    best_score: &mut f64,
+) -> anyhow::Result<bool> {
+    if cancel.load(Ordering::SeqCst) != generation {
+        return Ok(false);
+    }
+
+    mipad2_set_focus(focus)?;
+    std::thread::sleep(Duration::from_millis(180));
+
+    if cancel.load(Ordering::SeqCst) != generation {
+        return Ok(false);
+    }
+
+    let score = mipad2_focus_score(generation)?;
+    log::debug!("Mi Pad 2 autofocus focus={focus} score={score:.3}");
+
+    if score > *best_score {
+        *best_score = score;
+        *best_focus = focus;
+    }
+
+    Ok(true)
+}
+
+fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
+    const FALLBACK_FOCUS: u32 = 832;
+    const COARSE: [u32; 9] = [0, 128, 256, 384, 512, 640, 768, 896, 1023];
+
+    let mut best_focus = FALLBACK_FOCUS;
+    let mut best_score = f64::NEG_INFINITY;
+
+    for focus in COARSE {
+        match mipad2_evaluate_focus(&cancel, generation, focus, &mut best_focus, &mut best_score) {
+            Ok(true) => {}
+            Ok(false) => return,
+            Err(err) => {
+                log::warn!(
+                    "Mi Pad 2 autofocus capture failed, keeping focus at {FALLBACK_FOCUS}: {err}"
+                );
+                if cancel.load(Ordering::SeqCst) == generation {
+                    let _ = mipad2_set_focus(FALLBACK_FOCUS);
+                }
+                return;
+            }
+        }
+    }
+
+    // Refine one half-step on each side of the best coarse position.
+    let refine = [
+        best_focus.saturating_sub(64),
+        best_focus.saturating_add(64).min(1023),
+    ];
+    for focus in refine {
+        if focus == best_focus {
+            continue;
+        }
+        match mipad2_evaluate_focus(&cancel, generation, focus, &mut best_focus, &mut best_score) {
+            Ok(true) => {}
+            Ok(false) => return,
+            Err(err) => {
+                log::debug!("Mi Pad 2 autofocus refinement skipped at {focus}: {err}");
+            }
+        }
+    }
+
+    if cancel.load(Ordering::SeqCst) != generation {
+        return;
+    }
+
+    if let Err(err) = mipad2_set_focus(best_focus) {
+        log::warn!("Could not apply Mi Pad 2 autofocus result: {err}");
+    } else {
+        log::info!("Mi Pad 2 rear autofocus selected focus {best_focus} (score {best_score:.3})");
+    }
+}
+
 fn mipad2_set_front_exposure() -> anyhow::Result<()> {
     // The ov5693 driver comes up at exposure=12 / analogue_gain=8.
     // With the current AtomISP/PipeWire path there is no working auto
@@ -539,6 +712,10 @@ impl Camera {
             let viewfinder = imp.viewfinder.clone();
             let obj = self.clone();
             let next_input = if imp.mipad2_input.get() == 0 { 1 } else { 0 };
+            let af_generation = imp
+                .mipad2_af_generation
+                .fetch_add(1, Ordering::SeqCst)
+                .wrapping_add(1);
             let mut attempts = 0u8;
             glib::timeout_add_local(std::time::Duration::from_millis(100), move || {
                 attempts += 1;
@@ -554,10 +731,12 @@ impl Camera {
                                     // last fd closes, which otherwise makes every focus
                                     // command effectively transient.
                                     obj.imp().mipad2_vcm.replace(Some(vcm));
-                                    if let Err(err) = mipad2_set_focus(512) {
+                                    if let Err(err) = mipad2_set_focus(832) {
                                         log::warn!("Could not set Mi Pad 2 rear focus: {err}");
                                     } else {
-                                        log::info!("Set Mi Pad 2 rear focus to 512");
+                                        log::info!(
+                                            "Set Mi Pad 2 rear focus to 832 before autofocus"
+                                        );
                                     }
                                 }
                                 Err(err) => {
@@ -578,6 +757,19 @@ impl Camera {
                         log::info!("Switched Mi Pad 2 V4L2 camera input to {next_input}");
                         viewfinder.set_front_camera(next_input == 0);
                         viewfinder.start_stream();
+
+                        if next_input == 1 {
+                            let cancel = obj.imp().mipad2_af_generation.clone();
+                            std::thread::spawn(move || {
+                                // Give the restarted PipeWire/AtomISP stream enough
+                                // time to settle before sampling autofocus frames.
+                                std::thread::sleep(Duration::from_millis(700));
+                                if cancel.load(Ordering::SeqCst) == af_generation {
+                                    mipad2_autofocus(cancel, af_generation);
+                                }
+                            });
+                        }
+
                         glib::ControlFlow::Break
                     }
                     Err(err) if attempts < 10 => {
