@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - mipad2-camera
+      - mipad2-camera-51
 
 permissions:
   contents: read
@@ -45,25 +46,26 @@ jobs:
               DESTDIR="$PWD/pkgroot" meson install -C build --no-rebuild
               test -x pkgroot/usr/bin/snapshot
 
+              version="$(sed -n "s/.*version: '\''\([^'\'']*\)'\''.*/\1/p" meson.build | head -n1)"
+              test -n "$version"
+              artifact="snapshot-mipad2-$version-x86_64.tar.zst"
               mkdir -p dist
-              tar --zstd -C pkgroot \
-                -cf dist/snapshot-mipad2-50.0-x86_64.tar.zst usr
-              sha256sum dist/snapshot-mipad2-50.0-x86_64.tar.zst \
-                > dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+              tar --zstd -C pkgroot -cf "dist/$artifact" usr
+              sha256sum "dist/$artifact" > "dist/$artifact.sha256"
+              printf "%s\n" "$artifact" > dist/artifact-name.txt
             '
 
       - name: Show artifact contents
         shell: bash
         run: |
+          artifact="$(cat dist/artifact-name.txt)"
           ls -lh dist/
-          tar --zstd -tf dist/snapshot-mipad2-50.0-x86_64.tar.zst | sed -n '1,80p'
+          tar --zstd -tf "dist/$artifact" | sed -n '1,80p'
 
       - name: Upload Mi Pad 2 build
         uses: actions/upload-artifact@v4
         with:
-          name: snapshot-mipad2-50.0-x86_64
-          path: |
-            dist/snapshot-mipad2-50.0-x86_64.tar.zst
-            dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+          name: snapshot-mipad2
+          path: dist/
           if-no-files-found: error
           compression-level: 0
