@@ -420,14 +420,69 @@ fn mipad2_set_focus(position: u32) -> anyhow::Result<()> {
     Ok(())
 }
 
-const MIPAD2_AF_INFINITY: u32 = 237;
-const MIPAD2_AF_MACRO: u32 = 366;
-const MIPAD2_AF_DEFAULT: u32 = 253;
+const MIPAD2_REAR_OTP_PATH: &str = "/sys/bus/nvmem/devices/mipad2-t4ka3-otp/nvmem";
+const MIPAD2_AF_FALLBACK_INFINITY: u32 = 237;
+const MIPAD2_AF_FALLBACK_MACRO: u32 = 366;
 
-// The target tablet's factory DW9761 OTP stores infinity=0x00ed (237)
-// and macro=0x016e (366). Android's original T4KA3/DW9761 stack passes
-// these values to the Intel ISP autofocus data instead of treating the
-// whole 0..1023 actuator range as a useful optical focus range.
+#[derive(Clone, Copy, Debug)]
+struct Mipad2AfRange {
+    infinity: u32,
+    macro_pos: u32,
+}
+
+impl Mipad2AfRange {
+    fn default_focus(self) -> u32 {
+        self.infinity
+    }
+}
+
+fn mipad2_checksum255(data: &[u8]) -> u8 {
+    (data.iter().map(|value| u32::from(*value)).sum::<u32>() % 255) as u8
+}
+
+fn mipad2_af_range() -> Mipad2AfRange {
+    let fallback = Mipad2AfRange {
+        infinity: MIPAD2_AF_FALLBACK_INFINITY,
+        macro_pos: MIPAD2_AF_FALLBACK_MACRO,
+    };
+
+    let Ok(data) = fs::read(MIPAD2_REAR_OTP_PATH) else {
+        return fallback;
+    };
+
+    let valid = data.len() == 578
+        && data[0] == 1
+        && mipad2_checksum255(&data[1..15]) == data[15]
+        && data[16] == 1
+        && mipad2_checksum255(&data[17..31]) == data[31]
+        && data[32] == 1
+        && mipad2_checksum255(&data[33..303]) == data[303]
+        && data[304] == 1
+        && mipad2_checksum255(&data[305..577]) == data[577];
+    if !valid {
+        log::warn!("Mi Pad 2 rear OTP failed validation; using fallback autofocus range");
+        return fallback;
+    }
+
+    let infinity = u16::from_be_bytes([data[19], data[20]]) as u32;
+    let macro_pos = u16::from_be_bytes([data[21], data[22]]) as u32;
+    if infinity >= macro_pos || macro_pos > 1023 {
+        log::warn!(
+            "Mi Pad 2 rear OTP has invalid autofocus range {infinity}-{macro_pos}; using fallback"
+        );
+        return fallback;
+    }
+
+    Mipad2AfRange {
+        infinity,
+        macro_pos,
+    }
+}
+
+// Xiaomi's Android T4KA3/DW9761 stack consumes the factory infinity/macro
+// endpoints instead of treating the whole 0..1023 actuator range as useful.
+// Read those endpoints from the kernel's validated read-only NVMEM provider
+// when available; older kernels fall back to the values from the test tablet.
 fn mipad2_frame_focus_score(frame: &[u8]) -> anyhow::Result<f64> {
     const WIDTH: usize = 320;
     const HEIGHT: usize = 180;
@@ -554,13 +609,14 @@ fn mipad2_focus_score(generation: u32) -> anyhow::Result<f64> {
 fn mipad2_evaluate_focus(
     cancel: &AtomicU32,
     generation: u32,
+    range: Mipad2AfRange,
     focus: u32,
 ) -> anyhow::Result<Option<f64>> {
     if cancel.load(Ordering::SeqCst) != generation {
         return Ok(None);
     }
 
-    let focus = focus.clamp(MIPAD2_AF_INFINITY, MIPAD2_AF_MACRO);
+    let focus = focus.clamp(range.infinity, range.macro_pos);
     mipad2_set_focus(focus)?;
     std::thread::sleep(Duration::from_millis(120));
 
@@ -574,32 +630,45 @@ fn mipad2_evaluate_focus(
 }
 
 fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
-    const COARSE: [u32; 9] = [237, 253, 269, 285, 301, 317, 333, 349, 366];
     const COARSE_ACCEPT_RATIO: f64 = 1.08;
     const REFINE_ACCEPT_RATIO: f64 = 1.025;
 
-    let baseline_score = match mipad2_evaluate_focus(&cancel, generation, MIPAD2_AF_DEFAULT) {
+    let range = mipad2_af_range();
+    let default_focus = range.default_focus();
+    let span = range.macro_pos - range.infinity;
+    let coarse_step = (span / 8).max(8);
+    let mut coarse = Vec::new();
+    let mut focus = range.infinity;
+    loop {
+        coarse.push(focus);
+        if focus >= range.macro_pos {
+            break;
+        }
+        focus = (focus + coarse_step).min(range.macro_pos);
+    }
+
+    let baseline_score = match mipad2_evaluate_focus(&cancel, generation, range, default_focus) {
         Ok(Some(score)) => score,
         Ok(None) => return,
         Err(err) => {
             log::warn!(
-                "Mi Pad 2 autofocus baseline capture failed, keeping OTP-safe focus at {MIPAD2_AF_DEFAULT}: {err}"
+                "Mi Pad 2 autofocus baseline capture failed, keeping OTP-safe focus at {default_focus}: {err}"
             );
             if cancel.load(Ordering::SeqCst) == generation {
-                let _ = mipad2_set_focus(MIPAD2_AF_DEFAULT);
+                let _ = mipad2_set_focus(default_focus);
             }
             return;
         }
     };
 
-    let mut best_focus = MIPAD2_AF_DEFAULT;
+    let mut best_focus = default_focus;
     let mut best_score = baseline_score;
 
-    for focus in COARSE {
-        if focus == MIPAD2_AF_DEFAULT {
+    for focus in coarse {
+        if focus == default_focus {
             continue;
         }
-        match mipad2_evaluate_focus(&cancel, generation, focus) {
+        match mipad2_evaluate_focus(&cancel, generation, range, focus) {
             Ok(Some(score)) if score > best_score => {
                 best_focus = focus;
                 best_score = score;
@@ -610,25 +679,25 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
         }
     }
 
-    if best_focus != MIPAD2_AF_DEFAULT && best_score < baseline_score * COARSE_ACCEPT_RATIO {
+    if best_focus != default_focus && best_score < baseline_score * COARSE_ACCEPT_RATIO {
         log::info!(
-            "Mi Pad 2 autofocus peak at {best_focus} was marginal ({best_score:.4} vs baseline {baseline_score:.4}); keeping {MIPAD2_AF_DEFAULT}"
+            "Mi Pad 2 autofocus peak at {best_focus} was marginal ({best_score:.4} vs baseline {baseline_score:.4}); keeping {default_focus}"
         );
-        best_focus = MIPAD2_AF_DEFAULT;
+        best_focus = default_focus;
         best_score = baseline_score;
-    } else if best_focus != MIPAD2_AF_DEFAULT {
+    } else if best_focus != default_focus {
         for step in [8u32, 4u32] {
             let center = best_focus;
             let candidates = [
-                center.saturating_sub(step).max(MIPAD2_AF_INFINITY),
-                center.saturating_add(step).min(MIPAD2_AF_MACRO),
+                center.saturating_sub(step).max(range.infinity),
+                center.saturating_add(step).min(range.macro_pos),
             ];
 
             for focus in candidates {
                 if focus == best_focus {
                     continue;
                 }
-                match mipad2_evaluate_focus(&cancel, generation, focus) {
+                match mipad2_evaluate_focus(&cancel, generation, range, focus) {
                     Ok(Some(score)) if score > best_score * REFINE_ACCEPT_RATIO => {
                         best_focus = focus;
                         best_score = score;
@@ -651,7 +720,9 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
         log::warn!("Could not apply Mi Pad 2 autofocus result: {err}");
     } else {
         log::info!(
-            "Mi Pad 2 rear autofocus selected focus {best_focus} within OTP range {MIPAD2_AF_INFINITY}-{MIPAD2_AF_MACRO} (score {best_score:.4})"
+            "Mi Pad 2 rear autofocus selected focus {best_focus} within OTP range {}-{} (score {best_score:.4})",
+            range.infinity,
+            range.macro_pos
         );
     }
 }
@@ -862,11 +933,15 @@ impl Camera {
                                     // last fd closes, which otherwise makes every focus
                                     // command effectively transient.
                                     obj.imp().mipad2_vcm.replace(Some(vcm));
-                                    if let Err(err) = mipad2_set_focus(MIPAD2_AF_DEFAULT) {
+                                    let af_range = mipad2_af_range();
+                                    let default_focus = af_range.default_focus();
+                                    if let Err(err) = mipad2_set_focus(default_focus) {
                                         log::warn!("Could not set Mi Pad 2 rear focus: {err}");
                                     } else {
                                         log::info!(
-                                            "Set Mi Pad 2 rear focus to OTP-safe default {MIPAD2_AF_DEFAULT} before autofocus"
+                                            "Set Mi Pad 2 rear focus to OTP-safe default {default_focus} before autofocus (range {}-{})",
+                                            af_range.infinity,
+                                            af_range.macro_pos
                                         );
                                     }
                                 }
