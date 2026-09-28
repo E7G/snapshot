@@ -639,81 +639,127 @@ fn mipad2_evaluate_focus(
 fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
     const COARSE_ACCEPT_RATIO: f64 = 1.08;
     const REFINE_ACCEPT_RATIO: f64 = 1.025;
+    const MACRO_ENDPOINT_GUARD_RATIO: f64 = 0.95;
 
     let range = mipad2_af_range();
     let default_focus = range.default_focus();
     let span = range.macro_pos - range.infinity;
     let coarse_step = (span / 8).max(8);
+
+    // DW9761 on the Mi Pad 2 has measurable mechanical hysteresis. Live
+    // validation shows the macro -> infinity direction is repeatable while an
+    // infinity -> macro sweep can under-score otherwise sharp positions.
+    // Pre-position at the macro side, then evaluate every point while moving
+    // monotonically toward infinity.
+    if cancel.load(Ordering::SeqCst) != generation {
+        return;
+    }
+    if let Err(err) = mipad2_set_focus(range.macro_pos) {
+        log::warn!("Could not pre-position Mi Pad 2 autofocus at macro: {err}");
+        let _ = mipad2_set_focus(default_focus);
+        return;
+    }
+    std::thread::sleep(Duration::from_millis(180));
+
     let mut coarse = Vec::new();
-    let mut focus = range.infinity;
+    let mut focus = range.macro_pos;
     loop {
         coarse.push(focus);
-        if focus >= range.macro_pos {
+        if focus <= range.infinity {
             break;
         }
-        focus = (focus + coarse_step).min(range.macro_pos);
+        focus = focus.saturating_sub(coarse_step).max(range.infinity);
     }
 
-    let baseline_score = match mipad2_evaluate_focus(&cancel, generation, range, default_focus) {
-        Ok(Some(score)) => score,
-        Ok(None) => return,
-        Err(err) => {
-            log::warn!(
-                "Mi Pad 2 autofocus baseline capture failed, keeping OTP-safe focus at {default_focus}: {err}"
-            );
-            if cancel.load(Ordering::SeqCst) == generation {
-                let _ = mipad2_set_focus(default_focus);
-            }
-            return;
-        }
-    };
-
-    let mut best_focus = default_focus;
-    let mut best_score = baseline_score;
-
+    let mut samples = Vec::with_capacity(coarse.len());
     for focus in coarse {
-        if focus == default_focus {
-            continue;
-        }
         match mipad2_evaluate_focus(&cancel, generation, range, focus) {
-            Ok(Some(score)) if score > best_score => {
-                best_focus = focus;
-                best_score = score;
-            }
-            Ok(Some(_)) => {}
+            Ok(Some(score)) => samples.push((focus, score)),
             Ok(None) => return,
             Err(err) => log::debug!("Mi Pad 2 autofocus coarse sample skipped at {focus}: {err}"),
         }
     }
 
+    let Some((_, baseline_score)) = samples
+        .iter()
+        .find(|(focus, _)| *focus == default_focus)
+        .copied()
+    else {
+        log::warn!("Mi Pad 2 autofocus could not score OTP infinity; keeping {default_focus}");
+        let _ = mipad2_set_focus(default_focus);
+        return;
+    };
+
+    let (mut best_focus, mut best_score) = samples
+        .iter()
+        .copied()
+        .max_by(|a, b| a.1.total_cmp(&b.1))
+        .unwrap_or((default_focus, baseline_score));
+
     if best_focus != default_focus && best_score < baseline_score * COARSE_ACCEPT_RATIO {
         log::info!(
-            "Mi Pad 2 autofocus peak at {best_focus} was marginal ({best_score:.4} vs baseline {baseline_score:.4}); keeping {default_focus}"
+            "Mi Pad 2 autofocus peak at {best_focus} was marginal ({best_score:.4} vs infinity {baseline_score:.4}); keeping {default_focus}"
         );
         best_focus = default_focus;
         best_score = baseline_score;
     } else if best_focus != default_focus {
         for step in [8u32, 4u32] {
             let center = best_focus;
-            let candidates = [
-                center.saturating_sub(step).max(range.infinity),
-                center.saturating_add(step).min(range.macro_pos),
-            ];
+            let rlo = center.saturating_sub(step).max(range.infinity);
+            let rhi = center.saturating_add(step).min(range.macro_pos);
 
-            for focus in candidates {
-                if focus == best_focus {
-                    continue;
-                }
+            // Reset to the high-focus side before every refinement pass and
+            // walk downward only, matching the repeatable actuator direction.
+            if let Err(err) = mipad2_set_focus(rhi) {
+                log::debug!("Mi Pad 2 autofocus refinement pre-position failed: {err}");
+                continue;
+            }
+            std::thread::sleep(Duration::from_millis(90));
+
+            let mut focus = rhi;
+            let mut fine = Vec::new();
+            loop {
                 match mipad2_evaluate_focus(&cancel, generation, range, focus) {
-                    Ok(Some(score)) if score > best_score * REFINE_ACCEPT_RATIO => {
-                        best_focus = focus;
-                        best_score = score;
-                    }
-                    Ok(Some(_)) => {}
+                    Ok(Some(score)) => fine.push((focus, score)),
                     Ok(None) => return,
                     Err(err) => {
                         log::debug!("Mi Pad 2 autofocus refinement skipped at {focus}: {err}")
                     }
+                }
+                if focus <= rlo {
+                    break;
+                }
+                focus = focus.saturating_sub(step).max(rlo);
+            }
+
+            if let Some((candidate_focus, candidate_score)) =
+                fine.iter().copied().max_by(|a, b| a.1.total_cmp(&b.1))
+                && candidate_score > best_score * REFINE_ACCEPT_RATIO
+            {
+                best_focus = candidate_focus;
+                best_score = candidate_score;
+            }
+
+            // The factory macro value is a calibration endpoint, not a
+            // preferred resting point. Avoid sitting against the hard stop if
+            // an interior point is essentially as sharp.
+            if best_focus == range.macro_pos {
+                if let Some((interior_focus, interior_score)) = fine
+                    .iter()
+                    .copied()
+                    .filter(|(focus, _)| *focus < range.macro_pos)
+                    .max_by(|a, b| a.1.total_cmp(&b.1))
+                    && interior_score >= best_score * MACRO_ENDPOINT_GUARD_RATIO
+                {
+                    log::debug!(
+                        "Mi Pad 2 autofocus macro endpoint guard: {} {:.4} -> {} {:.4}",
+                        best_focus,
+                        best_score,
+                        interior_focus,
+                        interior_score
+                    );
+                    best_focus = interior_focus;
+                    best_score = interior_score;
                 }
             }
         }
@@ -723,11 +769,21 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
         return;
     }
 
+    // Final placement must use the same macro -> infinity approach direction
+    // as the measurement pass, otherwise backlash can shift the optical plane.
+    let approach = best_focus.saturating_add(12).min(range.macro_pos);
+    if let Err(err) = mipad2_set_focus(approach) {
+        log::warn!("Could not pre-position Mi Pad 2 final focus: {err}");
+        let _ = mipad2_set_focus(default_focus);
+        return;
+    }
+    std::thread::sleep(Duration::from_millis(70));
+
     if let Err(err) = mipad2_set_focus(best_focus) {
         log::warn!("Could not apply Mi Pad 2 autofocus result: {err}");
     } else {
         log::info!(
-            "Mi Pad 2 rear autofocus selected focus {best_focus} within OTP range {}-{} (score {best_score:.4})",
+            "Mi Pad 2 rear autofocus selected focus {best_focus} within OTP range {}-{} (score {best_score:.4}, macro->infinity)",
             range.infinity,
             range.macro_pos
         );
