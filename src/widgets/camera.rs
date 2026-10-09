@@ -715,14 +715,14 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
 }
 
 fn mipad2_set_front_exposure() -> anyhow::Result<()> {
-    // The ov5693 driver comes up at exposure=12 / analogue_gain=8.
-    // With the current AtomISP/PipeWire path there is no working auto
-    // exposure control, so that default produces an almost-black preview.
-    // These values were measured on the Mi Pad 2 front sensor at 1616x916:
-    // they lift indoor luminance without materially clipping highlights.
+    // AtomISP/PipeWire currently has no 3A control loop. The old 800/32
+    // startup preset clipped a lit white card and the user confirmed an
+    // overbright preview on 6.14 r7. At 1280x720, 320/8 measured about
+    // Y=146/255 on the same card and was confirmed visually normal.
+    // This is a temporary Mi Pad 2 application preset, not auto exposure.
     let device = mipad2_find_subdev("ov5693")?;
     let status = Command::new("v4l2-ctl")
-        .args(["-d", &device, "--set-ctrl", "exposure=800,analogue_gain=32"])
+        .args(["-d", &device, "--set-ctrl", "exposure=320,analogue_gain=8"])
         .status()
         .context("Failed to execute v4l2-ctl for Mi Pad 2 front exposure")?;
     anyhow::ensure!(
@@ -765,7 +765,7 @@ impl Camera {
                     if let Err(err) = mipad2_set_front_exposure() {
                         log::warn!("Could not set Mi Pad 2 front exposure: {err}");
                     } else {
-                        log::info!("Set Mi Pad 2 front exposure to 800, analogue gain to 32");
+                        log::info!("Set Mi Pad 2 front exposure to 320, analogue gain to 8");
                     }
                     if let Err(err) = mipad2_set_color_balance(0) {
                         log::warn!("Could not set Mi Pad 2 front OTP white balance: {err}");
@@ -942,7 +942,7 @@ impl Camera {
                                 log::warn!("Could not set Mi Pad 2 front exposure: {err}");
                             } else {
                                 log::info!(
-                                    "Set Mi Pad 2 front exposure to 800, analogue gain to 32"
+                                    "Set Mi Pad 2 front exposure to 320, analogue gain to 8"
                                 );
                             }
                         }
