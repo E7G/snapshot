@@ -714,24 +714,6 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
     }
 }
 
-fn mipad2_set_front_exposure() -> anyhow::Result<()> {
-    // AtomISP/PipeWire currently has no 3A control loop. The old 800/32
-    // startup preset clipped a lit white card and the user confirmed an
-    // overbright preview on 6.14 r7. At 1280x720, 320/8 measured about
-    // Y=146/255 on the same card and was confirmed visually normal.
-    // This is a temporary Mi Pad 2 application preset, not auto exposure.
-    let device = mipad2_find_subdev("ov5693")?;
-    let status = Command::new("v4l2-ctl")
-        .args(["-d", &device, "--set-ctrl", "exposure=320,analogue_gain=8"])
-        .status()
-        .context("Failed to execute v4l2-ctl for Mi Pad 2 front exposure")?;
-    anyhow::ensure!(
-        status.success(),
-        "v4l2-ctl failed to set Mi Pad 2 front exposure"
-    );
-    Ok(())
-}
-
 glib::wrapper! {
     pub struct Camera(ObjectSubclass<imp::Camera>)
         @extends gtk::Widget, adw::BreakpointBin,
@@ -762,11 +744,6 @@ impl Camera {
         if is_mipad2() {
             match mipad2_set_v4l2_input(0) {
                 Ok(()) => {
-                    if let Err(err) = mipad2_set_front_exposure() {
-                        log::warn!("Could not set Mi Pad 2 front exposure: {err}");
-                    } else {
-                        log::info!("Set Mi Pad 2 front exposure to 320, analogue gain to 8");
-                    }
                     if let Err(err) = mipad2_set_color_balance(0) {
                         log::warn!("Could not set Mi Pad 2 front OTP white balance: {err}");
                     } else {
@@ -938,13 +915,6 @@ impl Camera {
                             }
                         } else {
                             obj.imp().mipad2_vcm.replace(None);
-                            if let Err(err) = mipad2_set_front_exposure() {
-                                log::warn!("Could not set Mi Pad 2 front exposure: {err}");
-                            } else {
-                                log::info!(
-                                    "Set Mi Pad 2 front exposure to 320, analogue gain to 8"
-                                );
-                            }
                         }
 
                         if let Err(err) = mipad2_set_color_balance(next_input) {
@@ -961,7 +931,9 @@ impl Camera {
 
                         if next_input == 1 {
                             let cancel = obj.imp().mipad2_af_generation.clone();
+                            let exposure_hold = viewfinder.hold_auto_exposure();
                             std::thread::spawn(move || {
+                                let _exposure_hold = exposure_hold;
                                 // Give the restarted PipeWire/AtomISP stream enough
                                 // time to settle before sampling autofocus frames.
                                 std::thread::sleep(Duration::from_millis(700));

@@ -66,6 +66,7 @@ mod imp {
         pub devices: OnceCell<crate::DeviceProvider>,
         pub camera_src: RefCell<Option<gst::Element>>,
         pub camerabin: OnceCell<gst::Element>,
+        pub mipad2_ae: OnceCell<crate::mipad2_ae::AutoExposure>,
         pub camera_element: OnceCell<gst::Element>,
         pub capsfilter: OnceCell<gst::Element>,
         pub sink_paintable: OnceCell<gst::Element>,
@@ -240,6 +241,15 @@ mod imp {
             crate::ensure_init();
 
             let obj = self.obj();
+
+            if is_mipad2() {
+                match crate::mipad2_ae::AutoExposure::new() {
+                    Ok(ae) => {
+                        self.mipad2_ae.set(ae).unwrap();
+                    }
+                    Err(err) => log::warn!("Could not start Mi Pad 2 AE worker: {err}"),
+                }
+            }
 
             let camerabin = gst::ElementFactory::make("camerabin")
                 .property("location", None::<&str>)
@@ -463,6 +473,9 @@ mod imp {
         }
 
         fn dispose(&self) {
+            if let Some(ae) = self.mipad2_ae.get() {
+                ae.pause();
+            }
             if self.is_recording_video.borrow().is_some()
                 && let Err(err) = self.obj().stop_recording()
             {
@@ -812,8 +825,16 @@ impl Viewfinder {
         self.queue_draw();
     }
 
+    /// Freeze AE for a contrast autofocus sweep; dropping the guard resumes it.
+    pub fn hold_auto_exposure(&self) -> Option<crate::ExposureHold> {
+        self.imp().mipad2_ae.get().map(|ae| ae.hold())
+    }
+
     /// Starts the viewfinder.
     pub fn start_stream(&self) {
+        if let Some(ae) = self.imp().mipad2_ae.get() {
+            ae.start(self.imp().is_front_camera.get());
+        }
         glib::spawn_future_local(glib::clone!(
             #[weak(rename_to = obj)]
             self,
@@ -886,6 +907,9 @@ impl Viewfinder {
     ///
     /// A black frame will be shown after this methods has been called.
     pub fn stop_stream(&self) {
+        if let Some(ae) = self.imp().mipad2_ae.get() {
+            ae.pause();
+        }
         if let Err(err) = self.imp().camerabin().set_state(gst::State::Null) {
             log::error!("Could not pause camerabin: {err}");
             self.imp().set_state(ViewfinderState::Error);
@@ -1283,6 +1307,17 @@ impl Viewfinder {
         ));
 
         let pad = capsfilter_post_decode.static_pad("src").unwrap();
+        if let Some(ae) = self.imp().mipad2_ae.get().cloned() {
+            pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
+                if let Some(buffer) = info.buffer()
+                    && let Some(caps) = pad.current_caps()
+                {
+                    ae.observe(buffer, &caps);
+                }
+                gst::PadProbeReturn::Ok
+            });
+        }
+
         let ghost_pad = gst::GhostPad::with_target(&pad)?;
         ghost_pad.set_active(true)?;
 
