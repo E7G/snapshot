@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+use std::fs;
 use std::os::unix::io::OwnedFd;
-use std::process::{Command, Stdio};
+use std::process::Command;
 use std::sync::{
     Arc,
     atomic::{AtomicU32, Ordering},
 };
 use std::time::Duration;
-use std::{env, fs};
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
@@ -531,69 +531,22 @@ fn mipad2_frame_focus_score(frame: &[u8]) -> anyhow::Result<f64> {
         / magnitudes.len() as f64)
 }
 
-fn mipad2_focus_score(generation: u32) -> anyhow::Result<f64> {
-    const WIDTH: usize = 320;
-    const HEIGHT: usize = 180;
-    const FRAME_SIZE: usize = WIDTH * HEIGHT;
-    const BUFFERS: usize = 5;
-    const SCORE_FRAMES: usize = 3;
-
-    let path = env::temp_dir().join(format!(
-        "snapshot-mipad2-autofocus-{}-{generation}.gray",
-        std::process::id()
-    ));
-    let _ = fs::remove_file(&path);
-    let location = format!("location={}", path.display());
-    let num_buffers = format!("num-buffers={BUFFERS}");
-
-    let status = Command::new("timeout")
-        .arg("3")
-        .arg("gst-launch-1.0")
-        .args([
-            "-q",
-            "pipewiresrc",
-            "target-object=v4l2_input.pci-0000_00_03.0",
-            num_buffers.as_str(),
-            "!",
-            "videoconvert",
-            "!",
-            "videoscale",
-            "!",
-            "video/x-raw,format=GRAY8,width=320,height=180",
-            "!",
-            "filesink",
-        ])
-        .arg(&location)
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status()
-        .context("Failed to run GStreamer for Mi Pad 2 autofocus")?;
-
-    anyhow::ensure!(
-        status.success(),
-        "GStreamer autofocus capture failed with {status}"
-    );
-
-    let data = fs::read(&path).context("Failed to read Mi Pad 2 autofocus frames")?;
-    let _ = fs::remove_file(&path);
-    let frame_count = data.len() / FRAME_SIZE;
-    anyhow::ensure!(
-        frame_count >= SCORE_FRAMES,
-        "Mi Pad 2 autofocus capture has only {frame_count} complete frames ({} bytes)",
-        data.len()
-    );
-
-    let first = frame_count - SCORE_FRAMES;
-    let mut scores = Vec::with_capacity(SCORE_FRAMES);
-    for frame_index in first..frame_count {
-        let start = frame_index * FRAME_SIZE;
-        scores.push(mipad2_frame_focus_score(&data[start..start + FRAME_SIZE])?);
-    }
+fn mipad2_focus_score(sampler: &aperture::PreviewFrameSampler) -> anyhow::Result<f64> {
+    // Skip two post-settle frames, score the last three; preview stays running.
+    let frames = sampler
+        .capture(5, Duration::from_secs(3))
+        .context("Failed to sample existing Mi Pad 2 preview for autofocus")?;
+    let mut scores = frames
+        .iter()
+        .skip(2)
+        .map(|frame| mipad2_frame_focus_score(frame))
+        .collect::<anyhow::Result<Vec<_>>>()?;
     scores.sort_by(|a, b| a.total_cmp(b));
-    Ok(scores[SCORE_FRAMES / 2])
+    Ok(scores[scores.len() / 2])
 }
 
 fn mipad2_evaluate_focus(
+    sampler: &aperture::PreviewFrameSampler,
     cancel: &AtomicU32,
     generation: u32,
     range: Mipad2AfRange,
@@ -611,12 +564,16 @@ fn mipad2_evaluate_focus(
         return Ok(None);
     }
 
-    let score = mipad2_focus_score(generation)?;
+    let score = mipad2_focus_score(sampler)?;
     log::debug!("Mi Pad 2 autofocus focus={focus} score={score:.4}");
     Ok(Some(score))
 }
 
-fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
+fn mipad2_autofocus(
+    sampler: aperture::PreviewFrameSampler,
+    cancel: Arc<AtomicU32>,
+    generation: u32,
+) {
     const COARSE_ACCEPT_RATIO: f64 = 1.08;
     const REFINE_ACCEPT_RATIO: f64 = 1.025;
 
@@ -634,7 +591,13 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
         focus = (focus + coarse_step).min(range.macro_pos);
     }
 
-    let baseline_score = match mipad2_evaluate_focus(&cancel, generation, range, default_focus) {
+    let baseline_score = match mipad2_evaluate_focus(
+        &sampler,
+        &cancel,
+        generation,
+        range,
+        default_focus,
+    ) {
         Ok(Some(score)) => score,
         Ok(None) => return,
         Err(err) => {
@@ -655,7 +618,7 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
         if focus == default_focus {
             continue;
         }
-        match mipad2_evaluate_focus(&cancel, generation, range, focus) {
+        match mipad2_evaluate_focus(&sampler, &cancel, generation, range, focus) {
             Ok(Some(score)) if score > best_score => {
                 best_focus = focus;
                 best_score = score;
@@ -684,7 +647,7 @@ fn mipad2_autofocus(cancel: Arc<AtomicU32>, generation: u32) {
                 if focus == best_focus {
                     continue;
                 }
-                match mipad2_evaluate_focus(&cancel, generation, range, focus) {
+                match mipad2_evaluate_focus(&sampler, &cancel, generation, range, focus) {
                     Ok(Some(score)) if score > best_score * REFINE_ACCEPT_RATIO => {
                         best_focus = focus;
                         best_score = score;
@@ -932,13 +895,14 @@ impl Camera {
                         if next_input == 1 {
                             let cancel = obj.imp().mipad2_af_generation.clone();
                             let exposure_hold = viewfinder.hold_auto_exposure();
+                            let sampler = viewfinder.preview_frame_sampler();
                             std::thread::spawn(move || {
                                 let _exposure_hold = exposure_hold;
                                 // Give the restarted PipeWire/AtomISP stream enough
                                 // time to settle before sampling autofocus frames.
                                 std::thread::sleep(Duration::from_millis(700));
                                 if cancel.load(Ordering::SeqCst) == af_generation {
-                                    mipad2_autofocus(cancel, af_generation);
+                                    mipad2_autofocus(sampler, cancel, af_generation);
                                 }
                             });
                         }

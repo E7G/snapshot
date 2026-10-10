@@ -2,8 +2,8 @@
 use std::collections::HashMap;
 
 use gst::prelude::DeviceExt;
+use gst::prelude::*;
 use gtk::glib;
-use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 
 use crate::utils;
@@ -141,13 +141,48 @@ impl Camera {
     }
 
     pub(crate) fn reconfigure(&self, element: &gst::Element) -> Result<(), glib::BoolError> {
+        if let Some(path) = self.native_capture_path() {
+            if element
+                .factory()
+                .is_some_and(|factory| factory.name() == "v4l2src")
+            {
+                if !matches!(
+                    element.current_state(),
+                    gst::State::Null | gst::State::Ready
+                ) {
+                    return Err(glib::bool_error!(
+                        "Stop native capture before reconfiguring"
+                    ));
+                }
+                element.set_property("device", path);
+                return Ok(());
+            }
+        }
         self.device().reconfigure_element(element)
     }
 
     pub(crate) fn create_element(&self) -> Result<gst::Element, glib::BoolError> {
+        if let Some(path) = self.native_capture_path() {
+            log::info!("Mi Pad 2 preview uses native V4L2 MMAP capture");
+            return crate::mipad2_preview::create_native_source(path);
+        }
         let element = self.device().create_element(None)?;
         element.set_property("client-name", crate::APP_ID.get().unwrap());
         Ok(element)
+    }
+
+    fn native_capture_path(&self) -> Option<&'static str> {
+        let vendor = std::fs::read_to_string("/sys/class/dmi/id/sys_vendor").ok()?;
+        let product = std::fs::read_to_string("/sys/class/dmi/id/product_name").ok()?;
+        let props = self.device().properties()?;
+        let driver = props.get::<String>("api.v4l2.cap.driver").ok();
+        let path = props.get::<String>("api.v4l2.path").ok();
+        crate::mipad2_preview::native_capture_path(
+            &vendor,
+            &product,
+            driver.as_deref(),
+            path.as_deref(),
+        )
     }
 
     pub(crate) fn best_caps(&self) -> gst::Caps {

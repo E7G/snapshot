@@ -66,7 +66,9 @@ mod imp {
         pub devices: OnceCell<crate::DeviceProvider>,
         pub camera_src: RefCell<Option<gst::Element>>,
         pub camerabin: OnceCell<gst::Element>,
-        pub mipad2_ae: OnceCell<crate::mipad2_ae::AutoExposure>,
+        pub(crate) mipad2_ae: OnceCell<crate::mipad2_ae::AutoExposure>,
+        pub mipad2_preview: crate::PreviewFrameSampler,
+        pub state_change_generation: Cell<u64>,
         pub camera_element: OnceCell<gst::Element>,
         pub capsfilter: OnceCell<gst::Element>,
         pub sink_paintable: OnceCell<gst::Element>,
@@ -830,8 +832,16 @@ impl Viewfinder {
         self.imp().mipad2_ae.get().map(|ae| ae.hold())
     }
 
+    /// Sample the current preview without opening another capture owner.
+    pub fn preview_frame_sampler(&self) -> crate::PreviewFrameSampler {
+        self.imp().mipad2_preview.clone()
+    }
+
     /// Starts the viewfinder.
     pub fn start_stream(&self) {
+        let generation = self.imp().state_change_generation.get().wrapping_add(1);
+        self.imp().state_change_generation.set(generation);
+        self.imp().mipad2_preview.start();
         if let Some(ae) = self.imp().mipad2_ae.get() {
             ae.start(self.imp().is_front_camera.get());
         }
@@ -839,48 +849,59 @@ impl Viewfinder {
             #[weak(rename_to = obj)]
             self,
             async move {
-                obj.change_state_inner(gst::State::Playing).await;
+                obj.change_state_inner(gst::State::Playing, generation)
+                    .await;
             }
         ));
     }
 
     // It is not needed to call this for gst::State::Null.
-    async fn change_state_inner(&self, state: gst::State) {
+    async fn change_state_inner(&self, state: gst::State, generation: u64) {
         let (sender, receiver) = futures_channel::oneshot::channel();
 
         let camerabin = self.imp().camerabin();
-        std::thread::spawn(glib::clone!(#[weak] camerabin, move || {
-            let timeout = gst::format::ClockTime::from_seconds(2);
-            let (res, current_state, pending_state) = camerabin.state(Some(timeout));
-            let new_state_is = match res {
-                Ok(change_done) => {
-                    if change_done == gst::StateChangeSuccess::Async {
-                        camerabin.set_locked_state(true);
-                        log::debug!("Camerabin could not change its state from {current_state:?} to {pending_state:?}");
-                        StateChangeState::NotDone
-                    } else if current_state == state {
-                        StateChangeState::Equal
-                    } else {
-                        StateChangeState::Differ
+        std::thread::spawn(glib::clone!(
+            #[weak]
+            camerabin,
+            move || {
+                let timeout = gst::format::ClockTime::from_seconds(2);
+                let (res, current_state, pending_state) = camerabin.state(Some(timeout));
+                let new_state_is = match res {
+                    Ok(change_done) => {
+                        if change_done == gst::StateChangeSuccess::Async {
+                            log::debug!(
+                                "Camerabin could not change its state from {current_state:?} to {pending_state:?}"
+                            );
+                            StateChangeState::NotDone
+                        } else if current_state == state {
+                            StateChangeState::Equal
+                        } else {
+                            StateChangeState::Differ
+                        }
                     }
-                }
-                Err(err) => {
-                    log::error!("Previous camerabin state changed failed: {err}");
-                    StateChangeState::Error
-                }
-            };
-            sender.send(new_state_is).unwrap();
-        }))
-            .join()
-            .unwrap();
+                    Err(err) => {
+                        log::error!("Previous camerabin state changed failed: {err}");
+                        StateChangeState::Error
+                    }
+                };
+                let _ = sender.send(new_state_is);
+            }
+        ));
 
-        let change_state = receiver.await.unwrap();
+        let Ok(change_state) = receiver.await else {
+            return;
+        };
+        // A close/switch may have cancelled this wait while the GTK loop ran.
+        if self.imp().state_change_generation.get() != generation {
+            return;
+        }
         match change_state {
             StateChangeState::Equal => {
                 // Nothing to do, the new state matches the current one.
             }
             StateChangeState::NotDone => {
                 log::debug!("Aborting camerabin state change {state:?}");
+                camerabin.set_locked_state(true);
                 camerabin.abort_state();
                 camerabin.set_locked_state(false);
                 self.set_camerabin_state(state);
@@ -907,6 +928,10 @@ impl Viewfinder {
     ///
     /// A black frame will be shown after this methods has been called.
     pub fn stop_stream(&self) {
+        self.imp()
+            .state_change_generation
+            .set(self.imp().state_change_generation.get().wrapping_add(1));
+        self.imp().mipad2_preview.stop();
         if let Some(ae) = self.imp().mipad2_ae.get() {
             ae.pause();
         }
@@ -1307,6 +1332,15 @@ impl Viewfinder {
         ));
 
         let pad = capsfilter_post_decode.static_pad("src").unwrap();
+        let sampler = self.imp().mipad2_preview.clone();
+        pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
+            if let Some(buffer) = info.buffer()
+                && let Some(caps) = pad.current_caps()
+            {
+                sampler.observe(buffer, &caps);
+            }
+            gst::PadProbeReturn::Ok
+        });
         if let Some(ae) = self.imp().mipad2_ae.get().cloned() {
             pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
                 if let Some(buffer) = info.buffer()
