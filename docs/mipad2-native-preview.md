@@ -55,3 +55,32 @@ No gain-unit conversion or undocumented Android/Windows tuning is guessed.
 
 Current-day GUI reopen, photo capture and rear AE convergence remain pending.
 The default launcher remains r2 until candidate validation is complete.
+
+## 2026-10-11 evening validation (supersedes pending status above)
+
+Application code/package commit: b503142298ecd34129a24285754574c257fc78e6.
+Device kernel remains 6.14.0-mipad2-cachyos-navkeys-bqdiag1; no reboot or r9 test.
+
+- User confirmed both camera previews and normal rear photo/gallery output.
+- Rear AE writes exposure and native analogue-gain controls; 43 of 70 logged
+  steady samples reached luma 112..128. Zero exposure minimum no longer disables
+  AE. This is bounded application-owned AEC/AGC, not full IPA/AWB/3A.
+- Rear AF completed using the existing preview: selected 357 within validated
+  OTP range 237..366. Objective focus quality is not yet measured.
+- Default launcher now selects isolated native-ae-r5; three graceful close/reopen
+  trials verified the exact r5 binary, native V4L2 capture, and metered frames.
+- Original launcher is preserved at
+  /var/lib/mipad2-camera-native-ae-r5/launcher-before-r5. System Snapshot, r2,
+  boot files, stable kernel and anti-idle remain unchanged.
+- Direct front/rear/front/rear capture at their common 1280x720 size produced
+  eight JPEG frames per trial. Forcing 1920x1080 on a fresh rear source fails
+  negotiation because the current rear enumeration does not offer that size;
+  this is not a test of a supported rear mode.
+- Final front-photo confirmation, dynamic/high-contrast AE stability, objective
+  AF quality and complete AWB remain separate validation/work items.
+
+The `Unknown factory: jifmux` log is not proof of a missing JPEG plugin.
+GStreamer set_element_properties_from_encoding_profile reports this when its
+profile property map lacks a matching factory name; rear photography passed.
+The property-map behavior has not been patched in this build. Primary source:
+https://raw.githubusercontent.com/GStreamer/gstreamer/1.28/subprojects/gst-plugins-base/gst/encoding/gstencodebasebin.c
