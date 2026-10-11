@@ -226,6 +226,7 @@ mod imp {
         // Save window state on delete event
         fn close_request(&self) -> glib::Propagation {
             let window = self.obj();
+            window.shutdown_camera();
 
             if let Err(err) = window.save_window_size() {
                 log::warn!("Failed to save window state, {err:?}");
@@ -247,6 +248,14 @@ glib::wrapper! {
 }
 
 impl Window {
+    pub(crate) fn shutdown_camera(&self) {
+        let imp = self.imp();
+        if imp.camera.is_recording_active() {
+            imp.camera.stop_recording();
+        }
+        imp.camera.stop_stream();
+    }
+
     pub fn new(app: &Application) -> Self {
         glib::Object::builder().property("application", app).build()
     }

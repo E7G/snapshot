@@ -38,6 +38,17 @@ mod imp {
     }
 
     impl ApplicationImpl for Application {
+        fn shutdown(&self) {
+            // GApplication::quit does not emit Window::close-request. Stop
+            // capture and GL streaming before the process begins library exit.
+            for window in self.obj().windows() {
+                if let Ok(window) = window.downcast::<crate::Window>() {
+                    window.shutdown_camera();
+                }
+            }
+            self.parent_shutdown();
+        }
+
         fn handle_local_options(
             &self,
             options: &glib::VariantDict,
