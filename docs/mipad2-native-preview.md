@@ -85,3 +85,37 @@ GStreamer set_element_properties_from_encoding_profile reports this when its
 profile property map lacks a matching factory name; rear photography passed.
 The property-map behavior has not been patched in this build. Primary source:
 https://raw.githubusercontent.com/GStreamer/gstreamer/1.28/subprojects/gst-plugins-base/gst/encoding/gstencodebasebin.c
+
+
+## r6 explicit shutdown and exit-status correction (2026-10-11)
+
+Built source `db794b2fe85c72dd77710880bbc45ca3909ace1a`, installed isolated
+prefix `/usr/local/lib/mipad2-snapshot-native-ae-r6`. Full offline workspace
+tests and release/resource build passed; existing compiler warnings remain.
+
+Earlier r5 reopen readiness tests checked native MMAP/AE and pgrep absence,
+not the systemd exit result. Do not treat those preview gates as clean-exit
+proof. On kernel r10, a retained close-time SIGSEGV was in GstGL/Mesa; main
+thread was in libc exit/Mesa worker cleanup while capture/GL threads remained
+alive. Exact Mesa root cause remains unproven. No kernel BUG was indicated.
+
+The quit action calls GApplication::quit; this only runs application shutdown
+before returning from the main loop and does not guarantee window close
+request/disposal. Source now explicitly stops camera streaming during
+ApplicationImpl::shutdown and WindowImpl::close_request, before parent teardown.
+No GL renderer, sensor tuning, native capture or AE algorithm was changed.
+[Gio quit documentation](https://docs.gtk.org/gio/method.Application.quit.html).
+
+On actual kernel `6.14.0-mipad2-integrated-r11`, boot ID
+`d81f8a6a-8f25-40a5-8145-177ac52695cb`, user confirmed initial preview normal.
+Initial session plus three reopens passed native MMAP and continuing AE.
+Each session was closed by GDBus quit and verified actual MainPID=0,
+Result=success, ExecMainStatus=0. Four clean closures, not just disappearance.
+Default launcher activated r6 and another default-launch session continued AE.
+r5 prefix/launcher rollback backup retained; stable kernel boot files unchanged
+by app installation/activation. These checks do not prove full recording,
+window-X or Mesa stability; no new photo confirmation or AWB/3A claimed.
+
+Kernel r11 separately fixes front timing/cadence and takeover exposure resets.
+Its ordinary STREAMOFF/ON test with existing MMAP buffers still times out on
+both sensors. This kernel restart failure is distinct from r5 process exit.

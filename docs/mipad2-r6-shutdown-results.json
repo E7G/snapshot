@@ -1,0 +1,69 @@
+{
+  "kernel": "6.14.0-mipad2-integrated-r11",
+  "boot_id": "d81f8a6a-8f25-40a5-8145-177ac52695cb",
+  "source_commit": "db794b2fe85c72dd77710880bbc45ca3909ace1a",
+  "user_initial_preview_normal": true,
+  "cases": [
+    {
+      "unit": "mipad2-r11-snapshot-r6-initial",
+      "pid": "10330",
+      "exe": "/usr/local/lib/mipad2-snapshot-native-ae-r6/bin/snapshot",
+      "ae_samples": 143,
+      "native_mmap": true,
+      "preview_gate": true,
+      "closure": {
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "clean_exit": true
+      }
+    },
+    {
+      "unit": "mipad2-r11-snapshot-r6-clean-reopen-1",
+      "pid": "12040",
+      "exe": "/usr/local/lib/mipad2-snapshot-native-ae-r6/bin/snapshot",
+      "ae_samples": 6,
+      "native_mmap": true,
+      "preview_gate": true,
+      "closure": {
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "clean_exit": true
+      }
+    },
+    {
+      "unit": "mipad2-r11-snapshot-r6-clean-reopen-2",
+      "pid": "12222",
+      "exe": "/usr/local/lib/mipad2-snapshot-native-ae-r6/bin/snapshot",
+      "ae_samples": 6,
+      "native_mmap": true,
+      "preview_gate": true,
+      "closure": {
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "clean_exit": true
+      }
+    },
+    {
+      "unit": "mipad2-r11-snapshot-r6-clean-reopen-3",
+      "pid": "12453",
+      "exe": "/usr/local/lib/mipad2-snapshot-native-ae-r6/bin/snapshot",
+      "ae_samples": 6,
+      "native_mmap": true,
+      "preview_gate": true,
+      "closure": {
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainCode": "0",
+        "ExecMainStatus": "0",
+        "clean_exit": true
+      }
+    }
+  ],
+  "all_clean_closures": true
+}
