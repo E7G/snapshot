@@ -76,8 +76,9 @@ Device kernel remains 6.14.0-mipad2-cachyos-navkeys-bqdiag1; no reboot or r9 tes
   eight JPEG frames per trial. Forcing 1920x1080 on a fresh rear source fails
   negotiation because the current rear enumeration does not offer that size;
   this is not a test of a supported rear mode.
-- Final front-photo confirmation, dynamic/high-contrast AE stability, objective
-  AF quality and complete AWB remain separate validation/work items.
+- After the three default reopens, the user also confirmed normal front-photo
+  capture/gallery output. Dynamic/high-contrast AE stability, objective AF
+  quality and complete AWB remain separate validation/work items.
 
 The `Unknown factory: jifmux` log is not proof of a missing JPEG plugin.
 GStreamer set_element_properties_from_encoding_profile reports this when its
