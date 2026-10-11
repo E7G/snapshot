@@ -40,3 +40,18 @@ AtomISP/libcamera IPA or an AWB implementation. Kernel stream restart/multiple
 open issues remain separate kernel work. No kernel ABI or system camera plugin
 is changed. Installation must be isolated and rollback retained. Actual preview,
 AE convergence, camera switching, photography, and reopen require device tests.
+
+## 2026-10-11 hardware follow-up
+
+The r4 candidate produced 7658 AE log samples over roughly 55 minutes before
+losing its Wayland compositor connection. The user confirmed visible preview.
+The log also records front -> rear -> front switching and a completed rear
+OTP-bounded AF sweep (237..366, selected 333). This proves live sampler/control
+operation, not objective sharpness quality. Rear AE incorrectly disabled because
+the running T4KA3 exposes exposure minimum 0 (maximum 2486), while Range::valid
+required minimum >=1. Accept nonnegative native ranges, preserve all driver
+limits/steps, and test dark recovery from zero plus exhaustive rear bounds.
+No gain-unit conversion or undocumented Android/Windows tuning is guessed.
+
+Current-day GUI reopen, photo capture and rear AE convergence remain pending.
+The default launcher remains r2 until candidate validation is complete.

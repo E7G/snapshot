@@ -17,7 +17,7 @@ pub struct Range {
 
 impl Range {
     pub fn valid(self) -> bool {
-        self.min >= 1 && self.max >= self.min && self.step >= 1
+        self.min >= 0 && self.max >= self.min && self.step >= 1
     }
 
     pub fn quantize(self, value: f64) -> i32 {
@@ -179,6 +179,45 @@ mod tests {
     fn stats(mean: f64) -> Stats {
         Stats { mean, clipped: 0.0 }
     }
+    #[test]
+    fn rear_zero_minimum_exposure_is_valid_and_not_absorbing() {
+        // Live bqdiag1 T4KA3 QUERYCTRL: exposure 0..2486, gain 128..2047.
+        let er = Range {
+            min: 0,
+            max: 2486,
+            step: 1,
+        };
+        let gr = Range {
+            min: 128,
+            max: 2047,
+            step: 1,
+        };
+        assert!(er.valid());
+        assert!(!Range { min: -1, ..er }.valid());
+        assert_eq!(next(stats(30.0), 0, 128, er, gr), Some(Update::Exposure(1)));
+        assert_eq!(
+            next(stats(30.0), 800, 128, er, gr),
+            Some(Update::Exposure(1000))
+        );
+        assert_eq!(
+            next(stats(200.0), 800, 128, er, gr),
+            Some(Update::Exposure(640))
+        );
+        assert_eq!(next(stats(0.0), er.max, gr.max, er, gr), None);
+        assert_eq!(next(stats(255.0), er.min, gr.min, er, gr), None);
+        for exposure in 0..=er.max {
+            for gain in [128, 129, 512, 2047] {
+                for mean in [0.0, 30.0, 120.0, 200.0, 255.0] {
+                    match next(stats(mean), exposure, gain, er, gr) {
+                        Some(Update::Exposure(v)) => assert!((er.min..=er.max).contains(&v)),
+                        Some(Update::Gain(v)) => assert!((gr.min..=gr.max).contains(&v)),
+                        None => (),
+                    }
+                }
+            }
+        }
+    }
+
     #[test]
     fn dark_then_bright_priorities() {
         assert_eq!(next(stats(30.0), 320, 8, E, G), Some(Update::Exposure(400)));

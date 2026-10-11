@@ -100,7 +100,7 @@ impl Sensor {
         };
         if query.kind != 1 || query.flags & (1 | 4 | 16) != 0 || !range.valid() {
             return Err(io::Error::other(
-                "control not a usable positive integer range",
+                "control not a usable nonnegative integer range",
             ));
         }
         Ok(range)
