@@ -67,21 +67,35 @@ pub fn next(stats: Stats, exposure: i32, gain: i32, er: Range, gr: Range) -> Opt
     }
     const TARGET: f64 = 120.0;
     const DEAD_BAND: f64 = 8.0;
-    let reduce = stats.mean > TARGET + DEAD_BAND || stats.clipped > 0.10;
-    let increase = stats.mean < TARGET - DEAD_BAND && stats.clipped <= 0.10;
+    const CLIPPING_LIMIT: f64 = 0.10;
+    // A clipping constraint and the luminance target select ONE feedback gain.
+    // Hard clipping-up/down branches with a minimum 5% nudge chatter when a
+    // dark midtone and a bright area straddle the clipping threshold. Retain
+    // the same target/limit, but use the tighter ratio and one shared deadband.
+    // This is processed-frame feedback, not calibrated RAW/Intel AIQ statistics.
+    let luminance_gain = TARGET / stats.mean.max(1.0);
+    let highlight_gain = if stats.clipped > 0.0 {
+        CLIPPING_LIMIT / stats.clipped
+    } else {
+        f64::INFINITY
+    };
+    let constrained_gain = luminance_gain.min(highlight_gain);
+    let reduce = constrained_gain < TARGET / (TARGET + DEAD_BAND);
+    let increase = constrained_gain > TARGET / (TARGET - DEAD_BAND);
     if !reduce && !increase {
         return None;
     }
-    // Damped, bounded feedback plus a settling interval in the caller.
-    // Native codes need not be a calibrated physical-gain model: feedback
-    // checks the real next frame rather than pretending to know T4KA3's curve.
-    let mut factor = (TARGET / stats.mean.max(1.0)).sqrt().clamp(0.80, 1.25);
-    if reduce {
-        factor = factor.min(0.95);
+    // Damped, bounded feedback plus the caller's settling interval. Native
+    // codes need not be a physical-gain model; quantization still guarantees
+    // a bounded single-control update, including a zero minimum exposure.
+    // Clip fraction is not linear luminance: further damp this branch. The
+    // delayed high-contrast model rejects square-root-only clipping feedback.
+    let factor = if highlight_gain < luminance_gain {
+        constrained_gain.powf(0.25)
+    } else {
+        constrained_gain.sqrt()
     }
-    if increase {
-        factor = factor.max(1.05);
-    }
+    .clamp(0.80, 1.25);
     if reduce && gain > gr.min {
         let value = gr.nudge(gain, factor);
         return (value != gain).then_some(Update::Gain(value));
@@ -311,6 +325,128 @@ mod tests {
                     (95.0..=145.0).contains(&final_y),
                     "light={light} y={final_y} e={e} g={g}"
                 );
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod highlight_constraint_regression {
+    use super::*;
+    const E: Range = Range {
+        min: 1,
+        max: 3000,
+        step: 1,
+    };
+    const G: Range = Range {
+        min: 1,
+        max: 127,
+        step: 1,
+    };
+    #[test]
+    fn highlight_and_luminance_conflict_has_shared_deadband() {
+        // Actual r6 journal had Y~94..104 and clipped~0.098..0.107 at gain1.
+        // Old hard branch alternated between brightness-up and clipping-down.
+        for mean in [30.0, 80.0, 96.0, 110.0, 120.0] {
+            for clipped in [0.099, 0.100, 0.101] {
+                assert_eq!(
+                    next(Stats { mean, clipped }, 1200, 1, E, G),
+                    None,
+                    "mean={mean}, clipped={clipped}"
+                );
+            }
+        }
+    }
+    #[test]
+    fn strong_highlights_never_increase_even_when_midtones_dark() {
+        for mean in [1.0, 30.0, 90.0, 120.0] {
+            for clipped in [0.12, 0.2, 0.8, 1.0] {
+                assert!(
+                    matches!(next(Stats{mean,clipped},1200,1,E,G),Some(Update::Exposure(v)) if v<1200)
+                );
+                assert!(
+                    matches!(next(Stats{mean,clipped},1200,8,E,G),Some(Update::Gain(v)) if v<8)
+                );
+            }
+        }
+    }
+    #[test]
+    fn highlight_limited_but_achievable_scenes_settle() {
+        // Toy monotonic scene model, including feedback delay/noise. NOT pixel,
+        // physical gain calibration, sensor/ISP HDR, or real image-quality proof.
+        for target_e in [120.0, 600.0, 1200.0, 2200.0] {
+            for target_mean in [30.0, 80.0, 96.0, 110.0] {
+                for delayed in [false, true] {
+                    let (mut e, mut g) = (300, 8);
+                    let mut prev = Stats {
+                        mean: 120.0,
+                        clipped: 0.0,
+                    };
+                    let mut late_updates = 0;
+                    let mut min_e = i32::MAX;
+                    let mut max_e = 0;
+                    for i in 0..300 {
+                        let response = e as f64 * g as f64 / target_e;
+                        let noise = if i % 2 == 0 { 0.0005 } else { -0.0005 };
+                        let observed = Stats {
+                            mean: (target_mean * response).min(255.0),
+                            clipped: (0.1 + 0.2 * (response - 1.0) + noise).clamp(0.0, 1.0),
+                        };
+                        if let Some(u) = next(if delayed { prev } else { observed }, e, g, E, G) {
+                            match u {
+                                Update::Exposure(v) => e = v,
+                                Update::Gain(v) => g = v,
+                            };
+                            if i >= 200 {
+                                late_updates += 1;
+                            }
+                        }
+                        assert!((E.min..=E.max).contains(&e) && (G.min..=G.max).contains(&g));
+                        if i >= 200 {
+                            min_e = min_e.min(e);
+                            max_e = max_e.max(e);
+                        }
+                        prev = observed;
+                    }
+                    assert!(
+                        late_updates <= 4,
+                        "target={target_e} Y={target_mean} delayed={delayed}: updates={late_updates}"
+                    );
+                    assert!(
+                        (max_e - min_e) as f64 <= target_e * 0.08,
+                        "late swing {min_e}..{max_e}"
+                    );
+                    let response = e as f64 * g as f64 / target_e;
+                    assert!(
+                        (0.06..=0.13).contains(&(0.1 + 0.2 * (response - 1.0))),
+                        "final clip constraint response={response}"
+                    );
+                }
+            }
+        }
+    }
+    #[test]
+    fn unconstrained_deadband_and_control_quantization_unchanged() {
+        for mean in [112.0, 120.0, 128.0] {
+            assert_eq!(next(Stats { mean, clipped: 0.0 }, 1200, 8, E, G), None);
+        }
+        for mean in [30.0, 120.0, 200.0] {
+            for clipped in [0.0, 0.099, 0.1, 0.101, 0.2, 1.0] {
+                let er = Range {
+                    min: 3,
+                    max: 1001,
+                    step: 7,
+                };
+                for e in (3..=997).step_by(7) {
+                    if let Some(u) = next(Stats { mean, clipped }, e, 8, er, G) {
+                        let (v, r) = match u {
+                            Update::Exposure(v) => (v, er),
+                            Update::Gain(v) => (v, G),
+                        };
+                        assert!((r.min..=r.max).contains(&v));
+                        assert_eq!((v - r.min) % r.step, 0);
+                    }
+                }
             }
         }
     }

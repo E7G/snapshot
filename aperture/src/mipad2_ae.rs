@@ -140,9 +140,10 @@ impl Sensor {
             );
         } else {
             log::debug!(
-                "Mi Pad 2 AE {} steady Y={:.1} exposure={} gain={}",
+                "Mi Pad 2 AE {} steady Y={:.1} clipped={:.3} exposure={} gain={}",
                 self.name,
                 stats.mean,
+                stats.clipped,
                 exposure,
                 gain
             );
