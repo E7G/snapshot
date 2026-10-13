@@ -50,3 +50,30 @@ limits photos in that session to1080p until a mode-specific native switch is
 implemented/tested. Not promoted as general camera or Android photo parity.
 Default non-opt-in source/recorder/photo behavior remains unchanged.
 Actual native/encoder/file dimensions and recording throughput still pending.
+
+## Actual r13c automated throughput gates, 2026-10-14
+
+| Actual camera trial | Video packets | Effective fps | Maximum PTS gap | >100ms gaps |
+| --- | ---: | ---: | ---: | ---: |
+| Front10s |301|30.001|34ms|0|
+| Front30s |918|30.002|34ms|0|
+| Rear30s |908|30.012|34ms|0|
+
+Native source, encoder input and file are all1920x1080, no720p upscale.
+Mid-record VIDIOC_G_FMT readbacks confirm native1920x1080; H264+MP3 audio.
+GPIO camera switching goes front to rear without source geometry regression.
+All three software video/audio decode gates pass after camera/GUI idle;
+video null validation preserves demux timebase to avoid unrelated integer
+frame-rate rounding. No playback or media transfer. 33 framework tests pass,
+full release build/private artifact installed; prior artifacts/default launcher
+unchanged. Source21198c731e009601034b1ccb637ff012c6a98154 and private binary
+454edaeea64a1f0e6f78d8dd75803c36ac21b680ab9a1d89c4c407a362fcc75b.
+
+This meets only the measured1080p30 VIDEO THROUGHPUT gates in this scene.
+Not a same-scene Android benchmark, not visible GUI/preview/player/rotation
+proof, not AE/AWB/NR/AF/image-quality parity, not general photo-mode release.
+Fixed-native diagnostic source limits this opted-in session's photos to1080p;
+normal launcher remains r6. Need mode-specific native resolution switching,
+pixel/scaling/rotation, repeated opens/suspend and broader hardware/boot/flash
+regressions before promotion. Original1440p failures remain failed, and the
+full objective is not complete. No global VA unblocklist/package upgrade.

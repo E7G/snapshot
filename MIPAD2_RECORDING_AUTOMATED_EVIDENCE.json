@@ -1,0 +1,129 @@
+{
+  "source_commit": "21198c731e009601034b1ccb637ff012c6a98154",
+  "binary_sha256": "454edaeea64a1f0e6f78d8dd75803c36ac21b680ab9a1d89c4c407a362fcc75b",
+  "default_launcher_changed": false,
+  "android_live_comparison": false,
+  "full_objective_complete": false,
+  "cases": {
+    "front-10s": {
+      "state": "timed_trial_finalized",
+      "normal_settings_preserved": true,
+      "media": [
+        {
+          "video_packets": 301,
+          "effective_fps": 30.000999033267806,
+          "max_pts_gap": 0.03400000000000025,
+          "gaps_above100ms": 0,
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "audio_codec": "mp3",
+          "throughput_gate": true
+        }
+      ],
+      "native_1080p_observed": true,
+      "encoder_1080p_observed": true,
+      "midrecord_video_readback_1080p": true
+    },
+    "front-30s": {
+      "state": "timed_trial_finalized",
+      "normal_settings_preserved": true,
+      "media": [
+        {
+          "video_packets": 918,
+          "effective_fps": 30.00229057836793,
+          "max_pts_gap": 0.03400000000000247,
+          "gaps_above100ms": 0,
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "audio_codec": "mp3",
+          "throughput_gate": true
+        }
+      ],
+      "native_1080p_observed": true,
+      "encoder_1080p_observed": true,
+      "midrecord_video_readback_1080p": true
+    },
+    "rear-30s": {
+      "state": "timed_trial_finalized",
+      "normal_settings_preserved": true,
+      "media": [
+        {
+          "video_packets": 908,
+          "effective_fps": 30.0122431421859,
+          "max_pts_gap": 0.03400000000000247,
+          "gaps_above100ms": 0,
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "audio_codec": "mp3",
+          "throughput_gate": true
+        }
+      ],
+      "native_1080p_observed": true,
+      "encoder_1080p_observed": true,
+      "midrecord_video_readback_1080p": true
+    }
+  },
+  "requested_video_geometry": "1920x1080 NV12/30; not 720p upscale",
+  "requested_preview_geometry": "1280x720/30, separate display scaling; visible UI rendering not measured",
+  "three_cases_throughput_passed": true,
+  "remaining": "visible GUI responsiveness, pixel/scaling/rotation, image/3A/AF/AWB/NR quality, photo mode/full resolution, repeated opens and suspend, same-scene live Android comparison; original1440p failures retained",
+  "software_decode": {
+    "scope": "Software decode only after GUI camera idle; no audio playback/media transfer; demux video timebase prevents null-muxer frame-rate rounding artifacts",
+    "cases": [
+      {
+        "trial": "timed-trial.json",
+        "video": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        },
+        "audio": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        }
+      },
+      {
+        "trial": "timed-front-30s-trial.json",
+        "video": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        },
+        "audio": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        }
+      },
+      {
+        "trial": "timed-rear-30s-trial.json",
+        "video": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        },
+        "audio": {
+          "code": 0,
+          "stderr": "",
+          "gate": true
+        }
+      }
+    ],
+    "all_decode_gates": true
+  },
+  "framework_tests": 33,
+  "build_phases_passed": [
+    "prefix",
+    "format-check",
+    "tests",
+    "resources-release"
+  ],
+  "candidate_only": true,
+  "original_1440p_failures_retained": true,
+  "default_photo_and_launcher_preserved": true,
+  "stock_profile_photo_mode_not_ready": true
+}
