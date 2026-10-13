@@ -364,7 +364,29 @@ mod imp {
                     .build();
                 capsfilter.set_property("caps", &caps);
 
-                let mut elements = vec![&videorate, &glupload, &glconvert];
+                let preview_scaler =
+                    if std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1") {
+                        Some(
+                            gst::ElementFactory::make("videoscale")
+                                .property("add-borders", true)
+                                .build()
+                                .expect("Missing base videoscale"),
+                        )
+                    } else {
+                        None
+                    };
+                let preview_size = preview_scaler.as_ref().map(|_| {
+                    gst::ElementFactory::make("capsfilter")
+                        .property("caps", crate::mipad2_preview::android_preview_caps())
+                        .build()
+                        .unwrap()
+                });
+                let mut elements = vec![&videorate];
+                if let (Some(scale), Some(size)) = (preview_scaler.as_ref(), preview_size.as_ref())
+                {
+                    elements.extend([scale, size]);
+                }
+                elements.extend([&glupload, &glconvert]);
                 if let Some(flip) = gpu_preview_flip.as_ref() {
                     elements.push(flip);
                 }
@@ -1193,10 +1215,9 @@ impl Viewfinder {
                 "video-capture-caps",
                 crate::mipad2_preview::android_video_caps(),
             );
-            camerabin.set_property(
-                "viewfinder-caps",
-                crate::mipad2_preview::android_preview_caps(),
-            );
+            // Keep shared camerabin/source negotiation unconstrained. Scale
+            // only the optional display branch after its leaky queue.
+            camerabin.set_property("viewfinder-caps", gst::Caps::new_any());
             log::info!(
                 "Mi Pad 2 Android-profile candidate: video 1920x1080/30, preview 1280x720/30; 1440p failure not reclassified"
             );

@@ -24,3 +24,15 @@ Default launcher/global settings remain unchanged; candidate-only until actual
 file/frame timing, preview/scaling/pixel correctness and quality gates complete.
 Bitrate still2048kbps, audio enabled; source-copyOFF and ref1/QoS switches
 remain separately opt-in. No automatic playback or acoustic test.
+
+## r13 initial negotiation failure, retained
+Initial source-ready gate fails: decodebin3 video pad cannot link to shared
+post-decode capsfilter (no common format). Zero new recording, no success claim.
+Fixed1280x720 camerabin viewfinder-caps conflict with shared source/video
+negotiation. R13b keeps viewfinder-capsANY and inserts videoscale+NV12
+1280x720/30 caps only in the optional display bin, after rate selection and
+leaky queue, before GL upload. add-borders=true preserves differing aspect
+ratios rather than stretching pre-record/photo preview. Record caps remain
+explicit1080p30. Actual native input and encoder/file geometry must be audited
+so a720p source upscaled to1080p cannot be accepted as native1080p capture.
+Default non-opt-in preview adds no scaler/caps elements.
