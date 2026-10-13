@@ -299,6 +299,15 @@ impl Window {
                 }
             ));
             self.add_action(&action);
+            let switch = gio::SimpleAction::new("mipad2-switch-camera", None);
+            switch.connect_activate(glib::clone!(
+                #[weak(rename_to = window)]
+                self,
+                move |_, _| {
+                    window.imp().camera.diagnostic_switch_camera();
+                }
+            ));
+            self.add_action(&switch);
         }
 
         imp.camera.connect_capture_mode_notify(glib::clone!(

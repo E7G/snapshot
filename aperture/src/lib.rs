@@ -25,6 +25,7 @@ mod enums;
 mod error;
 mod mipad2_ae;
 mod mipad2_ae_algorithm;
+mod mipad2_capture_copy;
 mod mipad2_preview;
 mod mipad2_trace;
 mod pipeline_tee;

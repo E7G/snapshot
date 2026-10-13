@@ -333,7 +333,7 @@ mod imp {
                 // Cherry Trail's HASVK path mishandles multi-planar YUV DMA-BUF
                 // imports and the software videoconvert fallback is very costly.
                 // Keep preview frames in GLMemory and cap only the display branch
-                // to 20fps; picture/video capture keeps the original camera caps.
+                // to 15fps; picture/video capture keeps the original camera caps.
                 let bin = gst::Bin::default();
                 let videorate = gst::ElementFactory::make("videorate")
                     .property("drop-only", true)
@@ -1384,6 +1384,18 @@ impl Viewfinder {
 
         if let Some(pad) = device_src.static_pad("src") {
             crate::mipad2_trace::pad(&pad, "native-source");
+        }
+        if crate::mipad2_capture_copy::enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
+            device_src
+                .factory()
+                .as_ref()
+                .map(|f| f.name().to_string())
+                .unwrap_or_default()
+                .as_str(),
+        ) {
+            crate::mipad2_capture_copy::install(device_src);
         }
         let bin = gst::Bin::new();
 

@@ -849,6 +849,14 @@ impl Camera {
         Ok(())
     }
 
+    pub fn diagnostic_switch_camera(&self) {
+        if std::env::var("MIPAD2_DIAGNOSTIC_ACTIONS").as_deref() == Ok("1")
+            && !self.is_recording_active()
+        {
+            self.camera_switched();
+        }
+    }
+
     fn camera_switched(&self) {
         let provider = self.imp().provider.get().unwrap();
 
