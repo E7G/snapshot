@@ -46,6 +46,25 @@ pub(crate) fn recording_matrix_requested(h264: bool, hardware: bool) -> bool {
     )
 }
 
+pub(crate) fn low_latency_reference_policy(
+    device: bool,
+    h264: bool,
+    hardware: bool,
+    opt_in: bool,
+) -> bool {
+    device && h264 && hardware && opt_in
+}
+
+#[cfg(test)]
+#[test]
+fn low_latency_reference_is_scoped() {
+    assert!(low_latency_reference_policy(true, true, true, true));
+    assert!(!low_latency_reference_policy(false, true, true, true));
+    assert!(!low_latency_reference_policy(true, false, true, true));
+    assert!(!low_latency_reference_policy(true, true, false, true));
+    assert!(!low_latency_reference_policy(true, true, true, false));
+}
+
 pub(crate) fn orientation_tag(rotation: u8) -> &'static str {
     match rotation % 4 {
         0 => "rotate-0",

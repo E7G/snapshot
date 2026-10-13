@@ -788,6 +788,25 @@ impl Viewfinder {
         }
 
         camerabin.emit_by_name::<()>("start-capture", &[]);
+        if std::env::var("MIPAD2_TRACE_CAPTURE").as_deref() == Ok("1") {
+            let weak = self.downgrade();
+            let owned = location.as_ref().to_owned();
+            glib::timeout_add_local_once(std::time::Duration::from_secs(1), move || {
+                if let Some(viewfinder) = weak.upgrade() {
+                    if viewfinder.recording_location().as_ref() == Some(&owned) {
+                        viewfinder
+                            .imp()
+                            .camerabin()
+                            .downcast_ref::<gst::Bin>()
+                            .unwrap()
+                            .debug_to_dot_file_with_ts(
+                                gst::DebugGraphDetails::all(),
+                                "mipad2-during-recording",
+                            );
+                    }
+                }
+            });
+        }
 
         Ok(())
     }
@@ -1145,6 +1164,19 @@ impl Viewfinder {
         use gst_pbutils::encoding_profile::EncodingProfileBuilder;
         use gst_pbutils::{ElementProperties, ElementPropertiesMapItem};
 
+        let mut va_h264 =
+            ElementPropertiesMapItem::builder("vah264enc").field("bitrate", DEFAULT_BITRATE);
+        if crate::mipad2_preview::low_latency_reference_policy(
+            is_mipad2(),
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+            std::env::var("MIPAD2_H264_LOW_LATENCY").as_deref() == Ok("1"),
+        ) {
+            va_h264 = va_h264.field("ref-frames", 1u32);
+            log::info!(
+                "Mi Pad 2 candidate VA H264 uses one reference frame; bitrate/resolution/rate unchanged"
+            );
+        }
         // Video encoder properties
         let video_properties_map = ElementProperties::builder_map()
             .item(
@@ -1169,11 +1201,7 @@ impl Viewfinder {
                     .field("bitrate", DEFAULT_BITRATE)
                     .build(),
             )
-            .item(
-                ElementPropertiesMapItem::builder("vah264enc")
-                    .field("bitrate", DEFAULT_BITRATE)
-                    .build(),
-            )
+            .item(va_h264.build())
             .item(
                 ElementPropertiesMapItem::builder("vulkanh264enc")
                     .field("bitrate", DEFAULT_BITRATE)

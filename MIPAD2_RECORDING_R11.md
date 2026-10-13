@@ -38,3 +38,21 @@ handler is disconnected to prevent duplicate starts. Existing permission
 requests and shutdown hooks remain intact. No unlock or permission bypass,
 no default background capture. Locked-desktop pipeline tests are not visible
 GTK responsiveness/subjective quality evidence.
+
+## Hardware results: not a complete recording fix
+R11b same-binary background capture comparison: copy181 packets/18.4156fps
+(maxgap74ms), no-copy180 packets/18.0839fps(maxgap70.334ms); no gaps>100ms.
+Copy raises average app CPU69.91% versus61.83%. This does NOT establish
+MMAP starvation as primary cause or justify default copying. Copy remains opt-in.
+Audio-disabled diagnostic still16.265fps; GST_CAPS logging also enabled in
+that case, so it is not a clean timing A/B, but removing audio alone does not
+produce30fps. Audio-enabled settings are retained for normal candidates.
+R11 locked-desktop foreground-only attempts recorded nothing; source readiness
+gates blocked correctly. R11b explicitly authorized normal-portal initialization
+successfully starts native NV12 and automated recordings without user action.
+
+Fresh R18 raw capture360 frames each: front30.008 and rear30.012 wall fps,
+max wall gap34.019/34.473ms, no duplicate/reverse PTS. Separate VA front25fps,
+rear30fps. Previous all-headless30fps evidence is not substituted for these
+new results. MP4 diagnostic warm-front FFmpeg null sink complained about
+rounded duplicate DTS; this is retained, not labelled a successful decode gate.
