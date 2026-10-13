@@ -37,7 +37,9 @@ pub use error::{CaptureError, PipewireError, ProviderError};
 pub use mipad2_ae::ExposureHold;
 pub use mipad2_preview::PreviewFrameSampler;
 pub(crate) use pipeline_tee::PipelineTee;
-pub use utils::{is_h264_encoding_supported, is_hardware_encoding_supported};
+pub use utils::{
+    is_h264_encoding_supported, is_hardware_encoding_supported, preferred_video_format,
+};
 pub use viewfinder::Viewfinder;
 
 pub(crate) static APP_ID: OnceLock<&'static str> = OnceLock::new();

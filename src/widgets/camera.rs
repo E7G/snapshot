@@ -290,13 +290,10 @@ mod imp {
                 .bind("capture-mode", &*obj, "capture-mode")
                 .build();
 
-            let format = if aperture::is_h264_encoding_supported() {
-                log::debug!("Found openh264enc feature, using the h264/mp4 profile");
-                aperture::VideoFormat::H264Mp4
-            } else {
-                log::debug!("Did not find openh264enc feature, using the vp8/webm profile");
-                aperture::VideoFormat::Vp8Webm
-            };
+            let format = aperture::preferred_video_format(
+                self.settings().boolean("enable-hardware-encoding"),
+            );
+            log::debug!("Selected available recording profile: {:?}", format);
             self.viewfinder.set_video_format(format);
 
             self.settings()

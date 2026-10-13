@@ -17,7 +17,8 @@ use crate::code_detector::QrCodeDetector;
 ///
 /// This is the Gstreamer 1.26 default value for x264enc, chosen as reasonable compromise between
 /// quality and file size. Candidate for a preference.
-const DEFAULT_BITRATE: u32 = 2048;
+const DEFAULT_BITRATE: u32 = 2048; // kbps, used by VA/x264 encoders
+const DEFAULT_BITRATE_BPS: u32 = DEFAULT_BITRATE * 1000;
 const PROVIDER_TIMEOUT: u64 = 2;
 const MIPAD2_PREVIEW_RATE: i32 = 15;
 
@@ -215,9 +216,11 @@ mod imp {
             let obj = self.obj();
 
             if value != self.enable_hw_encoding.replace(value) {
-                match self.video_format.get() {
-                    VideoFormat::Vp8Webm => (),
-                    VideoFormat::H264Mp4 => obj.reset_pipeline(),
+                let format = crate::preferred_video_format(value);
+                if self.video_format.get() != format {
+                    obj.set_video_format(format); // This already resets once.
+                } else {
+                    obj.reset_pipeline(); // Reapply encoder ranks in either codec.
                 }
                 obj.notify_enable_hw_encoding();
             }
@@ -1068,7 +1071,7 @@ impl Viewfinder {
             )
             .item(
                 ElementPropertiesMapItem::builder("openh264enc")
-                    .field("bitrate", DEFAULT_BITRATE * 1024)
+                    .field("bitrate", DEFAULT_BITRATE_BPS)
                     .build(),
             )
             .item(
@@ -1088,7 +1091,9 @@ impl Viewfinder {
             )
             .item(
                 ElementPropertiesMapItem::builder("vp8enc")
-                    .field("target-bitrate", DEFAULT_BITRATE)
+                    .field("target-bitrate", DEFAULT_BITRATE_BPS)
+                    .field("deadline", 1i64) // Explicit realtime software fallback.
+                    .field("cpu-used", 8i32)
                     .build(),
             )
             .item(

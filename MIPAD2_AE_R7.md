@@ -37,3 +37,26 @@ unchanged. General kernel/flash objective remains active and incomplete.
 Primary design context (not copied algorithm/calibration):
 https://docs.libcamera.org/master/internal-api/classlibcamera_1_1ipa_1_1AgcMeanLuminance.html
 https://docs.libcamera.org/master/internal-api/structlibcamera_1_1ipa_1_1AgcMeanLuminance_1_1AgcConstraint.html
+
+
+## Recording selection repair (2026-10-13, still a candidate)
+
+User's R18/r6 clip saves/plays but recording stutters. Actual VP8/Vorbis clip
+has66 packets at1920x1440, effective11.68fps despite30/1 metadata. Device lacks
+VA plugin; i965 advertises H264 encoding, but matched signed VA1.28.7-1 plugin
+explicitly blocklists i965 for encoding. Default environment is NOT overridden.
+Scoped synthetic override produces valid decoded H264, but real-time gates
+are NOT all passed. Ball source alone is CPU-heavy; separate SMPTE tests retain
+the I420 conversion path's failed wall-time gate. On current stable bqdiag1,
+real front NV12 H264 runs28.65fps, while rear fails negotiation; both complete
+mutable snapshots restore. This is not R18 real recording/full30fps proof.
+
+Fix source hardware-only H264 eligibility under hardware opt-in (otherwise
+VP8 fallback); reset/update encoder ranks for either codec when preference
+changes, without duplicate reset. Actual old-source selector compiles then
+fails hardware-only enabled case; corrected helper4 cases pass,8-case matrix
+added to workspace tests. VP8's target-bitrate was2048bits/s while the shared
+constant is2048kbps. Correct VP8/OpenH264 bits/s units and explicitly request
+realtime VP8 fallback. Resolution/frame-rate unchanged. Hardware plugin/default
+selection, real app recording/preview responsiveness and quality remain to test.
+Do not infer real-time speed just from evenly spaced synthetic timestamps.

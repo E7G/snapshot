@@ -176,6 +176,29 @@ pub fn is_h264_encoding_supported() -> bool {
     registry.lookup_feature("openh264enc").is_some() || registry.lookup_feature("x264enc").is_some()
 }
 
+// A hardware-only H.264 factory is usable only when hardware encoding is
+// enabled. Do not select an MP4 profile whose sole encoder was ranked NONE.
+fn preferred_from_capabilities(
+    hw_enabled: bool,
+    sw_h264: bool,
+    hw_h264: bool,
+) -> crate::VideoFormat {
+    if sw_h264 || (hw_enabled && hw_h264) {
+        crate::VideoFormat::H264Mp4
+    } else {
+        crate::VideoFormat::Vp8Webm
+    }
+}
+
+/// Select an available recording profile while respecting hardware opt-in.
+pub fn preferred_video_format(hw_enabled: bool) -> crate::VideoFormat {
+    preferred_from_capabilities(
+        hw_enabled,
+        is_h264_encoding_supported(),
+        is_hardware_encoding_supported(crate::VideoFormat::H264Mp4),
+    )
+}
+
 // Whether the system supports hardware video encoding for a given format.
 pub fn is_hardware_encoding_supported(format: crate::VideoFormat) -> bool {
     let registry = gst::Registry::get();
@@ -196,6 +219,25 @@ pub fn is_hardware_encoding_supported(format: crate::VideoFormat) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn recording_profile_hardware_only_and_disabled_matrix() {
+        for hw_enabled in [false, true] {
+            for sw_h264 in [false, true] {
+                for hw_h264 in [false, true] {
+                    let expected = if sw_h264 || (hw_enabled && hw_h264) {
+                        crate::VideoFormat::H264Mp4
+                    } else {
+                        crate::VideoFormat::Vp8Webm
+                    };
+                    assert_eq!(
+                        preferred_from_capabilities(hw_enabled, sw_h264, hw_h264),
+                        expected
+                    );
+                }
+            }
+        }
+    }
 
     #[test]
     fn test_is_infrared() {
