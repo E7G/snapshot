@@ -36,3 +36,17 @@ ratios rather than stretching pre-record/photo preview. Record caps remain
 explicit1080p30. Actual native input and encoder/file geometry must be audited
 so a720p source upscaled to1080p cannot be accepted as native1080p capture.
 Default non-opt-in preview adds no scaler/caps elements.
+
+## r13b start-capture stall and r13c isolated diagnostic repair
+Preview starts at native1920x1440/30; synchronous start-capture geometry change
+stalls before diagnostic timer can be installed. Zero-byte open output, no
+encoder frames/no timed-action-start log. Exact candidate service stopped;
+camera fd idle and zero-byte failure preserved. No reboot/default change.
+R13c fixes native source caps toNV121920x1080/30 before initial PLAYING,
+keeps camerabin video-capture-caps raw-format-only and viewfinder-capsANY.
+Recording no longer asks to resize the active source. Separate720p30 display
+scaler remains. THIS FLAG IS RECORDING-DIAGNOSTIC ONLY: fixed source also
+limits photos in that session to1080p until a mode-specific native switch is
+implemented/tested. Not promoted as general camera or Android photo parity.
+Default non-opt-in source/recorder/photo behavior remains unchanged.
+Actual native/encoder/file dimensions and recording throughput still pending.

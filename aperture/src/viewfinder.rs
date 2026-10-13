@@ -1211,9 +1211,15 @@ impl Viewfinder {
             self.video_format() == VideoFormat::H264Mp4,
             self.enable_hw_encoding(),
         ) {
+            // Native source is fixed before initial PLAYING. Keep recorder's
+            // caps unrestricted to avoid a synchronous start-capture resize.
             camerabin.set_property(
                 "video-capture-caps",
-                crate::mipad2_preview::android_video_caps(),
+                gst_video::video_make_raw_caps(&[
+                    gst_video::VideoFormat::I420,
+                    gst_video::VideoFormat::Nv12,
+                ])
+                .build(),
             );
             // Keep shared camerabin/source negotiation unconstrained. Scale
             // only the optional display branch after its leaky queue.
@@ -1575,7 +1581,14 @@ impl Viewfinder {
         }
 
         if let Some(capsfilter) = imp.capsfilter.get() {
-            let caps = camera.best_caps(self.use_mp4_matrix_rotation());
+            let caps = if crate::mipad2_preview::android_profile_requested(
+                self.video_format() == VideoFormat::H264Mp4,
+                self.enable_hw_encoding(),
+            ) {
+                crate::mipad2_preview::android_video_caps()
+            } else {
+                camera.best_caps(self.use_mp4_matrix_rotation())
+            };
             capsfilter.set_property("caps", &caps);
         }
 
