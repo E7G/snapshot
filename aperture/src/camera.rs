@@ -185,11 +185,16 @@ impl Camera {
         )
     }
 
-    pub(crate) fn best_caps(&self) -> gst::Caps {
+    pub(crate) fn best_caps(&self, prefer_nv12: bool) -> gst::Caps {
         let caps = self
             .caps()
             .unwrap_or_else(|| gst::Caps::builder("video/x-raw").build());
         let highest_res_caps = utils::caps::filter_caps(caps);
+        let highest_res_caps = if prefer_nv12 {
+            crate::mipad2_preview::prefer_native_nv12(highest_res_caps)
+        } else {
+            highest_res_caps
+        };
         log::debug!("Using caps: {highest_res_caps:#?}");
 
         highest_res_caps

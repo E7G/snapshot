@@ -690,7 +690,7 @@ impl Viewfinder {
         // Set after we cannot fail anymore.
         imp.is_taking_picture.set(true);
 
-        self.set_tags();
+        self.set_tags(false);
 
         let camerabin = imp.camerabin();
         camerabin.set_property_from_str("mode", "mode-image");
@@ -735,7 +735,8 @@ impl Viewfinder {
         camerabin.set_property_from_str("mode", "mode-video");
         camerabin.set_property("location", location.as_ref().display().to_string());
 
-        self.set_tags();
+        self.update_video_rotation();
+        self.set_tags(true);
 
         camerabin.emit_by_name::<()>("start-capture", &[]);
 
@@ -802,6 +803,12 @@ impl Viewfinder {
     /// Rotates the preview, captured pictures and recorded video clockwise by 90 degrees.
     pub fn rotate_clockwise(&self) {
         let imp = self.imp();
+        if self.use_mp4_matrix_rotation()
+            && (self.is_recording() || imp.is_stopping_recording.get())
+        {
+            log::debug!("Keep the MP4 recording orientation fixed until capture finalizes");
+            return;
+        }
         let rotation = (imp.rotation.get() + 1) % 4;
         imp.rotation.set(rotation);
         let method = match rotation {
@@ -810,14 +817,32 @@ impl Viewfinder {
             2 => "rotate-180",
             _ => "counterclockwise",
         };
-        for flip in [
-            imp.viewfinder_flip.get(),
-            imp.image_flip.get(),
-            imp.video_flip.get(),
-        ]
-        .into_iter()
-        .flatten()
+        for flip in [imp.viewfinder_flip.get(), imp.image_flip.get()]
+            .into_iter()
+            .flatten()
         {
+            flip.set_property_from_str("method", method);
+        }
+        self.update_video_rotation();
+    }
+
+    fn use_mp4_matrix_rotation(&self) -> bool {
+        crate::mipad2_preview::recording_matrix_requested(
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+        )
+    }
+
+    fn update_video_rotation(&self) {
+        let imp = self.imp();
+        if let Some(flip) = imp.video_flip.get() {
+            let rotation = if self.use_mp4_matrix_rotation() {
+                0
+            } else {
+                imp.rotation.get()
+            };
+            let method =
+                ["none", "clockwise", "rotate-180", "counterclockwise"][usize::from(rotation % 4)];
             flip.set_property_from_str("method", method);
         }
     }
@@ -1027,13 +1052,29 @@ impl Viewfinder {
         self.emit_by_name::<()>("code-detected", &[&data]);
     }
 
-    fn set_tags(&self) {
+    fn set_tags(&self, for_video: bool) {
         let imp = self.imp();
 
         let tagsetter = imp
             .camerabin()
             .dynamic_cast_ref::<gst::TagSetter>()
             .unwrap();
+        // Photos are physically rotated; reset a previous video's matrix tag.
+        let rotation = if for_video && self.use_mp4_matrix_rotation() {
+            imp.rotation.get()
+        } else {
+            0
+        };
+        tagsetter.add_tag::<gst::tags::ImageOrientation>(
+            &crate::mipad2_preview::orientation_tag(rotation),
+            gst::TagMergeMode::Replace,
+        );
+        if for_video && self.use_mp4_matrix_rotation() {
+            log::info!(
+                "Mi Pad 2 MP4 recording uses {} matrix; no per-frame video rotation",
+                crate::mipad2_preview::orientation_tag(rotation)
+            );
+        }
         tagsetter.add_tag::<gst::tags::ApplicationName>(
             crate::APP_ID.get().unwrap(),
             gst::TagMergeMode::Replace,
@@ -1253,6 +1294,7 @@ impl Viewfinder {
                 .build();
 
         let camerabin = self.imp().camerabin();
+        self.update_video_rotation();
         camerabin.set_property("video-profile", video_profile);
         camerabin.set_property("image-profile", image_profile);
     }
@@ -1385,7 +1427,7 @@ impl Viewfinder {
         }
 
         if let Some(capsfilter) = imp.capsfilter.get() {
-            let caps = camera.best_caps();
+            let caps = camera.best_caps(self.use_mp4_matrix_rotation());
             capsfilter.set_property("caps", &caps);
         }
 

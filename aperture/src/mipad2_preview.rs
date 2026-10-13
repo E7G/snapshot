@@ -29,6 +29,41 @@ pub(crate) fn create_native_source(path: &str) -> Result<gst::Element, gtk::glib
     Ok(source)
 }
 
+// Experimental process-only opt-in until full GUI recording/player validation.
+fn matrix_policy(vendor: &str, product: &str, h264: bool, hardware: bool, opt_in: bool) -> bool {
+    vendor.trim() == "Xiaomi Inc" && product.trim() == "Mipad2" && h264 && hardware && opt_in
+}
+
+pub(crate) fn recording_matrix_requested(h264: bool, hardware: bool) -> bool {
+    let vendor = std::fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
+    let product = std::fs::read_to_string("/sys/class/dmi/id/product_name").unwrap_or_default();
+    matrix_policy(
+        &vendor,
+        &product,
+        h264,
+        hardware,
+        std::env::var("MIPAD2_MP4_ROTATION_MATRIX").as_deref() == Ok("1"),
+    )
+}
+
+pub(crate) fn orientation_tag(rotation: u8) -> &'static str {
+    match rotation % 4 {
+        0 => "rotate-0",
+        1 => "rotate-90",
+        2 => "rotate-180",
+        _ => "rotate-270",
+    }
+}
+
+pub(crate) fn prefer_native_nv12(caps: gst::Caps) -> gst::Caps {
+    let nv12 = gst::Caps::builder("video/x-raw")
+        .field("format", "NV12")
+        .build();
+    let mut result = nv12.intersect_with_mode(&caps, gst::CapsIntersectMode::First);
+    result.merge(caps);
+    result
+}
+
 const WIDTH: usize = 320;
 const HEIGHT: usize = 180;
 #[derive(Debug)]
@@ -207,6 +242,58 @@ fn gray_frame(buffer: &gst::BufferRef, caps: &gst::CapsRef) -> Option<Vec<u8>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn recording_matrix_is_scoped_and_opt_in() {
+        for vendor in ["Xiaomi Inc", "Xiaomi Inc\n", "Other"] {
+            for product in ["Mipad2", "Mipad2\n", "Other"] {
+                for h264 in [false, true] {
+                    for hw in [false, true] {
+                        for enabled in [false, true] {
+                            assert_eq!(
+                                matrix_policy(vendor, product, h264, hw, enabled),
+                                vendor.trim() == "Xiaomi Inc"
+                                    && product.trim() == "Mipad2"
+                                    && h264
+                                    && hw
+                                    && enabled
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn all_orientation_tags_and_wraps() {
+        for i in 0..=u8::MAX {
+            assert_eq!(
+                orientation_tag(i),
+                ["rotate-0", "rotate-90", "rotate-180", "rotate-270"][usize::from(i % 4)]
+            );
+        }
+    }
+
+    #[test]
+    fn nv12_preference_preserves_geometry_rate_and_fallback() {
+        gst::init().unwrap();
+        let original: gst::Caps = "video/x-raw,format=I420,width=1920,height=1440,framerate=30/1;video/x-raw,format=NV12,width=1920,height=1440,framerate=30/1".parse().unwrap();
+        let sorted = prefer_native_nv12(original.clone());
+        assert!(original.is_subset(&sorted) && sorted.is_subset(&original));
+        let first = sorted.structure(0).unwrap();
+        assert_eq!(first.get::<&str>("format").unwrap(), "NV12");
+        assert_eq!(first.get::<i32>("width").unwrap(), 1920);
+        assert_eq!(first.get::<i32>("height").unwrap(), 1440);
+        assert_eq!(
+            first.get::<gst::Fraction>("framerate").unwrap(),
+            gst::Fraction::new(30, 1)
+        );
+        let fallback: gst::Caps = "video/x-raw,format=I420,width=1920,height=1440,framerate=30/1"
+            .parse()
+            .unwrap();
+        assert_eq!(prefer_native_nv12(fallback.clone()), fallback);
+    }
+
     #[test]
     fn policy_is_device_specific() {
         assert_eq!(
