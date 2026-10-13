@@ -295,6 +295,18 @@ mod imp {
                     .intersect(&yuv_caps)
                     .is_empty()
             };
+            let gpu_preview_rotation = is_mipad2()
+                && std::env::var("MIPAD2_PREVIEW_GPU_ROTATION").as_deref() == Ok("1")
+                && gst::ElementFactory::find("glvideoflip").is_some();
+            let gpu_preview_flip = if gpu_preview_rotation {
+                Some(
+                    gst::ElementFactory::make("glvideoflip")
+                        .build()
+                        .expect("Preflighted GL video flip factory"),
+                )
+            } else {
+                None
+            };
             let sink = if is_mipad2() {
                 // Cherry Trail's HASVK path mishandles multi-planar YUV DMA-BUF
                 // imports and the software videoconvert fallback is very costly.
@@ -323,22 +335,13 @@ mod imp {
                     .build();
                 capsfilter.set_property("caps", &caps);
 
-                bin.add_many([
-                    &videorate,
-                    &glupload,
-                    &glconvert,
-                    &capsfilter,
-                    &paintablesink,
-                ])
-                .unwrap();
-                gst::Element::link_many([
-                    &videorate,
-                    &glupload,
-                    &glconvert,
-                    &capsfilter,
-                    &paintablesink,
-                ])
-                .unwrap();
+                let mut elements = vec![&videorate, &glupload, &glconvert];
+                if let Some(flip) = gpu_preview_flip.as_ref() {
+                    elements.push(flip);
+                }
+                elements.extend([&capsfilter, &paintablesink]);
+                bin.add_many(elements.iter().copied()).unwrap();
+                gst::Element::link_many(elements.iter().copied()).unwrap();
                 bin.add_pad(
                     &gst::GhostPad::with_target(&videorate.static_pad("sink").unwrap()).unwrap(),
                 )
@@ -391,7 +394,17 @@ mod imp {
                 .build()
                 .expect("Missing GStreamer Good Plug-ins");
             camerabin.set_property("viewfinder-filter", &viewfinder_flip);
-            self.viewfinder_flip.set(viewfinder_flip).unwrap();
+            // With GPU opt-in the camerabin software filter stays identity;
+            // only the already uploaded GL display branch is rotated. There is
+            // no gldownload/CPU readback and recording caps are untouched.
+            if let Some(flip) = gpu_preview_flip {
+                log::info!(
+                    "Mi Pad 2 preview rotation uses GLMemory after display rate selection; recording branch unchanged"
+                );
+                self.viewfinder_flip.set(flip).unwrap();
+            } else {
+                self.viewfinder_flip.set(viewfinder_flip).unwrap();
+            }
 
             let (video_filter, video_flip) =
                 create_rotation_filter().expect("Could not create video rotation filter");
