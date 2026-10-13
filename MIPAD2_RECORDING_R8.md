@@ -50,3 +50,33 @@ semantics and supported player display, photos and switching/reopen regression,
 measured GUI CPU/cadence/responsiveness/quality, and production opt-in promotion.
 No default launcher/settings/package upgrades or reboot are part of this build.
 Broader kernel/sensor/3A/boot/hardware/flash objective remains active.
+
+
+## Built/private-installed checkpoint (same day, GUI recording still pending)
+
+Built/package source: `41b931b65e8533d25c2e8f074321e2cfb07169fe`; offline full release/resources
+build and 27 workspace framework tests pass. Binary SHA256:
+`1c39f6d8fd8c984353a0b79039f18bded3b1e46981c35f5386802c623fa12832`. Installed only under `/usr/local/lib/mipad2-snapshot-recording-r8`; r6 default launcher,
+r6/r7 device binaries, normal settings and packaged archives remain unchanged.
+This documentation commit is not the build source. No global VA override,
+package upgrade, kernel install or reboot is implied by candidate installation.
+
+Full1920x1440 synthetic SMPTE was H264 encoded once, then losslessly remuxed
+with rotate-0/90/180/270 MP4 tags. FFmpeg's normal autorotate output agrees
+byte-for-byte with the expected pixel permutation of its non-autorotate RGB
+decode for all four directions (MAE0/outliers0). Coded dimensions stay1920x1440;
+90/270-degree display dimensions are1440x1920. This validates mux/FFmpeg
+orientation semantics, not user GUI/gallery compatibility or live throughput.
+The original pixel fixture needed missing numpy and failed at import before
+creating its folder or touching a camera. Its log is retained; v2 uses only
+stdlib byte operations and does not add/upgrade device packages.
+
+The r8 private window is launched once with matrix opt-in and hardware H264
+enabled in private keyfile settings only, and shutter sounds disabled there.
+A separate bounded observer waits for the first finalized new recording,
+collecting actual process CPU and file packet timestamps until it finalizes,
+the app exits or6h expire. This avoids reusing the old180s idle sample window
+which expired hours before the user's r7 recording. A live observer is NOT a
+recording pass. User preview/recording responsiveness, actual NV12 caps/matrix
+propagation, audio-bearing recording, playback direction and photo regressions
+remain pending. No claim that the user's 17.8fps clip is repaired yet.
