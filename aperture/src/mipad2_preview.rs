@@ -65,6 +65,57 @@ fn low_latency_reference_is_scoped() {
     assert!(!low_latency_reference_policy(true, true, true, false));
 }
 
+pub(crate) fn android_profile_requested(h264: bool, hardware: bool) -> bool {
+    let vendor = std::fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
+    let product = std::fs::read_to_string("/sys/class/dmi/id/product_name").unwrap_or_default();
+    matrix_policy(
+        &vendor,
+        &product,
+        h264,
+        hardware,
+        std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1"),
+    )
+}
+
+pub(crate) fn android_video_caps() -> gst::Caps {
+    gst::Caps::builder("video/x-raw")
+        .field("format", "NV12")
+        .field("width", 1920i32)
+        .field("height", 1080i32)
+        .field("framerate", gst::Fraction::new(30, 1))
+        .build()
+}
+
+pub(crate) fn android_preview_caps() -> gst::Caps {
+    gst::Caps::builder("video/x-raw")
+        .field("format", "NV12")
+        .field("width", 1280i32)
+        .field("height", 720i32)
+        .field("framerate", gst::Fraction::new(30, 1))
+        .build()
+}
+
+#[cfg(test)]
+#[test]
+fn android_video_and_preview_geometry_are_distinct() {
+    gst::init().unwrap();
+    let video = android_video_caps();
+    let preview = android_preview_caps();
+    assert!(video.is_fixed());
+    assert!(preview.is_fixed());
+    for (caps, w, h) in [(&video, 1920i32, 1080i32), (&preview, 1280, 720)] {
+        let s = caps.structure(0).unwrap();
+        assert_eq!(s.get::<i32>("width").unwrap(), w);
+        assert_eq!(s.get::<i32>("height").unwrap(), h);
+        assert_eq!(
+            s.get::<gst::Fraction>("framerate").unwrap(),
+            gst::Fraction::new(30, 1)
+        );
+        assert_eq!(s.get::<String>("format").unwrap(), "NV12");
+    }
+    assert!(video.intersect(&preview).is_empty()); // No accidental recording downscale to preview.
+}
+
 pub(crate) fn orientation_tag(rotation: u8) -> &'static str {
     match rotation % 4 {
         0 => "rotate-0",

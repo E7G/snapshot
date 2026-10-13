@@ -21,6 +21,13 @@ const DEFAULT_BITRATE: u32 = 2048; // kbps, used by VA/x264 encoders
 const DEFAULT_BITRATE_BPS: u32 = DEFAULT_BITRATE * 1000;
 const PROVIDER_TIMEOUT: u64 = 2;
 const MIPAD2_PREVIEW_RATE: i32 = 15;
+fn mipad2_preview_rate() -> i32 {
+    if is_mipad2() && std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1") {
+        30
+    } else {
+        MIPAD2_PREVIEW_RATE
+    }
+}
 
 fn is_mipad2() -> bool {
     let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
@@ -337,7 +344,7 @@ mod imp {
                 let bin = gst::Bin::default();
                 let videorate = gst::ElementFactory::make("videorate")
                     .property("drop-only", true)
-                    .property("max-rate", MIPAD2_PREVIEW_RATE)
+                    .property("max-rate", mipad2_preview_rate())
                     .build()
                     .expect("Missing GStreamer Base Plug-ins");
                 let glupload = gst::ElementFactory::make("glupload")
@@ -352,7 +359,7 @@ mod imp {
                 let caps = gst::Caps::builder("video/x-raw")
                     .features(["memory:GLMemory"])
                     .field("format", "RGBA")
-                    .field("framerate", gst::Fraction::new(MIPAD2_PREVIEW_RATE, 1))
+                    .field("framerate", gst::Fraction::new(mipad2_preview_rate(), 1))
                     .field("texture-target", "2D")
                     .build();
                 capsfilter.set_property("caps", &caps);
@@ -1176,6 +1183,33 @@ impl Viewfinder {
             log::info!(
                 "Mi Pad 2 candidate VA H264 uses one reference frame; bitrate/resolution/rate unchanged"
             );
+        }
+        let camerabin = self.imp().camerabin();
+        if crate::mipad2_preview::android_profile_requested(
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+        ) {
+            camerabin.set_property(
+                "video-capture-caps",
+                crate::mipad2_preview::android_video_caps(),
+            );
+            camerabin.set_property(
+                "viewfinder-caps",
+                crate::mipad2_preview::android_preview_caps(),
+            );
+            log::info!(
+                "Mi Pad 2 Android-profile candidate: video 1920x1080/30, preview 1280x720/30; 1440p failure not reclassified"
+            );
+        } else {
+            camerabin.set_property(
+                "video-capture-caps",
+                gst_video::video_make_raw_caps(&[
+                    gst_video::VideoFormat::I420,
+                    gst_video::VideoFormat::Nv12,
+                ])
+                .build(),
+            );
+            camerabin.set_property("viewfinder-caps", gst::Caps::new_any());
         }
         // Video encoder properties
         let video_properties_map = ElementProperties::builder_map()
