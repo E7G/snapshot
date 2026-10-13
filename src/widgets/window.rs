@@ -218,6 +218,23 @@ mod imp {
                 ));
             });
             self.is_active_handle.replace(Some(is_active_handle));
+            if std::env::var("MIPAD2_DIAGNOSTIC_ACTIONS").as_deref() == Ok("1")
+                && std::env::var("MIPAD2_DIAGNOSTIC_BACKGROUND_CAPTURE").as_deref() == Ok("1")
+            {
+                // Explicit unattended diagnostic only. Reuse normal portal
+                // authorization; don't bypass permissions or unlock desktop.
+                if let Some(handle) = self.is_active_handle.take() {
+                    obj.disconnect(handle);
+                }
+                log::info!("Mi Pad 2 diagnostic camera initialization without foreground wait");
+                glib::spawn_future_local(glib::clone!(
+                    #[weak]
+                    obj,
+                    async move {
+                        obj.imp().camera.start().await;
+                    }
+                ));
+            }
         }
     }
 

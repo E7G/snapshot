@@ -25,3 +25,16 @@ and rejects switching while recording; no exposed normal-session actions.
 
 Hardware validation pending. Kernel/default launcher/packages remain unchanged.
 https://gstreamer.freedesktop.org/documentation/gstreamer/gstbuffer.html
+
+## Unattended diagnostic startup
+Desktop locked before r11 first foreground activation. Both guarded trials
+correctly stopped at no_recent_native_source_frames; neither recorded anything.
+Do not interpret DBus action success as actual stream/camera switching success.
+Loginctl unlock signal did not change LockedHint; no repeated unlock attempt.
+R11b process opt-ins MIPAD2_DIAGNOSTIC_ACTIONS=1 together with
+MIPAD2_DIAGNOSTIC_BACKGROUND_CAPTURE=1 start the NORMAL camera/portal
+initialization without waiting for first foreground activation. The is-active
+handler is disconnected to prevent duplicate starts. Existing permission
+requests and shutdown hooks remain intact. No unlock or permission bypass,
+no default background capture. Locked-desktop pipeline tests are not visible
+GTK responsiveness/subjective quality evidence.
