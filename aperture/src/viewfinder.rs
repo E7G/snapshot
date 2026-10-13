@@ -261,6 +261,21 @@ mod imp {
                 .build()
                 .expect("Missing GStreamer Bad Plug-ins");
             self.camerabin.set(camerabin.clone()).unwrap();
+            if std::env::var("MIPAD2_TRACE_CAPTURE").as_deref() == Ok("1") {
+                camerabin
+                    .downcast_ref::<gst::Bin>()
+                    .unwrap()
+                    .connect_deep_element_added(|_, _, element| {
+                        if element.factory().is_some_and(|f| f.name() == "vah264enc") {
+                            if let Some(pad) = element.static_pad("sink") {
+                                crate::mipad2_trace::pad(&pad, "encoder-in");
+                            }
+                            if let Some(pad) = element.static_pad("src") {
+                                crate::mipad2_trace::pad(&pad, "encoder-out");
+                            }
+                        }
+                    });
+            }
 
             let bus = self.camerabin().bus().unwrap();
             let watch = bus
@@ -283,6 +298,13 @@ mod imp {
                 .build()
                 .expect("Missing gst-plugin-gtk4");
 
+            if is_mipad2() && std::env::var("MIPAD2_PREVIEW_QOS_OFF").as_deref() == Ok("1") {
+                // Diagnostic A/B switch only: don't let display lateness inform
+                // upstream capture. This does not alter recording caps/ranks.
+                paintablesink.set_property("qos", false);
+                paintablesink.set_property("processing-deadline", 0u64);
+                log::info!("Mi Pad 2 diagnostic preview QoS propagation disabled");
+            }
             let paintable = paintablesink.property::<gdk::Paintable>("paintable");
 
             let is_yuv_natively_supported = {
@@ -720,6 +742,11 @@ impl Viewfinder {
     ///  - we are already recording or taking a picture
     ///  - the [`fn@Viewfinder::state`] of the camera is not
     ///    [`ViewfinderState::Ready`][crate::ViewfinderState::Ready].
+    /// Current owned recording path, for cancellation-safe diagnostic timers.
+    pub fn recording_location(&self) -> Option<PathBuf> {
+        self.imp().is_recording_video.borrow().clone()
+    }
+
     pub fn start_recording<P: AsRef<Path>>(&self, location: P) -> Result<(), crate::CaptureError> {
         let imp = self.imp();
 
@@ -750,6 +777,15 @@ impl Viewfinder {
 
         self.update_video_rotation();
         self.set_tags(true);
+        if std::env::var("MIPAD2_TRACE_CAPTURE").as_deref() == Ok("1") {
+            camerabin
+                .downcast_ref::<gst::Bin>()
+                .unwrap()
+                .debug_to_dot_file_with_ts(
+                    gst::DebugGraphDetails::all(),
+                    "mipad2-before-recording",
+                );
+        }
 
         camerabin.emit_by_name::<()>("start-capture", &[]);
 
@@ -1346,6 +1382,9 @@ impl Viewfinder {
     ) -> Result<gst::Element, glib::BoolError> {
         use gst::prelude::*;
 
+        if let Some(pad) = device_src.static_pad("src") {
+            crate::mipad2_trace::pad(&pad, "native-source");
+        }
         let bin = gst::Bin::new();
 
         let capsfilter = gst::ElementFactory::make("capsfilter").build()?;
@@ -1392,6 +1431,7 @@ impl Viewfinder {
         ));
 
         let pad = capsfilter_post_decode.static_pad("src").unwrap();
+        crate::mipad2_trace::pad(&pad, "shared-source");
         let sampler = self.imp().mipad2_preview.clone();
         pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
             if let Some(buffer) = info.buffer()

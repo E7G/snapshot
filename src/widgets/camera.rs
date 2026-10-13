@@ -788,6 +788,36 @@ impl Camera {
         Ok(())
     }
 
+    /// Private opt-in diagnostic; uses normal recording/UI callbacks and a
+    /// unique-path ownership guard so a timer cannot stop a later user clip.
+    pub async fn diagnostic_record(&self, seconds: u32) -> anyhow::Result<()> {
+        if std::env::var("MIPAD2_DIAGNOSTIC_ACTIONS").as_deref() != Ok("1")
+            || !(1..=30).contains(&seconds)
+        {
+            anyhow::bail!("Diagnostic action unavailable or invalid duration");
+        }
+        if self.is_recording_active() {
+            anyhow::bail!("Recording already active");
+        }
+        self.start_recording().await?;
+        let owned_path = self.imp().viewfinder.recording_location();
+        let camera = self.downgrade();
+        glib::timeout_add_seconds_local_once(seconds, move || {
+            if let Some(camera) = camera.upgrade() {
+                if owned_path.is_some()
+                    && camera.imp().viewfinder.recording_location() == owned_path
+                {
+                    camera.stop_recording();
+                }
+            }
+        });
+        log::info!(
+            "Mi Pad 2 diagnostic timed recording started: {} seconds",
+            seconds
+        );
+        Ok(())
+    }
+
     pub fn stop_recording(&self) {
         let imp = self.imp();
         if matches!(imp.viewfinder.state(), aperture::ViewfinderState::Ready)

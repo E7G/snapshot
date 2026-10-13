@@ -19,7 +19,7 @@ leaky queue, max2 buffers, unlimited byte/time thresholds. Older preview frames
 may be discarded, but the recording branch is outside this tee and is NOT made
 leaky. A slow display must not hold sensor buffers/backpressure encoding.
 The camera's recording resolution/rate remain1920x1440@30. The pre-existing
-display branch's20fps rate remains unchanged for this isolated comparison.
+display branch's15fps rate remains unchanged for this isolated comparison.
 
 On exact Mi Pad2, process opt-inMIPAD2_PREVIEW_GPU_ROTATION=1 with glvideoflip
 available moves preview rotation after display-rate selection and GL upload/
@@ -41,3 +41,14 @@ must distinguish writing descriptors from read-only gallery playback.
 Pending actual GPU preview correctness, tag/caps propagation, concurrent live
 preview/audio/recording CPU/cadence/user responsiveness, photos, camera switching
 and reopen regression. No full camera/kernel/boot/3A/hardware/flash completion.
+
+## Actual r9 failure / 2026-10-13
+Native MMAP and GL preview rotation were confirmed at runtime. The clip has
+216 video packets over 11.508667 seconds: 18.73584 effective fps, maximum
+PTS gap 273 ms, eight gaps exceeding 100 ms. H264 1920x1440 with -90 display
+matrix and MP3 mono 44100 audio. Twelve actual recording CPU samples average
+73.64%, versus preceding preview 55.91%. User still reports stutter/dropped
+frames. GPU pixel tests pass all four orientations, exact RGBA MAE 0, but
+do not establish throughput. No default launcher promotion.
+Earlier 20fps display-rate wording was incorrect: actual constant is 15,
+unchanged. Recording caps remain 30fps; caps do not prove actual frame rate.

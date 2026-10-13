@@ -277,6 +277,29 @@ impl Window {
             ),
         );
         self.add_action(&countdown_action);
+        if std::env::var("MIPAD2_DIAGNOSTIC_ACTIONS").as_deref() == Ok("1") {
+            let action =
+                gio::SimpleAction::new("mipad2-record-seconds", Some(glib::VariantTy::UINT32));
+            action.connect_activate(glib::clone!(
+                #[weak(rename_to = window)]
+                self,
+                move |_, value| {
+                    let Some(seconds) = value
+                        .and_then(|v| v.get::<u32>())
+                        .filter(|s| (1..=30).contains(s))
+                    else {
+                        return;
+                    };
+                    let camera = window.imp().camera.get();
+                    glib::spawn_future_local(async move {
+                        if let Err(error) = camera.diagnostic_record(seconds).await {
+                            log::error!("Mi Pad 2 diagnostic recording failed: {error}");
+                        }
+                    });
+                }
+            ));
+            self.add_action(&action);
+        }
 
         imp.camera.connect_capture_mode_notify(glib::clone!(
             #[weak(rename_to = window)]
