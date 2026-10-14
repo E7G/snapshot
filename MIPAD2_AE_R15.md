@@ -45,3 +45,24 @@ Full release/framework and actual native front/rear exposure convergence,
 reopen/photo/video/suspend regression gates are required before promotion.
 Use a new immutable R15 private prefix; r6 default/R14d artifacts preserved.
 Overall kernel/flash/boot/DSP/compatibility and Android-quality scope remains.
+
+## R15 initial broader regression, R15c complete actuator correction
+
+Initial R15 gain-only change FAILED full framework regression:43/44pass,
+original wide-light delayed-feedback fixture ends at Y80/e2/g2 forlight20.
+No package or installation occurred; failure report/sourcecommit retained.
+A relative exposure-step/gain-step fallback prototype also FAILED the same
+old fixture (13/14puretests), so it was removed, not accepted as a solution.
+Exact trace shows delayed feedback cycling exposure2->3->4->3->2 at gain2:
+gainrounding was fixed but forced downward exposure nudge created a second
+coarse-actuator cycle. Original convergence expectation was NOT weakened.
+
+R15c also uses normal quantization for Exposure reductions. When a damped
+reduction rounds back to the present linecode it does not force an extra
+downwardline based on a stale frame. Upward nudge remains to escape dark
+quantization deadzones; strong resolvable reductions retain existing policy.
+Both actuator bounds/steps/minimum saturation and onecontrol/readback remain.
+All14 exact pure-algorithm hosttests nowpass, including the unchanged original
+wide-light/delay and highlightconstraint regressions and new lowgain cases.
+Fresh fullrelease44framework and real-camera convergence/regressions still
+required. Immutable R15c prefix, not overwriting failed/uninstalled R15state.

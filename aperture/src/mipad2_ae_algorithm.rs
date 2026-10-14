@@ -108,7 +108,16 @@ pub fn next(stats: Stats, exposure: i32, gain: i32, er: Range, gr: Range) -> Opt
         }
     }
     if increase && exposure < er.max || reduce && exposure > er.min {
-        let value = er.nudge(exposure, factor);
+        // Exposure also becomes coarse near its floor. A rounded-back
+        // reduction must not force an extra line decrease on a delayed
+        // sample; that can produce a 2<->4 line cycle at gain2. Keep upward
+        // nudges to escape a dark quantization dead-zone, but let reductions
+        // stop at the nearest legal actuator code.
+        let value = if reduce {
+            er.quantize(exposure as f64 * factor)
+        } else {
+            er.nudge(exposure, factor)
+        };
         if value != exposure {
             return Some(Update::Exposure(value));
         }
