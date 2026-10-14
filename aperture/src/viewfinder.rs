@@ -361,7 +361,10 @@ mod imp {
                 let caps = gst::Caps::builder("video/x-raw")
                     .features(["memory:GLMemory"])
                     .field("format", "RGBA")
-                    .field("framerate", gst::Fraction::new(mipad2_preview_rate(), 1))
+                    .field(
+                        "framerate",
+                        crate::mipad2_preview::display_rate_range(mipad2_preview_rate()),
+                    )
                     .field("texture-target", "2D")
                     .build();
                 capsfilter.set_property("caps", &caps);
@@ -379,7 +382,7 @@ mod imp {
                     };
                 let preview_size = preview_scaler.as_ref().map(|_| {
                     gst::ElementFactory::make("capsfilter")
-                        .property("caps", crate::mipad2_preview::android_preview_caps())
+                        .property("caps", crate::mipad2_preview::android_display_caps())
                         .build()
                         .unwrap()
                 });

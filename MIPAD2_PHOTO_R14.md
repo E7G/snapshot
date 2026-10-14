@@ -71,3 +71,27 @@ tests must reverify this corrected version. Hardware mode/stream probes are
 not proof of successful R14b GUI JPEG capture, decoder/rotation, latency,
 repeated shots/restore/recording/PM or Android optical parity. Candidate remains
 private and unpromoted until those actual gates pass. No reduced-size fallback.
+
+## R14b real failure / R14c display-rate ceiling
+
+R14b front photo FAILED with no JPEG. Actual ISP mode2/VFPP2 and native
+2560x1920 NV12 source plus2576x1936 sensor confirmed, but decodebin3 dynamic
+video pad cannot link downstream: no common format, not-linked stream error.
+Both ISP controls restored3/0 afterNULL; candidate does not claim preview
+recovery from cached G_FMT. Failed trial closed gracefully0, no video owner,
+normal settings untouched. Preserve failed report and immutable R14b package.
+
+Source inspection identifies two display-only capsfilters requiring30fps
+(720p CPU scale and GLMemory RGBA output) despite drop-only videorate and
+15fps transient still source. Official videorate contract: drop-only produces
+no duplicates; max-rate is a ceiling, not a command to synthesize30fps:
+https://gstreamer.freedesktop.org/documentation/videorate/
+
+R14c uses1..maximum framerate ranges in BOTH display-only capsfilters, keeping
+native full still15 request, recorder1080p30 and GL-memory-only rotation.
+Real host buffer regression: old fixed30 branch fails; corrected front/rear
+full-native15fps sources and normal1080p30 source reachEOS, negotiated720p
+display remains15/30 respectively, four buffers, zero duplicates. Also tests
+GL output rate-caps containment. This is not actual hardwareGL/JPEG proof.
+Private candidate build and actual front/rear JPEG/repeated shot/30fps restore
+gates remain required; Android live optical parity is not established.

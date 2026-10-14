@@ -188,6 +188,119 @@ fn android_still_sizes_do_not_replace_video_or_preview() {
     );
 }
 
+// Display rate is a ceiling, not a forced synthetic rate. During the native
+// still stream the input runs at 15fps; drop-only videorate cannot produce30.
+// Both CPU scale and GL output filters must accept the lower source rate.
+pub(crate) fn display_rate_range(max_rate: i32) -> gst::FractionRange {
+    gst::FractionRange::new(
+        gst::Fraction::new(1, 1),
+        gst::Fraction::new(max_rate.max(1), 1),
+    )
+}
+
+pub(crate) fn android_display_caps() -> gst::Caps {
+    gst::Caps::builder("video/x-raw")
+        .field("format", "NV12")
+        .field("width", 1280i32)
+        .field("height", 720i32)
+        .field("framerate", display_rate_range(30))
+        .build()
+}
+
+#[cfg(test)]
+#[test]
+fn drop_only_display_accepts_native_still_without_fake_30fps() {
+    use gst::prelude::*;
+    gst::init().unwrap();
+    // RED witness: the former fixed30 branch cannot link a15fps source to
+    // drop-only videorate. Preserve the incompatibility as a regression case.
+    let old = gst::parse::launch(
+        "videotestsrc num-buffers=4 ! video/x-raw,format=NV12,width=2560,height=1920,framerate=15/1 ! videorate drop-only=true max-rate=30 ! videoscale ! video/x-raw,format=NV12,width=1280,height=720,framerate=30/1 ! fakesink sync=false",
+    );
+    if let Ok(element) = old {
+        let pipe = element.downcast::<gst::Pipeline>().unwrap();
+        let set = pipe.set_state(gst::State::Playing);
+        let msg = pipe.bus().unwrap().timed_pop_filtered(
+            gst::ClockTime::from_seconds(3),
+            &[gst::MessageType::Error, gst::MessageType::Eos],
+        );
+        pipe.set_state(gst::State::Null).unwrap();
+        assert!(
+            set.is_err() || msg.is_some_and(|m| matches!(m.view(), gst::MessageView::Error(_)))
+        );
+    }
+    // Real buffers, EOS and negotiated caps, not only a static capsintersect.
+    for (width, height, rate) in [(2560, 1920, 15), (3264, 2448, 15), (1920, 1080, 30)] {
+        let pipe = gst::Pipeline::new();
+        let src = gst::ElementFactory::make("videotestsrc")
+            .property("num-buffers", 4i32)
+            .property_from_str("pattern", "black")
+            .build()
+            .unwrap();
+        let input = gst::ElementFactory::make("capsfilter")
+            .property(
+                "caps",
+                gst::Caps::builder("video/x-raw")
+                    .field("format", "NV12")
+                    .field("width", width)
+                    .field("height", height)
+                    .field("framerate", gst::Fraction::new(rate, 1))
+                    .build(),
+            )
+            .build()
+            .unwrap();
+        let vr = gst::ElementFactory::make("videorate")
+            .property("drop-only", true)
+            .property("max-rate", 30i32)
+            .build()
+            .unwrap();
+        let scale = gst::ElementFactory::make("videoscale")
+            .property("add-borders", true)
+            .build()
+            .unwrap();
+        let display = gst::ElementFactory::make("capsfilter")
+            .property("caps", android_display_caps())
+            .build()
+            .unwrap();
+        let sink = gst::ElementFactory::make("fakesink")
+            .property("sync", false)
+            .build()
+            .unwrap();
+        let elements = [&src, &input, &vr, &scale, &display, &sink];
+        pipe.add_many(elements).unwrap();
+        gst::Element::link_many(elements).unwrap();
+        pipe.set_state(gst::State::Playing).unwrap();
+        let msg = pipe.bus().unwrap().timed_pop_filtered(
+            gst::ClockTime::from_seconds(5),
+            &[gst::MessageType::Error, gst::MessageType::Eos],
+        );
+        let negotiated = display.static_pad("src").unwrap().current_caps();
+        let duplicates = vr.property::<u64>("duplicate");
+        let produced = vr.property::<u64>("out");
+        pipe.set_state(gst::State::Null).unwrap();
+        assert!(msg.is_some_and(|m| matches!(m.view(), gst::MessageView::Eos(_))));
+        let caps = negotiated.unwrap();
+        let info = gst_video::VideoInfo::from_caps(&caps).unwrap();
+        assert_eq!((info.width(), info.height()), (1280, 720));
+        assert_eq!(info.fps(), gst::Fraction::new(rate, 1));
+        assert_eq!(duplicates, 0);
+        assert_eq!(produced, 4);
+        // GL output's rate constraint must also contain this physical rate.
+        let gl = gst::Caps::builder("video/x-raw")
+            .features(["memory:GLMemory"])
+            .field("format", "RGBA")
+            .field("framerate", display_rate_range(30))
+            .build();
+        let exact = gst::Caps::builder("video/x-raw")
+            .features(["memory:GLMemory"])
+            .field("format", "RGBA")
+            .field("framerate", gst::Fraction::new(rate, 1))
+            .build();
+        assert!(exact.is_subset(&gl));
+    }
+}
+
+#[cfg(test)]
 pub(crate) fn android_preview_caps() -> gst::Caps {
     gst::Caps::builder("video/x-raw")
         .field("format", "NV12")
