@@ -1,0 +1,239 @@
+{
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_built_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_built_source": "78d677c9c260ad42f2c9e07a71416002150c0273",
+  "binary_sha256": "2336a05d6dd033f18afc65822153e56e5cbd263c1801f06f209371ed221631a3",
+  "framework_tests": 44,
+  "complete_pure_algorithm_host_tests": 14,
+  "actual_front_exposure_cases": [
+    {
+      "case": "seed1",
+      "initial_exposure": 1976,
+      "initial_gain": 1,
+      "first_actual_mean": 91.3,
+      "first_update": [
+        "Gain",
+        2
+      ],
+      "last_20_mean_range": [
+        126.9,
+        127.0
+      ],
+      "last_20_controls": [
+        [
+          1825,
+          2
+        ]
+      ],
+      "last_20_control_update_count": 0,
+      "reverse_gain2_to1_count": 0,
+      "last_native_preview_fps": [
+        30.02,
+        30.022,
+        29.999
+      ],
+      "actual_sensor": "frontOV5693 input0",
+      "raw_report_sha256": "1e95a359eac54f173db9eee526294e77e6828f2968d79b226f3e80567c710fda",
+      "visible_optical_or_scene_calibration": false
+    },
+    {
+      "case": "seed2",
+      "initial_exposure": 1976,
+      "initial_gain": 2,
+      "first_actual_mean": 131.8,
+      "first_update": [
+        "Exposure",
+        1885
+      ],
+      "last_20_mean_range": [
+        126.9,
+        126.9
+      ],
+      "last_20_controls": [
+        [
+          1819,
+          2
+        ]
+      ],
+      "last_20_control_update_count": 0,
+      "reverse_gain2_to1_count": 0,
+      "last_native_preview_fps": [
+        29.994,
+        30.01,
+        30.013
+      ],
+      "actual_sensor": "frontOV5693 input0",
+      "raw_report_sha256": "b6bea57150f77e1912e3eae4e22ce1a0e7caa1f8adb7df87c6101cebeea7094f",
+      "visible_optical_or_scene_calibration": false
+    }
+  ],
+  "native_jpeg_cases": [
+    {
+      "sensor": "front",
+      "case": "first",
+      "width": 2560,
+      "height": 1920,
+      "actual_full_native_source": true,
+      "minimum_native_warm_buffers": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "fresh1080p30": true,
+      "raw_report_sha256": "41d24b7c6b1dee1f6a5f03c14db76fce12660e703325e8e4d77e559d7c9ff454"
+    },
+    {
+      "sensor": "rear",
+      "case": "first",
+      "width": 3264,
+      "height": 2448,
+      "actual_full_native_source": true,
+      "minimum_native_warm_buffers": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "fresh1080p30": true,
+      "raw_report_sha256": "a27839b169f3402d2fa281f92b1fac0f6dd89a72ac07d47f591e3b8a12ad7838"
+    },
+    {
+      "sensor": "front",
+      "case": "repeat",
+      "width": 2560,
+      "height": 1920,
+      "actual_full_native_source": true,
+      "minimum_native_warm_buffers": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "fresh1080p30": true,
+      "raw_report_sha256": "a2ac9329c339066e6fba145c43c526fe2352ba764ae4c5de3ede2707c688d5f6"
+    },
+    {
+      "sensor": "rear",
+      "case": "repeat",
+      "width": 3264,
+      "height": 2448,
+      "actual_full_native_source": true,
+      "minimum_native_warm_buffers": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "fresh1080p30": true,
+      "raw_report_sha256": "c40d56d794f5fb3e5108b6c2379a58372cb8e07370e080631ac4d98ef030bfa2"
+    }
+  ],
+  "post_photo_recording_cases": [
+    {
+      "cycle": 0,
+      "sensor": "rear",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 323,
+      "effective_fps": 30.011185224654692,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "raw_report_sha256": "4bd811d16175d42509fcf11d2031693333c07513f34faabb39aa93a9fc8eede1"
+    },
+    {
+      "cycle": 1,
+      "sensor": "front",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 308,
+      "effective_fps": 29.999021855997462,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "raw_report_sha256": "42fb8960b955c4c02d8f9b8271bc29db928392f85e0c2b164ed44f188dbe6fe0"
+    },
+    {
+      "cycle": 2,
+      "sensor": "rear",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 315,
+      "effective_fps": 30.01146839519981,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "raw_report_sha256": "4c7999adeb42e2f443899d89c77ccd99d5de0bf663bcf41eaed97dbfb091fbf9"
+    },
+    {
+      "cycle": 3,
+      "sensor": "front",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 299,
+      "effective_fps": 29.99798671230119,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "raw_report_sha256": "dd7f0e6b9cc45367c69b1ae476a597f5fa481ddefece90671fd676452225852d"
+    }
+  ],
+  "all_four_video_and_audio_null_decodes_passed": true,
+  "graceful_close_exit0": true,
+  "both_sensors_pm0_suspended": true,
+  "pre_experiment_sensor_exposure_gain_restored": true,
+  "post_camera_s0i3_delta_us": 9069088,
+  "normal_settings_preserved": true,
+  "default_launcher": "r6 unchanged",
+  "stable_kernel_default": "mipad2-bqdiag1 unchanged",
+  "candidate_only": true,
+  "kernel_gain_abi_changed": false,
+  "media_transferred_or_published": false,
+  "playback_or_tones": false,
+  "actual_hardware_bus_fault_injection": false,
+  "android_windows_live_optical_parity": false,
+  "full_objective_complete": false,
+  "reference_audit": {
+    "android_commit": "d2afb1de9a761ff01dafdf9efe4736e521ab71f6",
+    "android_url": "https://github.com/latte-dev/android_kernel_xiaomi_latte/blob/d2afb1de9a761ff01dafdf9efe4736e521ab71f6/drivers/external_drivers/camera/drivers/media/i2c/micam/ov5693.c",
+    "android_sha256": "3ba82f64e06a56261970a6067892a38c400ff1ec37c6cebeeb6adba1892a0e49",
+    "android_cached_reference_exact": true,
+    "linux_integer_gain_units_preserved": true,
+    "kernel_gain_abi_changed": false,
+    "windows_algorithm_source_available": false,
+    "windows_cpf_format": "AIQB binary tuning, not algorithm source",
+    "windows_cpf_sha256": {
+      "OV5693_12P2BA535_1_CHT.cpf": "d6664834721ff7a9e6c24e7cf428490e5612470eb07cac42e998303dcdb35f9c",
+      "OV5693_12P2BA535_7_CHT.cpf": "8fa2f7866b0f2db8d86974f804e66de541aadf322d52db482cc94bb5d276251e",
+      "t4ka3_F8D02B_1_CHT.cpf": "8dd98c270b1e09a6e5ca1771529b82347df2b7ecf73190c7fe0f1203c41160d8",
+      "t4ka3_F8D02B_2_CHT.cpf": "11bd38a134a98399cd5d2eab331579b4c5fdc93b4c4cf538c82c24d2a6cb8771"
+    },
+    "actual_r14d_low_gain_update_count": 494,
+    "actual_r14d_filtered_alternating_pairs": 493
+  },
+  "retained_failures": [
+    "R15 gain-only fullframework43/44: original wide-light/delay Y80; never packaged or installed",
+    "relative-step fallback prototype13/14 puretests failed same case and removed",
+    "first externalGREEN probe duplicatefixture compilefailure, corrected harness only",
+    "seed2 opener initially reused generic localopen filename; both original per-device snapshots preserved separately, genericfilename denotes seed2"
+  ],
+  "remaining": [
+    "same-scene AE/AWB/AF/NR/color/optical quality and automatic 3A for other applications",
+    "native fractional gain ABI-compatible design, still latency and rearphysical15fps",
+    "visibleGUI/player/rotation/cancellation races",
+    "kernelreset/create/CSS/sensor-restart failure shutdown and real busfault transactions",
+    "headlessboot/highrates/compat32/MediaRequests/DSP/otherhardware",
+    "fullflashimagebuild/integration"
+  ],
+  "post_photo_video_front_ae": {
+    "last20_mean_range": [
+      126.8,
+      126.9
+    ],
+    "last20_controls": [
+      [
+        1820,
+        2
+      ]
+    ],
+    "zero_late_updates": true,
+    "raw_report_sha256": "bdc4181da6e4475707b7d8b7f9f51c99e393e87451a7ad99886a67447dbbea5e"
+  }
+}
