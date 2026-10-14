@@ -51,7 +51,8 @@ pub enum Update {
 }
 
 /// One control per update: no partially applied exposure/gain pair.
-/// Favor longer exposure over noise, and reduce gain before reducing exposure.
+/// Favor longer exposure over noise, and prefer a resolvable gain reduction.
+/// Use fine exposure when the requested reduction is below one gain-code step.
 /// Query the driver again after a mode change; never extend VBLANK here.
 pub fn next(stats: Stats, exposure: i32, gain: i32, er: Range, gr: Range) -> Option<Update> {
     if !er.valid()
@@ -97,8 +98,14 @@ pub fn next(stats: Stats, exposure: i32, gain: i32, er: Range, gr: Range) -> Opt
     }
     .clamp(0.80, 1.25);
     if reduce && gain > gr.min {
-        let value = gr.nudge(gain, factor);
-        return (value != gain).then_some(Update::Gain(value));
+        // Do not force an adjacent gain code when the damped target rounds
+        // back to this code. Near unity that "nudge" can halve the sensor
+        // gain and form a 1<->2 cycle at maximum exposure. Fine exposure can
+        // meet the same target without reversing the required gain increase.
+        let value = gr.quantize(gain as f64 * factor);
+        if value != gain {
+            return Some(Update::Gain(value));
+        }
     }
     if increase && exposure < er.max || reduce && exposure > er.min {
         let value = er.nudge(exposure, factor);
@@ -364,9 +371,11 @@ mod highlight_constraint_regression {
                 assert!(
                     matches!(next(Stats{mean,clipped},1200,1,E,G),Some(Update::Exposure(v)) if v<1200)
                 );
-                assert!(
-                    matches!(next(Stats{mean,clipped},1200,8,E,G),Some(Update::Gain(v)) if v<8)
-                );
+                assert!(match next(Stats { mean, clipped }, 1200, 8, E, G) {
+                    Some(Update::Gain(v)) => v < 8,
+                    Some(Update::Exposure(v)) => v < 1200,
+                    None => false,
+                });
             }
         }
     }
@@ -449,5 +458,135 @@ mod highlight_constraint_regression {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod coarse_gain_regression {
+    use super::*;
+    const E: Range = Range {
+        min: 1,
+        max: 1976,
+        step: 1,
+    };
+    const G: Range = Range {
+        min: 1,
+        max: 127,
+        step: 1,
+    };
+    #[test]
+    fn sampled_front_low_gain_pair_must_not_form_a_two_code_cycle() {
+        // Actual R14d processed-frame journal, not a calibrated RAW model.
+        let dark = Stats {
+            mean: 92.2,
+            clipped: 0.031,
+        };
+        let bright = Stats {
+            mean: 132.2,
+            clipped: 0.088,
+        };
+        assert_eq!(next(dark, 1976, 1, E, G), Some(Update::Gain(2)));
+        let result = next(bright, 1976, 2, E, G);
+        assert!(
+            matches!(result,Some(Update::Exposure(v)) if v<1976 && v>1500),
+            "R15 fine exposure expected instead of reverse Gain(1): {result:?}"
+        );
+    }
+    #[test]
+    fn coarse_gain_with_available_exposure_settles_in_delayed_toy_scene() {
+        // Fitted only to the two logged processed-luma values. This is a
+        // quantization/delay regression, NOT physical camera quality proof.
+        let gamma = (132.2f64 / 92.2).ln() / 2.0f64.ln();
+        for delay in [false, true] {
+            for light in [0.5f64, 1.0, 2.0, 4.0] {
+                for initial in [(1976, 1), (1976, 2), (800, 4)] {
+                    let (mut e, mut g) = initial;
+                    let mut previous = Stats {
+                        mean: 120.0,
+                        clipped: 0.0,
+                    };
+                    let mut late_updates = 0;
+                    let mut last_gain = None;
+                    let mut late_gain_reversals = 0;
+                    for i in 0..250 {
+                        let response = light * e as f64 * g as f64 / 1976.0;
+                        let stats = Stats {
+                            mean: (92.2 * response.powf(gamma)).min(255.0),
+                            clipped: (0.031 * response.powf(1.5)).min(1.0),
+                        };
+                        if let Some(update) = next(if delay { previous } else { stats }, e, g, E, G)
+                        {
+                            match update {
+                                Update::Exposure(v) => e = v,
+                                Update::Gain(v) => {
+                                    if i >= 200 && last_gain == Some(v) {
+                                        late_gain_reversals += 1;
+                                    }
+                                    last_gain = Some(g);
+                                    g = v;
+                                }
+                            }
+                            if i >= 200 {
+                                late_updates += 1;
+                            }
+                        }
+                        previous = stats;
+                        assert!((E.min..=E.max).contains(&e) && (G.min..=G.max).contains(&g));
+                    }
+                    let final_y = 92.2 * (light * e as f64 * g as f64 / 1976.0).powf(gamma);
+                    assert!(
+                        (112.0..=128.0).contains(&final_y),
+                        "light={light} delay={delay} initial={initial:?} y={final_y} e={e} g={g}"
+                    );
+                    assert!(
+                        late_updates <= 4 && late_gain_reversals == 0,
+                        "late updates={late_updates} reversals={late_gain_reversals}"
+                    );
+                }
+            }
+        }
+    }
+    #[test]
+    fn fine_rear_gain_and_strong_reduction_keep_existing_priority() {
+        let rear = Range {
+            min: 128,
+            max: 2047,
+            step: 1,
+        };
+        assert!(
+            matches!(next(Stats{mean:132.2,clipped:0.088},1976,208,E,rear),Some(Update::Gain(v)) if v<208)
+        );
+        assert_eq!(
+            next(
+                Stats {
+                    mean: 200.0,
+                    clipped: 0.0
+                },
+                800,
+                8,
+                E,
+                G
+            ),
+            Some(Update::Gain(6))
+        );
+        // A rounding dead-zone at gain2 uses fine exposure; no forced50% jump.
+        assert!(
+            matches!(next(Stats{mean:200.0,clipped:0.0},800,2,E,G),Some(Update::Exposure(v)) if v<800)
+        );
+        // At both minimum exposure and a rounded-back gain, report no legal
+        // fine update rather than artificially forcing an adjacent gaincode.
+        assert_eq!(
+            next(
+                Stats {
+                    mean: 132.2,
+                    clipped: 0.088
+                },
+                1,
+                2,
+                E,
+                G
+            ),
+            None
+        );
     }
 }
