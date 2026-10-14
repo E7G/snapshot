@@ -90,6 +90,7 @@ mod imp {
         pub is_stopping_recording: Cell<bool>,
         pub is_taking_picture: Cell<bool>,
         pub native_photo_active: Cell<bool>,
+        pub native_photo_mode: RefCell<Option<crate::mipad2_capture_mode::ModeGuard>>,
         pub is_front_camera: Cell<bool>,
 
         pub timeout_handler: RefCell<Option<glib::SourceId>>,
@@ -770,23 +771,32 @@ impl Viewfinder {
         // now also exclude the preparation interval.
         imp.is_taking_picture.set(true);
         self.stop_stream();
+        if imp.camerabin().current_state() != gst::State::Null {
+            imp.is_taking_picture.set(false);
+            return Err(crate::CaptureError::NotReady);
+        }
+        let mode = match crate::mipad2_capture_mode::ModeGuard::acquire() {
+            Ok(mode) => mode,
+            Err(error) => {
+                log::error!("Mi Pad 2 native still mode preparation failed: {error}");
+                imp.is_taking_picture.set(false);
+                if self.state() == ViewfinderState::Ready {
+                    self.start_stream();
+                }
+                return Err(crate::CaptureError::NotReady);
+            }
+        };
+        imp.native_photo_mode.replace(Some(mode));
         imp.native_photo_active.set(true);
         capsfilter.set_property("caps", crate::mipad2_preview::android_photo_caps(front));
         imp.camerabin().set_property_from_str("mode", "mode-image");
         let frames = std::sync::Arc::new(std::sync::atomic::AtomicU32::new(0));
         let counter = frames.clone();
         let probe = pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
-            if matches!(info.data, Some(gst::PadProbeData::Buffer(_))) {
-                let matches = pad
-                    .current_caps()
-                    .and_then(|caps| {
-                        let s = caps.structure(0)?;
-                        Some(
-                            s.get::<i32>("width").ok() == Some(width)
-                                && s.get::<i32>("height").ok() == Some(height),
-                        )
-                    })
-                    .unwrap_or(false);
+            if let Some(gst::PadProbeData::Buffer(buffer)) = info.data.as_ref() {
+                let matches = pad.current_caps().is_some_and(|caps| {
+                    crate::mipad2_preview::full_photo_buffer_matches(&caps, buffer, width, height)
+                });
                 if matches {
                     counter.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
                 }
@@ -1193,6 +1203,26 @@ impl Viewfinder {
             self.imp().set_state(ViewfinderState::Error);
         } else {
             log::debug!("Camerabin state successfully set to NULL");
+        }
+        // Never mutate ISP controls if shutdown failed or remains incomplete.
+        if self.imp().camerabin().current_state() != gst::State::Null {
+            if self.imp().native_photo_mode.borrow().is_some() {
+                log::error!("Mi Pad 2 ISP mode retained: source has not reached NULL");
+                self.imp().set_state(ViewfinderState::Error);
+            }
+            return;
+        }
+        // Close/cancellation/image-done all pass through this NULL transition.
+        // Restore the mode before new caps are probed, never while streaming.
+        if let Some(mode) = self.imp().native_photo_mode.borrow_mut().take() {
+            self.imp().native_photo_active.set(false);
+            if let Err(error) = mode.restore() {
+                log::error!("Mi Pad 2 native still mode restoration failed: {error}");
+                self.imp().set_state(ViewfinderState::Error);
+            }
+            if let (Some(camera), Some(capsfilter)) = (self.camera(), self.imp().capsfilter.get()) {
+                capsfilter.set_property("caps", self.native_camera_caps(&camera));
+            }
         }
     }
 

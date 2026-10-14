@@ -92,6 +92,65 @@ pub(crate) fn android_photo_geometry(front: bool) -> (i32, i32) {
     if front { (2560, 1920) } else { (3264, 2448) }
 }
 
+pub(crate) fn full_photo_buffer_matches(
+    caps: &gst::Caps,
+    buffer: &gst::BufferRef,
+    width: i32,
+    height: i32,
+) -> bool {
+    if !caps.is_fixed() || width <= 0 || height <= 0 {
+        return false;
+    }
+    let Ok(info) = gst_video::VideoInfo::from_caps(caps) else {
+        return false;
+    };
+    info.format() == gst_video::VideoFormat::Nv12
+        && info.width() == width as u32
+        && info.height() == height as u32
+        && buffer.size() >= info.size()
+        && !buffer
+            .flags()
+            .intersects(gst::BufferFlags::CORRUPTED | gst::BufferFlags::GAP)
+}
+
+#[cfg(test)]
+#[test]
+fn full_photo_preparation_rejects_stale_short_wrong_format_or_corrupt_buffers() {
+    gst::init().unwrap();
+    for front in [true, false] {
+        let caps = android_photo_caps(front);
+        let (w, h) = android_photo_geometry(front);
+        let size = gst_video::VideoInfo::from_caps(&caps).unwrap().size();
+        let mut buffer = gst::Buffer::with_size(size).unwrap();
+        assert!(full_photo_buffer_matches(&caps, &buffer, w, h));
+        assert!(!full_photo_buffer_matches(
+            &android_video_caps(),
+            &buffer,
+            w,
+            h
+        ));
+        let short = gst::Buffer::with_size(size - 1).unwrap();
+        assert!(!full_photo_buffer_matches(&caps, &short, w, h));
+        buffer
+            .get_mut()
+            .unwrap()
+            .set_flags(gst::BufferFlags::CORRUPTED);
+        assert!(!full_photo_buffer_matches(&caps, &buffer, w, h));
+        buffer
+            .get_mut()
+            .unwrap()
+            .unset_flags(gst::BufferFlags::CORRUPTED);
+        buffer.get_mut().unwrap().set_flags(gst::BufferFlags::GAP);
+        assert!(!full_photo_buffer_matches(&caps, &buffer, w, h));
+        assert!(!full_photo_buffer_matches(
+            &gst::Caps::new_any(),
+            &short,
+            w,
+            h
+        ));
+    }
+}
+
 pub(crate) fn android_photo_caps(front: bool) -> gst::Caps {
     let (width, height) = android_photo_geometry(front);
     gst::Caps::builder("video/x-raw")
