@@ -117,3 +117,45 @@ transientnativecaps, not genericUnknownlocation. No secondvideoowner, no
 externalprocess/inputchange. ABI/intsize/unknown/closed/nonV4Lfd hostcases.
 Kernel contract: https://docs.kernel.org/userspace-api/media/v4l/vidioc-g-input.html
 Actual rear/full-sourceJPEG and repeated photo/record/PM validation pending.
+
+## R14d actual bounded hardware gates, 2026-10-14
+
+On kernel6.14 R19 (built source8c57f2be2), app source45b01add33ac:
+
+| Actual photo | Native sensor selection | JPEG | Restore |
+| --- | --- | --- | --- |
+| Frontfirst + repeat | ownerG_INPUT0, OV5693 |2560x1920 twice| ISP3/VFPP0, fresh1080p30 |
+| Rearfirst + repeat | ownerG_INPUT1, T4KA3 |3264x2448 twice| ISP3/VFPP0, fresh1080p30 |
+
+Every shot observes full native video source, at least12valid native warm
+buffers, actual ISP2/VFPP2 and sensor geometry; JPEG decodes without error.
+No1080p source upscaling or accepting rear2560x1920 as8MP success. First
+nonempty-file observations are approximate poll latencies, NOT closed-file
+latency/Android1second timing proof. Photos remain private on device.
+
+After photos, four actual10s recorder cycles alternate rear/front/rear/front:
+- rear cycle0: 297 packets, 30.012166fps, maxPTSgap34.000ms, no>100ms gaps.
+- front cycle1: 300 packets, 30.001004fps, maxPTSgap34.000ms, no>100ms gaps.
+- rear cycle2: 318 packets, 30.012309fps, maxPTSgap34.000ms, no>100ms gaps.
+- front cycle3: 295 packets, 30.001019fps, maxPTSgap44.667ms, no>100ms gaps.
+
+All clips are native1920x1080 H264, actual mid-recordG_FMT confirmed; video
+and audio softwareNULL decode allpass, no player/audio playback or transfer.
+This does not prove visible preview/player smoothness or rotation correctness.
+Graceful app close exits0, no captureowner; both sensorsPMusage0/suspended.
+Post-photo/record10s RTC resumes same boot and restores PM debug flags.
+Actual SoC S0I3 residency increment: 9,715,072us.
+
+41framework tests, fullrelease resources/build and immutable private package
+pass. Original R14/R14b/R14c failures, protected oldbinaries, normalsettings,
+stable bqdiag1 boot default and r6 launcher remain intact. Candidate NOT
+promoted. No full Android/Windows optical parity or overallcompletion claim.
+
+Actual front AE journal also shows lowgain1<->2 chatter (Yapproximately92/132
+at maxexposure) in this scene; existing gain-first reduction cannot fine-tune
+across coarse lowgain codes. This is retained, next exposurefeedback work,
+not silently called solved because photo/throughput gates pass. Full-resolution
+rear15fps, shutterlatency, AE/AWB/AF/NR/quality, visibleGUI/rotation/cancel,
+kernelerrortransactions/headlessboot/otherhardware/flash scope remains.
+
+See MIPAD2_PHOTO_AUTOMATED_EVIDENCE.json for sanitized source-pinned results.

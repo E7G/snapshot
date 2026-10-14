@@ -1,0 +1,200 @@
+{
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_built_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_built_source": "45b01add33ac3bf3836cea293500c2571dd9f871",
+  "binary_sha256": "7ede30ff578844ecf68f6f5e8d34eaf1d15ce88aa76c1e3785826573a39537ff",
+  "framework_tests": 41,
+  "photo_cases": [
+    {
+      "sensor": "front",
+      "case": "first",
+      "width": 2560,
+      "height": 1920,
+      "actual_native_source": true,
+      "full_native_pixel_area": true,
+      "source_warm_buffers_minimum": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "last_fresh_native_preview_fps": [
+        30.018,
+        29.996,
+        30.015
+      ],
+      "first_nonempty_file_observed_seconds": 2.1281254291534424,
+      "raw_report_sha256": "aad500701193337ab84e12c0a244ae8aec2883316e3d1b8fd6ea9b7a144a3bc8"
+    },
+    {
+      "sensor": "rear",
+      "case": "first",
+      "width": 3264,
+      "height": 2448,
+      "actual_native_source": true,
+      "full_native_pixel_area": true,
+      "source_warm_buffers_minimum": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "last_fresh_native_preview_fps": [
+        30.018,
+        30.011,
+        30.025
+      ],
+      "first_nonempty_file_observed_seconds": 2.4647979736328125,
+      "raw_report_sha256": "4a0d6823741e9780d969b66d3b05019625ffe863fad3b0f5e6ffac3698e52081"
+    },
+    {
+      "sensor": "front",
+      "case": "repeat",
+      "width": 2560,
+      "height": 1920,
+      "actual_native_source": true,
+      "full_native_pixel_area": true,
+      "source_warm_buffers_minimum": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "last_fresh_native_preview_fps": [
+        29.995,
+        30.028,
+        30.016
+      ],
+      "first_nonempty_file_observed_seconds": 2.17976975440979,
+      "raw_report_sha256": "7ed526280e4df63267b54f29bdd6498b7683010a9591474db3b7453082d28c9e"
+    },
+    {
+      "sensor": "rear",
+      "case": "repeat",
+      "width": 3264,
+      "height": 2448,
+      "actual_native_source": true,
+      "full_native_pixel_area": true,
+      "source_warm_buffers_minimum": 12,
+      "jpeg_null_decode": true,
+      "restored_isp_mode": 3,
+      "restored_isp_vfpp": 0,
+      "last_fresh_native_preview_fps": [
+        30.034,
+        30.02,
+        30.032
+      ],
+      "first_nonempty_file_observed_seconds": 2.713498592376709,
+      "raw_report_sha256": "e01f613e1e0e7da325808a96cea1849a8ef5221d6d7ab92521d495495bb59f14"
+    }
+  ],
+  "post_photo_video_cases": [
+    {
+      "cycle": 0,
+      "sensor": "rear",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 297,
+      "effective_fps": 30.0121660804324,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "video_audio_software_null_decode": true,
+      "mid_record_actual_native_format": true,
+      "raw_report_sha256": "53e8733ae7b10b4ecddc892b24fb8f67c14a26411f95c0b1549865e8953cbc80"
+    },
+    {
+      "cycle": 1,
+      "sensor": "front",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 300,
+      "effective_fps": 30.00100438145103,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "video_audio_software_null_decode": true,
+      "mid_record_actual_native_format": true,
+      "raw_report_sha256": "0992f6706d50cd516cf5c9980623881bf78154746fcacb808959ff7b60413135"
+    },
+    {
+      "cycle": 2,
+      "sensor": "rear",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 318,
+      "effective_fps": 30.012308833663923,
+      "maximum_pts_gap_seconds": 0.034000000000000696,
+      "gaps_above_100ms": 0,
+      "video_audio_software_null_decode": true,
+      "mid_record_actual_native_format": true,
+      "raw_report_sha256": "b0b9e62688d1b0452a5f64b4b6d34547a7881f2381c75335ef660b6b58c375a6"
+    },
+    {
+      "cycle": 3,
+      "sensor": "front",
+      "requested_seconds": 10,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 295,
+      "effective_fps": 30.00101942239466,
+      "maximum_pts_gap_seconds": 0.044666999999999984,
+      "gaps_above_100ms": 0,
+      "video_audio_software_null_decode": true,
+      "mid_record_actual_native_format": true,
+      "raw_report_sha256": "f48dba308b47256e45b71631edaa1dfdee79b170c8172a40fd9a08f991c791d5"
+    }
+  ],
+  "graceful_close_exit": 0,
+  "camera_pm_usage_zero_and_suspended": true,
+  "normal_settings_preserved": true,
+  "default_launcher": "r6 unchanged",
+  "stable_kernel_default": "mipad2-bqdiag1 unchanged",
+  "rtc_seconds": 10,
+  "s0i3_delta_us": 9715072,
+  "pm_debug_flags_restored": true,
+  "candidate_only": true,
+  "private_media_retained_on_device": true,
+  "media_transferred_or_published": false,
+  "playback_or_tones": false,
+  "actual_hardware_bus_fault_injection": false,
+  "visible_gui_player_rotation_verified": false,
+  "android_live_optical_parity": false,
+  "full_objective_complete": false,
+  "retained_failures": [
+    {
+      "report": "mipad2-r14-front-photo-first.json",
+      "passed": false,
+      "sha256": "4114219dfdf5ace1b9e65d0b3482c895f4bb78c3ba7e482a64d93e4f86f879a8"
+    },
+    {
+      "report": "mipad2-r14b-front-photo-first.json",
+      "passed": false,
+      "sha256": "32ba58076ed26408d1436cb1aba365ba7cbf142f9a07314bf661ab8f78d7b9bc"
+    },
+    {
+      "report": "mipad2-r14c-rear-photo-first.json",
+      "passed": false,
+      "sha256": "8dfa95c03ffef2a026e1e0c8ca88492fa70cd369459e6e65aacd1b7ac96102bd"
+    }
+  ],
+  "known_remaining": [
+    "front low-gain1/2 exposure chatter in actual journal: approximatelyY92/132; verify finer exposure feedback",
+    "same-scene AE/AWB/AF/NR/color/optical quality vsAndroid/Windows",
+    "still latency approximately2seconds sampling, not Android1second proof",
+    "full-resolution rear physical15fps not proven",
+    "visible GUI/player/rotation and cancellation races",
+    "kernelnormal-stop/async recovery and real bus failures",
+    "headless boot/highrates/compat32/Requests/otherhardware/DSP",
+    "full flash image build/integration"
+  ],
+  "low_gain_ae_chatter_observation": {
+    "scope": "Read-only native processed-frame AE journal metrics, not exported image or same-scene optical calibration",
+    "low_gain_updates_count": 494,
+    "pairwise_alternations": 493,
+    "chatter_observed": true,
+    "physical_gain_response_calibrated": false,
+    "no_media_transfer": true,
+    "no_control_writes": true,
+    "raw_report_sha256": "064e9271bafae7f7d7506a12ce5e0fba0acc022b75027b27a48cf1f9bfae26f2"
+  }
+}
