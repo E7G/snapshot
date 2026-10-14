@@ -325,6 +325,20 @@ impl Window {
                 }
             ));
             self.add_action(&switch);
+            let picture = gio::SimpleAction::new("mipad2-picture", None);
+            picture.connect_activate(glib::clone!(
+                #[weak(rename_to = window)]
+                self,
+                move |_, _| {
+                    let camera = window.imp().camera.get();
+                    glib::spawn_future_local(async move {
+                        if let Err(error) = camera.take_picture(crate::PictureFormat::Jpeg).await {
+                            log::error!("Mi Pad 2 diagnostic native picture failed: {error}");
+                        }
+                    });
+                }
+            ));
+            self.add_action(&picture);
         }
 
         imp.camera.connect_capture_mode_notify(glib::clone!(

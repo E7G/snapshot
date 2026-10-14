@@ -86,6 +86,49 @@ pub(crate) fn android_video_caps() -> gst::Caps {
         .build()
 }
 
+// Android-declared JPEG sizes; 15fps applies only to the short still stream,
+// never to the normal 1080p30 viewfinder/recorder. Runtime proof is required.
+pub(crate) fn android_photo_geometry(front: bool) -> (i32, i32) {
+    if front { (2560, 1920) } else { (3264, 2448) }
+}
+
+pub(crate) fn android_photo_caps(front: bool) -> gst::Caps {
+    let (width, height) = android_photo_geometry(front);
+    gst::Caps::builder("video/x-raw")
+        .field("format", "NV12")
+        .field("width", width)
+        .field("height", height)
+        .field("framerate", gst::Fraction::new(15, 1))
+        .build()
+}
+
+#[cfg(test)]
+#[test]
+fn android_still_sizes_do_not_replace_video_or_preview() {
+    gst::init().unwrap();
+    for (front, width, height) in [(true, 2560, 1920), (false, 3264, 2448)] {
+        let caps = android_photo_caps(front);
+        assert!(caps.is_fixed());
+        let s = caps.structure(0).unwrap();
+        assert_eq!(s.get::<i32>("width").unwrap(), width);
+        assert_eq!(s.get::<i32>("height").unwrap(), height);
+        assert_eq!(
+            s.get::<gst::Fraction>("framerate").unwrap(),
+            gst::Fraction::new(15, 1)
+        );
+        assert!(caps.intersect(&android_video_caps()).is_empty());
+        assert!(caps.intersect(&android_preview_caps()).is_empty());
+    }
+    assert_eq!(
+        android_video_caps()
+            .structure(0)
+            .unwrap()
+            .get::<gst::Fraction>("framerate")
+            .unwrap(),
+        gst::Fraction::new(30, 1)
+    );
+}
+
 pub(crate) fn android_preview_caps() -> gst::Caps {
     gst::Caps::builder("video/x-raw")
         .field("format", "NV12")

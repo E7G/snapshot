@@ -838,7 +838,11 @@ impl Camera {
         let filename = utils::picture_file_name(format);
         let path = utils::pictures_dir()?.join(filename);
 
-        imp.viewfinder.take_picture(path)?;
+        let result = imp.viewfinder.take_picture_full_resolution(path).await;
+        if result.is_err() {
+            window.set_shutter_enabled(true);
+        }
+        result?;
         imp.flash_bin.flash();
 
         let settings = imp.settings();

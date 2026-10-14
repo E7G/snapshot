@@ -89,6 +89,7 @@ mod imp {
 
         pub is_stopping_recording: Cell<bool>,
         pub is_taking_picture: Cell<bool>,
+        pub native_photo_active: Cell<bool>,
         pub is_front_camera: Cell<bool>,
 
         pub timeout_handler: RefCell<Option<glib::SourceId>>,
@@ -736,6 +737,133 @@ impl Viewfinder {
     ///
     /// The [`picture-done`](#picture-done) signal will be emitted when this
     /// operation ends.
+    /// Opt-in Mi Pad 2 still capture: restart at native full resolution before
+    /// capture, then restore 1080p30 after image-done. No active-source resize.
+    pub async fn take_picture_full_resolution<P: AsRef<Path>>(
+        &self,
+        location: P,
+    ) -> Result<(), crate::CaptureError> {
+        if !crate::mipad2_preview::android_profile_requested(
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+        ) {
+            return self.take_picture(location);
+        }
+        let imp = self.imp();
+        if self.state() != ViewfinderState::Ready {
+            return Err(crate::CaptureError::NotReady);
+        }
+        if imp.is_taking_picture.get() || imp.native_photo_active.get() {
+            return Err(crate::CaptureError::SnapshotInProgress);
+        }
+        if imp.is_recording_video.borrow().is_some() {
+            return Err(crate::CaptureError::RecordingInProgress);
+        }
+        let camera = self.camera().ok_or(crate::CaptureError::NotReady)?;
+        let front = !matches!(camera.location(), crate::CameraLocation::Back);
+        let (width, height) = crate::mipad2_preview::android_photo_geometry(front);
+        let capsfilter = imp.capsfilter.get().ok_or(crate::CaptureError::NotReady)?;
+        let pad = capsfilter
+            .static_pad("src")
+            .ok_or(crate::CaptureError::NotReady)?;
+        // Reserve the capture across await; existing switch/record/photo guards
+        // now also exclude the preparation interval.
+        imp.is_taking_picture.set(true);
+        self.stop_stream();
+        imp.native_photo_active.set(true);
+        capsfilter.set_property("caps", crate::mipad2_preview::android_photo_caps(front));
+        imp.camerabin().set_property_from_str("mode", "mode-image");
+        let frames = std::sync::Arc::new(std::sync::atomic::AtomicU32::new(0));
+        let counter = frames.clone();
+        let probe = pad.add_probe(gst::PadProbeType::BUFFER, move |pad, info| {
+            if matches!(info.data, Some(gst::PadProbeData::Buffer(_))) {
+                let matches = pad
+                    .current_caps()
+                    .and_then(|caps| {
+                        let s = caps.structure(0)?;
+                        Some(
+                            s.get::<i32>("width").ok() == Some(width)
+                                && s.get::<i32>("height").ok() == Some(height),
+                        )
+                    })
+                    .unwrap_or(false);
+                if matches {
+                    counter.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                }
+            }
+            gst::PadProbeReturn::Ok
+        });
+        let Some(probe) = probe else {
+            imp.is_taking_picture.set(false);
+            self.restore_native_photo_preview(true);
+            return Err(crate::CaptureError::NotReady);
+        };
+        self.start_stream();
+        let generation = imp.state_change_generation.get();
+        let mut ready = false;
+        for _ in 0..80 {
+            if imp.state_change_generation.get() != generation
+                || !imp.is_taking_picture.get()
+                || self.state() != ViewfinderState::Ready
+            {
+                break;
+            }
+            if frames.load(std::sync::atomic::Ordering::Relaxed) >= 12 {
+                ready = true;
+                break;
+            }
+            glib::timeout_future(std::time::Duration::from_millis(100)).await;
+        }
+        pad.remove_probe(probe);
+        imp.is_taking_picture.set(false);
+        if !ready {
+            let resume = imp.state_change_generation.get() == generation
+                && self.state() == ViewfinderState::Ready;
+            self.restore_native_photo_preview(resume);
+            return Err(crate::CaptureError::NotReady);
+        }
+        log::info!(
+            "Mi Pad 2 native still source ready: {width}x{height}, at least12 new native buffers; capture starts now"
+        );
+        let result = self.take_picture(location);
+        if result.is_err() {
+            self.restore_native_photo_preview(true);
+        }
+        result
+    }
+
+    fn restore_native_photo_preview(&self, resume: bool) {
+        if !self.imp().native_photo_active.replace(false) {
+            return;
+        }
+        self.stop_stream();
+        if let (Some(camera), Some(capsfilter)) = (self.camera(), self.imp().capsfilter.get()) {
+            capsfilter.set_property("caps", self.native_camera_caps(&camera));
+        }
+        if resume && self.state() == ViewfinderState::Ready {
+            self.start_stream();
+            log::info!("Mi Pad 2 native still completed/unwound; restoring1080p30 source");
+        }
+    }
+
+    fn native_camera_caps(&self, camera: &crate::Camera) -> gst::Caps {
+        if crate::mipad2_preview::android_profile_requested(
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+        ) {
+            if self.imp().native_photo_active.get() {
+                crate::mipad2_preview::android_photo_caps(!matches!(
+                    camera.location(),
+                    crate::CameraLocation::Back
+                ))
+            } else {
+                crate::mipad2_preview::android_video_caps()
+            }
+        } else {
+            camera.best_caps(self.use_mp4_matrix_rotation())
+        }
+    }
+
     pub fn take_picture<P: AsRef<Path>>(&self, location: P) -> Result<(), crate::CaptureError> {
         let imp = self.imp();
 
@@ -1094,6 +1222,7 @@ impl Viewfinder {
 
     fn on_image_done(&self, file: &gio::File) {
         self.imp().is_taking_picture.set(false);
+        self.restore_native_photo_preview(true);
 
         self.emit_picture_done(Some(file));
     }
@@ -1117,6 +1246,7 @@ impl Viewfinder {
         );
 
         self.cancel_current_operation();
+        self.restore_native_photo_preview(false);
 
         if self.imp().camerabin().current_state() != gst::State::Playing {
             self.imp().set_state(ViewfinderState::Error);
@@ -1581,14 +1711,7 @@ impl Viewfinder {
         }
 
         if let Some(capsfilter) = imp.capsfilter.get() {
-            let caps = if crate::mipad2_preview::android_profile_requested(
-                self.video_format() == VideoFormat::H264Mp4,
-                self.enable_hw_encoding(),
-            ) {
-                crate::mipad2_preview::android_video_caps()
-            } else {
-                camera.best_caps(self.use_mp4_matrix_rotation())
-            };
+            let caps = self.native_camera_caps(camera);
             capsfilter.set_property("caps", &caps);
         }
 
