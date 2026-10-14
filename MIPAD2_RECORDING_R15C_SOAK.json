@@ -1,0 +1,113 @@
+{
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_built_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_built_source": "78d677c9c260ad42f2c9e07a71416002150c0273",
+  "app_binary_sha256": "2336a05d6dd033f18afc65822153e56e5cbd263c1801f06f209371ed221631a3",
+  "ui_pipeline_recordings": [
+    {
+      "cycle": 0,
+      "sensor": "front",
+      "requested_seconds": 30,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 923,
+      "effective_fps": 30.000000325379613,
+      "max_pts_gap_seconds": 0.03433400000000009,
+      "gaps_above100ms": 0,
+      "max_thermal_millidegrees": 65000,
+      "decoded_frames": 923,
+      "distinct_decoded_frames": 923,
+      "consecutive_identical_decoded_frames": 0,
+      "video_audio_null_decode": true,
+      "raw_report_sha256": "ddcd964c4832fd0deca86fa2c8504e9550aebd11d5d4cc28816820038f1face3"
+    },
+    {
+      "cycle": 1,
+      "sensor": "rear",
+      "requested_seconds": 30,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 902,
+      "effective_fps": 30.010992150410164,
+      "max_pts_gap_seconds": 0.03400000000000247,
+      "gaps_above100ms": 0,
+      "max_thermal_millidegrees": 68000,
+      "decoded_frames": 902,
+      "distinct_decoded_frames": 881,
+      "consecutive_identical_decoded_frames": 21,
+      "video_audio_null_decode": true,
+      "raw_report_sha256": "26b6596889d1951f33185a46096f301b66d071124befc31b07e02906de2a101f"
+    },
+    {
+      "cycle": 2,
+      "sensor": "front",
+      "requested_seconds": 30,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 905,
+      "effective_fps": 30.000663399625395,
+      "max_pts_gap_seconds": 0.03400000000000247,
+      "gaps_above100ms": 0,
+      "max_thermal_millidegrees": 67000,
+      "decoded_frames": 905,
+      "distinct_decoded_frames": 904,
+      "consecutive_identical_decoded_frames": 1,
+      "video_audio_null_decode": true,
+      "raw_report_sha256": "0ae3b7ff617f3ef9448e31a19ba965f3421524fb7cdbcb20e741786d022b5297"
+    },
+    {
+      "cycle": 3,
+      "sensor": "rear",
+      "requested_seconds": 30,
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "packets": 902,
+      "effective_fps": 30.011657913599535,
+      "max_pts_gap_seconds": 0.03400000000000247,
+      "gaps_above100ms": 0,
+      "max_thermal_millidegrees": 70000,
+      "decoded_frames": 902,
+      "distinct_decoded_frames": 879,
+      "consecutive_identical_decoded_frames": 23,
+      "video_audio_null_decode": true,
+      "raw_report_sha256": "7b9aef2d0dd2a6680f16ddefd79a4b96b1b78d60079477e8d3f831694f19bb92"
+    }
+  ],
+  "closed_gracefully": true,
+  "original_controls_restored": true,
+  "both_sensors_pm0_suspended": true,
+  "no_media_transfer": true,
+  "no_playback": true,
+  "default_launcher_changed": false,
+  "candidate_promoted": false,
+  "standalone_rear_probe": {
+    "source_frames": 960,
+    "source_consecutive_identical_active_nv12_frames": 0,
+    "decoded_frames": 960,
+    "decoded_consecutive_identical_frames": 0,
+    "hardware_frame_sequence_after_first60": {
+      "buffers": 900,
+      "max_pts_gap_seconds": 0.03385715,
+      "offset_gaps_above1": 0,
+      "max_offset_step": 1
+    },
+    "encoder": {
+      "bitrate": 2000,
+      "b-frames": 0,
+      "key-int-max": 30,
+      "aud": true
+    },
+    "note": "Different standalone no-preview/no-AE pipeline, not a same-pipeline comparison. Did not reproduce UI-pipeline decoded repeats; does not establish their cause."
+  },
+  "unresolved": [
+    "GUI rear has 21 and 23 identical consecutive decoded frames out of 902 each; not automatically sensor repeats or proven dropped frames. Static scene and lossy coding can affect this metric; direct comparison did not reproduce.",
+    "Need same-UI-pipeline source/encoder-input fingerprints and per-epoch frame sequence/PTS/counters before declaring cause or removing data-path elements.",
+    "Timing traces retain cumulative startup/switch max-gap values; do not mistake those for recording-only gaps.",
+    "Same-scene Android optical/motion/player/preview latency parity not proven."
+  ],
+  "full_objective_complete": false
+}
