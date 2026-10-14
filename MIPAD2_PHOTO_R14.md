@@ -95,3 +95,25 @@ display remains15/30 respectively, four buffers, zero duplicates. Also tests
 GL output rate-caps containment. This is not actual hardwareGL/JPEG proof.
 Private candidate build and actual front/rear JPEG/repeated shot/30fps restore
 gates remain required; Android live optical parity is not established.
+
+## R14c hardware result and R14d physical sensor selection
+
+R14c front actual native2560x1920 JPEG passedNULL decode, warm12nativebuffers,
+mode2/VFPP2/full sensor shape; restoresISP3/0 and actual fresh1080p30 samples.
+Rear trial FAILED: input1/T4 actual, but2560x1920 source/JPEG ratherthan
+3264x2448. No rear pass or pixel-area substitution. Its batch stopped atfirst
+failure; repeat trials unrun. Candidate gracefully closed0/videoidle/ISP3/0,
+normalsettings unchanged, original reports and immutable packages retained.
+
+Reason: Camera.location reads libcamera-only metadata; shared AtomISP/PipeWire
+device hasUnknown location for BOTH physicalinputs. Snapshot's native switch
+already maintains front/rear state after successfulS_INPUT, but newphoto path
+incorrectly recomputedfront fromUnknown libcamera.location.
+
+R14d checks readonlyVIDIOC_G_INPUT on existingv4l2src device-fd BEFORE NULL,
+requires physical0/1 to agree with managed sensorselection, rejects unopenfd,
+unknowninput/mismatch without changingcaps/ISP. Uses managedselection for
+transientnativecaps, not genericUnknownlocation. No secondvideoowner, no
+externalprocess/inputchange. ABI/intsize/unknown/closed/nonV4Lfd hostcases.
+Kernel contract: https://docs.kernel.org/userspace-api/media/v4l/vidioc-g-input.html
+Actual rear/full-sourceJPEG and repeated photo/record/PM validation pending.

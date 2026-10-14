@@ -764,7 +764,35 @@ impl Viewfinder {
             return Err(crate::CaptureError::RecordingInProgress);
         }
         let camera = self.camera().ok_or(crate::CaptureError::NotReady)?;
-        let front = !matches!(camera.location(), crate::CameraLocation::Back);
+        // AtomISP exposes two sensors as inputs of one PipeWire device. Its
+        // libcamera.location is Unknown even for T4/rear; do not infer front.
+        // Read the existing capture owner's actual input before changing caps.
+        let source = imp
+            .camera_element
+            .get()
+            .ok_or(crate::CaptureError::NotReady)?;
+        if !source.factory().is_some_and(|f| f.name() == "v4l2src")
+            || !source.has_property_with_type("device-fd", i32::static_type())
+        {
+            return Err(crate::CaptureError::NotReady);
+        }
+        let front = match crate::mipad2_capture_mode::selected_front_input(
+            source.property::<i32>("device-fd"),
+        ) {
+            Ok(front) if front == imp.is_front_camera.get() => front,
+            Ok(_) => {
+                log::error!("Mi Pad 2 physical input disagrees with managed sensor selection");
+                return Err(crate::CaptureError::NotReady);
+            }
+            Err(error) => {
+                log::error!("Mi Pad 2 physical input read failed: {error}");
+                return Err(crate::CaptureError::NotReady);
+            }
+        };
+        log::info!(
+            "Mi Pad 2 native still selected physical {} input",
+            if front { "front/OV5693" } else { "rear/T4KA3" }
+        );
         let (width, height) = crate::mipad2_preview::android_photo_geometry(front);
         let capsfilter = imp.capsfilter.get().ok_or(crate::CaptureError::NotReady)?;
         let pad = capsfilter
@@ -865,10 +893,7 @@ impl Viewfinder {
             self.enable_hw_encoding(),
         ) {
             if self.imp().native_photo_active.get() {
-                crate::mipad2_preview::android_photo_caps(!matches!(
-                    camera.location(),
-                    crate::CameraLocation::Back
-                ))
+                crate::mipad2_preview::android_photo_caps(self.imp().is_front_camera.get())
             } else {
                 crate::mipad2_preview::android_video_caps()
             }

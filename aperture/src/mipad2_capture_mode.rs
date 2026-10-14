@@ -57,6 +57,43 @@ fn write_control(f: &File, id: u32, value: i32) -> io::Result<()> {
     }
     Ok(())
 }
+const G_INPUT: c_ulong =
+    ((2u32 << 30) | (4u32 << 16) | (u32::from_be_bytes([0, 0, 0, b'V']) << 8) | 38) as c_ulong;
+fn input_is_front(index: i32) -> io::Result<bool> {
+    match index {
+        0 => Ok(true),
+        1 => Ok(false),
+        _ => Err(io::Error::other("Unknown Mi Pad 2 physical input")),
+    }
+}
+pub(crate) fn selected_front_input(fd: c_int) -> io::Result<bool> {
+    if fd < 0 {
+        return Err(io::Error::other("Native capture owner is not open"));
+    }
+    let mut index: i32 = -1;
+    // SAFETY: read-only G_INPUT with exact initialized4-byte int. Borrow the
+    // existing v4l2src descriptor synchronously before its NULL transition;
+    // never close it, create a second owner, or change the selected input.
+    if unsafe { ioctl(fd, G_INPUT, &mut index as *mut i32) } < 0 {
+        return Err(io::Error::last_os_error());
+    }
+    input_is_front(index)
+}
+#[cfg(test)]
+#[test]
+fn physical_input_query_is_read_only_and_rejects_unknown_or_closed_owner() {
+    assert_eq!(G_INPUT, 0x80045626);
+    assert_eq!(std::mem::size_of::<c_int>(), 4);
+    assert_eq!(input_is_front(0).unwrap(), true);
+    assert_eq!(input_is_front(1).unwrap(), false);
+    for index in [-1, 2, i32::MAX] {
+        assert!(input_is_front(index).is_err());
+    }
+    assert!(selected_front_input(-1).is_err());
+    let file = File::open("/dev/null").unwrap();
+    assert!(selected_front_input(file.as_raw_fd()).is_err());
+}
+
 fn qualified(q: &Query) -> bool {
     q.id == RUN_MODE
         && q.kind == 3
