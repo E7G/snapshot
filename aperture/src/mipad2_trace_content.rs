@@ -79,6 +79,10 @@ impl History {
     }
 
     pub fn begin(&mut self, owner: u64) {
+        // A late flush/segment from an old pad must not seize the new source.
+        if owner == 0 || owner < self.owner {
+            return;
+        }
         self.owner = owner;
         self.epoch += 1;
         self.samples.clear();
@@ -257,5 +261,20 @@ mod tests {
         let mut h = History::new(8);
         assert!(!h.observe(0, None, [0; 16]));
         assert_eq!(h.resolve(None, [0; 16]), Match::Missing);
+    }
+
+    #[test]
+    fn content_history_stale_begin_cannot_steal_new_owner() {
+        let mut h = History::new(8);
+        h.begin(2);
+        h.observe(2, Some(1), [1; 16]);
+        let epoch = h.epoch;
+        h.begin(1);
+        assert_eq!(h.epoch, epoch);
+        assert!(h.observe(2, Some(2), [2; 16]));
+        assert!(!h.observe(1, Some(3), [3; 16]));
+        assert!(matches!(h.resolve(Some(1), [1; 16]), Match::Unique(_)));
+        h.begin(0);
+        assert_eq!(h.epoch, epoch);
     }
 }

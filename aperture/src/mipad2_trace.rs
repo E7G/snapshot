@@ -210,3 +210,68 @@ pub(crate) fn pad(pad: &gst::Pad, label: &str) {
         gst::PadProbeReturn::Ok
     });
 }
+
+#[cfg(test)]
+mod content_map_tests {
+    use super::*;
+
+    #[test]
+    fn content_map_honors_per_buffer_offsets_and_strides() {
+        gst::init().unwrap();
+        let info = gst_video::VideoInfo::builder(gst_video::VideoFormat::Nv12, 4, 4)
+            .build()
+            .unwrap();
+        let mut packed = gst::Buffer::with_size(24).unwrap();
+        {
+            let mut m = packed.get_mut().unwrap().map_writable().unwrap();
+            m.as_mut_slice()[..16].fill(7);
+            m.as_mut_slice()[16..].fill(9);
+        }
+        let expected = fingerprint_buffer(&packed, &info).unwrap();
+        let mut padded = gst::Buffer::with_size(64).unwrap();
+        {
+            let mut m = padded.get_mut().unwrap().map_writable().unwrap();
+            let b = m.as_mut_slice();
+            b.fill(255);
+            for row in 0..4 {
+                b[3 + row * 8..3 + row * 8 + 4].fill(7);
+            }
+            for row in 0..2 {
+                b[42 + row * 8..42 + row * 8 + 4].fill(9);
+            }
+        }
+        gst_video::VideoMeta::add_full(
+            padded.get_mut().unwrap(),
+            gst_video::VideoFrameFlags::empty(),
+            gst_video::VideoFormat::Nv12,
+            4,
+            4,
+            &[3, 42],
+            &[8, 8],
+        )
+        .unwrap();
+        assert_eq!(fingerprint_buffer(&padded, &info), Some(expected));
+        // The readable NO_REF map must release itself, not retain a pool frame.
+        {
+            let mut m = padded.get_mut().unwrap().map_writable().unwrap();
+            m.as_mut_slice()[7] = 13;
+        }
+        assert_eq!(fingerprint_buffer(&padded, &info), Some(expected));
+        {
+            let mut m = padded.get_mut().unwrap().map_writable().unwrap();
+            m.as_mut_slice()[53] += 1;
+        }
+        assert_ne!(fingerprint_buffer(&padded, &info), Some(expected));
+        assert!(padded.get_mut().is_some());
+    }
+
+    #[test]
+    fn content_map_does_not_treat_unsupported_formats_as_valid() {
+        gst::init().unwrap();
+        let info = gst_video::VideoInfo::builder(gst_video::VideoFormat::I420, 4, 4)
+            .build()
+            .unwrap();
+        let buffer = gst::Buffer::with_size(info.size()).unwrap();
+        assert_eq!(fingerprint_buffer(&buffer, &info), None);
+    }
+}

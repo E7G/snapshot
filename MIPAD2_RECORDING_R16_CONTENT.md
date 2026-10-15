@@ -25,3 +25,13 @@ has reverted to stable bqdiag1; do not mix its evidence with the R19 baseline.
 Use a new immutable R16 private prefix, preserving r6 launcher and R15c.
 
 Reference: https://gstreamer.freedesktop.org/documentation/video/video-frame.html
+
+## Pre-deployment review: R16a
+
+Initial R16 full framework/release compiled, but extra exact-source review
+found a stale old-pad begin/flush could steal a newer source epoch. A new
+RED test reproduced it; begin now rejects older/zero owner IDs. The first
+R16 build was not packaged or installed. R16a adds real GstVideoMeta-offset/
+stride mapping and NO_REF-map lifetime tests, beyond pure hash/history tests.
+No device reboot or candidate launch is performed while the user stays on
+the old stable kernel. Pixel fingerprints remain diagnostics, not a fix.
