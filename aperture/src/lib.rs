@@ -29,6 +29,7 @@ mod mipad2_capture_copy;
 mod mipad2_capture_mode;
 mod mipad2_preview;
 mod mipad2_trace;
+mod mipad2_trace_content;
 mod pipeline_tee;
 mod utils;
 mod viewfinder;
