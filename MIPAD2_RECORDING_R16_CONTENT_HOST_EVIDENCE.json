@@ -1,0 +1,48 @@
+{
+  "built_source": "cb59e2acc6f2549470024874327334b14de2e01a",
+  "binary_sha256": "ed040bf10d58d2ef85825d360d2990a4e27f4f99d12a944911cf0fe70e5ef2ad",
+  "archive_sha256": "fff7c533fecc7bf5f3655e847a1282e5a1fe0065d8e982f89a9be12b69896b20",
+  "private_prefix": "/usr/local/lib/mipad2-snapshot-recording-r16a",
+  "framework_tests": 56,
+  "new_diagnostic_tests": 12,
+  "full_build_phases": [
+    {
+      "phase": "prefix",
+      "exit_code": 0
+    },
+    {
+      "phase": "format-check",
+      "exit_code": 0
+    },
+    {
+      "phase": "tests",
+      "exit_code": 0
+    },
+    {
+      "phase": "resources-release",
+      "exit_code": 0
+    }
+  ],
+  "original_r16_built_but_not_packaged_or_installed": true,
+  "extra_stale_owner_red_reproduced": true,
+  "stale_owner_fixed_in_r16a": true,
+  "custom_video_meta_and_no_retained_buffer_ref_tested": true,
+  "old_ae_photo_video_framework_tests_retained": true,
+  "production_ae_algorithm_changed": false,
+  "production_kernel_changed": false,
+  "device_installed": false,
+  "device_launched": false,
+  "device_rebooted": false,
+  "prior_artifacts_preserved": true,
+  "default_launcher_changed": false,
+  "content_flag_default": false,
+  "pixel_or_digest_logged": false,
+  "current_device_kernel": "6.14.0-mipad2-cachyos-navkeys-bqdiag1",
+  "runtime_r19": false,
+  "manual_r19_start_unavailable": true,
+  "runtime_checksum_cost_measured": false,
+  "gui_repeat_cause_proven": false,
+  "android_optical_parity": false,
+  "full_objective_complete": false,
+  "next": "Only after verified R19 runtime, install fresh immutable R16a privately and compare tracing-off/on in the same UI recording pipeline, including checksum cost, sequence/PTS/epoch/content-match accounting and decode-frame repeats. No remote-only reboot while user is unavailable."
+}

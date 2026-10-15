@@ -35,3 +35,14 @@ R16 build was not packaged or installed. R16a adds real GstVideoMeta-offset/
 stride mapping and NO_REF-map lifetime tests, beyond pure hash/history tests.
 No device reboot or candidate launch is performed while the user stays on
 the old stable kernel. Pixel fingerprints remain diagnostics, not a fix.
+
+## R16a completed host/package gates, 2026-10-15
+
+All56 framework tests pass, preserving the44 prior AE/photo/video cases
+and adding12 diagnostic cases. Full resources/release build and private
+archive packaging pass. Both actual GstVideoMeta padded-offset/stride and
+NO_REF map lifetime tests pass. Extra stale-owner RED is preserved; initial
+R16 was never packaged/installed. R16a has not been sent to or launched on
+the device. No runtime overhead, repeated-frame cause or Android parity
+claim follows from these host gates. Previous binary archives/manifests and
+the r6 launcher are unchanged. See the adjacent HOST_EVIDENCE.json file.
