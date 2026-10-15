@@ -1,7 +1,31 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //! Explicit quality candidate, not a claim about active MIUI runtime settings.
 //! Vendor XML declares 15Mbps/AAC but carries a dummy MRD7/T100 header.
+use gst::prelude::*;
 use gst_pbutils::encoding_profile::EncodingProfileBuilder;
+use std::sync::{LazyLock, Mutex};
+
+static AAC_ORIGINAL_RANK: LazyLock<Mutex<Option<gst::Rank>>> = LazyLock::new(|| Mutex::new(None));
+
+fn selected_aac_rank(enabled: bool, original: gst::Rank) -> gst::Rank {
+    if enabled {
+        original.max(gst::Rank::PRIMARY)
+    } else {
+        original
+    }
+}
+
+pub(crate) fn configure_aac_rank(enabled: bool) {
+    let mut original = AAC_ORIGINAL_RANK.lock().unwrap();
+    // Never touch rank in a process which has not enabled this candidate.
+    if !enabled && original.is_none() {
+        return;
+    }
+    if let Some(factory) = gst::ElementFactory::find("avenc_aac") {
+        let prior = *original.get_or_insert(factory.rank());
+        factory.set_rank(selected_aac_rank(enabled, prior));
+    }
+}
 
 pub(crate) fn policy(
     device: bool,
@@ -27,7 +51,7 @@ pub(crate) fn aac_profile() -> gst_pbutils::EncodingAudioProfile {
         .field("rate", 48_000i32)
         .field("channels", 2i32)
         .build();
-    // Profile-local explicit factory selection: do not mutate process/global ranks.
+    // Pin the factory; encodebin also needs its rank raised in this process only.
     let properties = gst_pbutils::ElementProperties::builder_map()
         .item(
             gst_pbutils::ElementPropertiesMapItem::builder("avenc_aac")
@@ -53,6 +77,20 @@ mod tests {
             assert_eq!(policy(b[0], b[1], b[2], b[3], b[4], b[5]), mask == 63);
         }
     }
+    #[test]
+    fn quality_aac_rank_preserves_and_restores_original_policy() {
+        for original in [
+            gst::Rank::NONE,
+            gst::Rank::MARGINAL,
+            gst::Rank::PRIMARY,
+            gst::Rank::PRIMARY + 100,
+        ] {
+            assert_eq!(selected_aac_rank(false, original), original);
+            assert!(selected_aac_rank(true, original) >= gst::Rank::PRIMARY);
+            assert!(selected_aac_rank(true, original) >= original);
+        }
+    }
+
     #[test]
     fn quality_bitrate_units_and_legacy_are_distinct() {
         assert_eq!(video_kbps(false, 2048), 2048);

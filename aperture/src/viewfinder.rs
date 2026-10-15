@@ -1398,6 +1398,7 @@ impl Viewfinder {
                 "Mi Pad 2 quality candidate unavailable: device/profile/hardware/AAC gate failed; legacy settings retained, not quality-validated"
             );
         }
+        crate::mipad2_recording_quality::configure_aac_rank(quality_enabled);
         let va_bitrate =
             crate::mipad2_recording_quality::video_kbps(quality_enabled, DEFAULT_BITRATE);
         if quality_enabled {
