@@ -38,6 +38,22 @@ pub(crate) fn policy(
     device && h264 && hw && android && requested && aac
 }
 
+/// Diagnostic ablations never alter the normal joint-quality policy.
+pub(crate) fn diagnostic_axes(enabled: bool, diagnostic: bool, axis: Option<&str>) -> (bool, bool) {
+    if !enabled {
+        return (false, false);
+    }
+    if !diagnostic {
+        return (true, true);
+    }
+    match axis {
+        Some("legacy") => (false, false),
+        Some("video-only") => (true, false),
+        Some("audio-only") => (false, true),
+        _ => (true, true), // Invalid/missing input must not silently lower quality.
+    }
+}
+
 pub(crate) fn video_kbps(enabled: bool, legacy: u32) -> u32 {
     if enabled { 15_000 } else { legacy }
 }
@@ -88,6 +104,36 @@ mod tests {
             assert_eq!(selected_aac_rank(false, original), original);
             assert!(selected_aac_rank(true, original) >= gst::Rank::PRIMARY);
             assert!(selected_aac_rank(true, original) >= original);
+        }
+    }
+
+    #[test]
+    fn diagnostic_axes_are_explicitly_gated_and_preserve_joint_target() {
+        for enabled in [false, true] {
+            for diagnostic in [false, true] {
+                for axis in [
+                    None,
+                    Some("joint"),
+                    Some("legacy"),
+                    Some("video-only"),
+                    Some("audio-only"),
+                    Some("typo"),
+                ] {
+                    let expected = if !enabled {
+                        (false, false)
+                    } else if !diagnostic {
+                        (true, true)
+                    } else {
+                        match axis {
+                            Some("legacy") => (false, false),
+                            Some("video-only") => (true, false),
+                            Some("audio-only") => (false, true),
+                            _ => (true, true),
+                        }
+                    };
+                    assert_eq!(diagnostic_axes(enabled, diagnostic, axis), expected);
+                }
+            }
         }
     }
 

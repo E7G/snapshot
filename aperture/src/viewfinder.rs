@@ -1398,12 +1398,26 @@ impl Viewfinder {
                 "Mi Pad 2 quality candidate unavailable: device/profile/hardware/AAC gate failed; legacy settings retained, not quality-validated"
             );
         }
-        crate::mipad2_recording_quality::configure_aac_rank(quality_enabled);
-        let va_bitrate =
-            crate::mipad2_recording_quality::video_kbps(quality_enabled, DEFAULT_BITRATE);
+        let (quality_video, quality_audio) = crate::mipad2_recording_quality::diagnostic_axes(
+            quality_enabled,
+            std::env::var("MIPAD2_DIAGNOSTIC_ACTIONS").as_deref() == Ok("1"),
+            std::env::var("MIPAD2_QUALITY_DIAGNOSTIC_AXIS")
+                .ok()
+                .as_deref(),
+        );
         if quality_enabled {
             log::info!(
-                "Mi Pad 2 quality candidate: VA H264 15000kbps; audio AAC-LC 192kbps/48000Hz/2ch when enabled; not active-MIUI parity proof"
+                "Mi Pad 2 quality axes: video={} aac={}; ablation is not joint-quality acceptance",
+                quality_video,
+                quality_audio
+            );
+        }
+        crate::mipad2_recording_quality::configure_aac_rank(quality_audio);
+        let va_bitrate =
+            crate::mipad2_recording_quality::video_kbps(quality_video, DEFAULT_BITRATE);
+        if quality_video && quality_audio {
+            log::info!(
+                "Mi Pad 2 joint quality candidate: VA H26415000kbps/AAC192kbps; not parity proof"
             );
         }
         let mut va_h264 =
@@ -1556,7 +1570,7 @@ impl Viewfinder {
                 let caps = gst::Caps::builder("video/quicktime").build();
                 let mut container_profile = gst_pbutils::EncodingContainerProfile::builder(&caps)
                     .name("MP4 audio/video")
-                    .description(if quality_enabled {
+                    .description(if quality_audio {
                         "Candidate MP4/H264/AAC-LC"
                     } else {
                         "Standard MP4/H264/MPEG audio"
@@ -1571,7 +1585,7 @@ impl Viewfinder {
                 container_profile = container_profile.add_profile(video_profile);
 
                 if !self.disable_audio_recording() {
-                    let audio_profile = if quality_enabled {
+                    let audio_profile = if quality_audio {
                         crate::mipad2_recording_quality::aac_profile()
                     } else {
                         gst_pbutils::EncodingAudioProfile::builder(
