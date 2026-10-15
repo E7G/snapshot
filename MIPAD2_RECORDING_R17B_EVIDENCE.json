@@ -1,0 +1,427 @@
+{
+  "date": "2026-10-15",
+  "built_source": "a8682b92bf8aa198dec04dd1a07cfa39db39b991",
+  "binary_sha256": "994d8357c1e42d6cf7c753a2a5cfc68420a82f1e4d082723c82e9df984232517",
+  "framework_tests": 62,
+  "diagnostic_axes_gated": true,
+  "normal_quality_target_unchanged": "15Mbps H264/AAC192k48k2ch",
+  "default_launcher_changed": false,
+  "cohorts": {
+    "legacy": [
+      {
+        "sensor": "front",
+        "fps": 30.002008728240632,
+        "max_pts_gap_seconds": 0.03433300000000017,
+        "cadence_gate": true,
+        "packets": 897,
+        "decoded_frames": 897,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 67000
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.011454753722795,
+        "max_pts_gap_seconds": 0.03400000000000247,
+        "cadence_gate": true,
+        "packets": 918,
+        "decoded_frames": 918,
+        "consecutive_exact_decoded_repeats": 26,
+        "max_thermal_millidegrees": 70000
+      }
+    ],
+    "audio": [
+      {
+        "sensor": "front",
+        "fps": 29.99999966740577,
+        "max_pts_gap_seconds": 0.03433300000000017,
+        "cadence_gate": true,
+        "packets": 903,
+        "decoded_frames": 903,
+        "consecutive_exact_decoded_repeats": 2,
+        "max_thermal_millidegrees": 71000
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.009723485713543,
+        "max_pts_gap_seconds": 0.03400000000000247,
+        "cadence_gate": true,
+        "packets": 896,
+        "decoded_frames": 896,
+        "consecutive_exact_decoded_repeats": 28,
+        "max_thermal_millidegrees": 71000
+      }
+    ],
+    "video": [
+      {
+        "sensor": "front",
+        "fps": 26.104066747967497,
+        "max_pts_gap_seconds": 0.05000000000000071,
+        "cadence_gate": false,
+        "packets": 797,
+        "decoded_frames": 797,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 74000
+      },
+      {
+        "sensor": "rear",
+        "fps": 27.32037193575655,
+        "max_pts_gap_seconds": 0.04499999999999993,
+        "cadence_gate": false,
+        "packets": 809,
+        "decoded_frames": 809,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 71000
+      }
+    ],
+    "joint": [
+      {
+        "sensor": "front",
+        "fps": 26.219121760523034,
+        "max_pts_gap_seconds": 0.04533400000000043,
+        "cadence_gate": false,
+        "packets": 779,
+        "decoded_frames": 779,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 67000
+      },
+      {
+        "sensor": "rear",
+        "fps": 27.359412379123288,
+        "max_pts_gap_seconds": 0.04433300000000173,
+        "cadence_gate": false,
+        "packets": 813,
+        "decoded_frames": 813,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 71000
+      }
+    ],
+    "joint-unmonitored": [
+      {
+        "sensor": "front",
+        "fps": 26.231662605882768,
+        "max_pts_gap_seconds": 0.04433299999999818,
+        "cadence_gate": false,
+        "packets": 786,
+        "decoded_frames": 786,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 71000
+      },
+      {
+        "sensor": "rear",
+        "fps": 27.116106239764633,
+        "max_pts_gap_seconds": 0.04299999999999926,
+        "cadence_gate": false,
+        "packets": 810,
+        "decoded_frames": 810,
+        "consecutive_exact_decoded_repeats": 0,
+        "max_thermal_millidegrees": 69000
+      }
+    ]
+  },
+  "pmu_analysis": {
+    "window": "3..27seconds after recording action; whole-clip cadence gates remain separate",
+    "counter_isolation": "system-wide GPU; not per-process; PMU may affect timing/power",
+    "arms": {
+      "legacy": [
+        {
+          "sensor": "front",
+          "sample_count": 22,
+          "gpu_frequency_mean": 580.9090909090909,
+          "gpu_frequency_range": [
+            200,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 45.97169791395078,
+            "vcs0-busy": 31.6667112001265,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 41.653025342089045
+          },
+          "process_cpu_percent_mean": 92.8779914004124,
+          "process_write_MB_per_second": 0.2665956903556974,
+          "device_io_busy_percent": 1.7659360944406717,
+          "device_weighted_io_ms_per_second": 27.460306268552443,
+          "fps": 30.002008728240632,
+          "max_pts_gap": 0.03433300000000017,
+          "video_bit_rate": "1982156",
+          "audio_codec": "mp3"
+        },
+        {
+          "sensor": "rear",
+          "sample_count": 22,
+          "gpu_frequency_mean": 597.2727272727273,
+          "gpu_frequency_range": [
+            580,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 48.87398473716449,
+            "vcs0-busy": 29.89772786652842,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 38.911929285469554
+          },
+          "process_cpu_percent_mean": 94.13217558587078,
+          "process_write_MB_per_second": 0.2718678127687606,
+          "device_io_busy_percent": 2.593476091304878,
+          "device_weighted_io_ms_per_second": 50.594762391388386,
+          "fps": 30.011454753722795,
+          "max_pts_gap": 0.03400000000000247,
+          "video_bit_rate": "1985778",
+          "audio_codec": "mp3"
+        }
+      ],
+      "audio": [
+        {
+          "sensor": "front",
+          "sample_count": 22,
+          "gpu_frequency_mean": 577.2727272727273,
+          "gpu_frequency_range": [
+            200,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 45.898178244705946,
+            "vcs0-busy": 31.50783673326512,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 41.5410248664909
+          },
+          "process_cpu_percent_mean": 106.39431685262281,
+          "process_write_MB_per_second": 0.28082740370484777,
+          "device_io_busy_percent": 2.62552393761649,
+          "device_weighted_io_ms_per_second": 97.19276217977291,
+          "fps": 29.99999966740577,
+          "max_pts_gap": 0.03433300000000017,
+          "video_bit_rate": "1985796",
+          "audio_codec": "aac"
+        },
+        {
+          "sensor": "rear",
+          "sample_count": 22,
+          "gpu_frequency_mean": 581.8181818181819,
+          "gpu_frequency_range": [
+            200,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 49.10168490204451,
+            "vcs0-busy": 29.98310658878697,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 38.81844638884476
+          },
+          "process_cpu_percent_mean": 108.36703314757624,
+          "process_write_MB_per_second": 0.2814897579451588,
+          "device_io_busy_percent": 1.9490285403456062,
+          "device_weighted_io_ms_per_second": 59.08265889119416,
+          "fps": 30.009723485713543,
+          "max_pts_gap": 0.03400000000000247,
+          "video_bit_rate": "1982059",
+          "audio_codec": "aac"
+        }
+      ],
+      "video": [
+        {
+          "sensor": "front",
+          "sample_count": 22,
+          "gpu_frequency_mean": 600,
+          "gpu_frequency_range": [
+            600,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 52.896780944250075,
+            "vcs0-busy": 40.397154967918006,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 37.08470405128289
+          },
+          "process_cpu_percent_mean": 94.72111707663308,
+          "process_write_MB_per_second": 1.5835716577684906,
+          "device_io_busy_percent": 3.4407872451728796,
+          "device_weighted_io_ms_per_second": 183.45035934873448,
+          "fps": 26.104066747967497,
+          "max_pts_gap": 0.05000000000000071,
+          "video_bit_rate": "12949038",
+          "audio_codec": "mp3"
+        },
+        {
+          "sensor": "rear",
+          "sample_count": 22,
+          "gpu_frequency_mean": 600,
+          "gpu_frequency_range": [
+            600,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 49.65019117221915,
+            "vcs0-busy": 43.76210360277035,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 39.621338467438434
+          },
+          "process_cpu_percent_mean": 98.93120894486968,
+          "process_write_MB_per_second": 1.7308390341632978,
+          "device_io_busy_percent": 4.577577765877188,
+          "device_weighted_io_ms_per_second": 560.4144393793105,
+          "fps": 27.32037193575655,
+          "max_pts_gap": 0.04499999999999993,
+          "video_bit_rate": "13935805",
+          "audio_codec": "mp3"
+        }
+      ],
+      "joint": [
+        {
+          "sensor": "front",
+          "sample_count": 22,
+          "gpu_frequency_mean": 600,
+          "gpu_frequency_range": [
+            600,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 53.17505499389193,
+            "vcs0-busy": 40.613846648855315,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 0.0
+          },
+          "process_cpu_percent_mean": 100.4552367581553,
+          "process_write_MB_per_second": 1.632725200489214,
+          "device_io_busy_percent": 3.2312959117731332,
+          "device_weighted_io_ms_per_second": 285.57073555888616,
+          "fps": 26.219121760523034,
+          "max_pts_gap": 0.04533400000000043,
+          "video_bit_rate": "13192753",
+          "audio_codec": "aac"
+        },
+        {
+          "sensor": "rear",
+          "sample_count": 22,
+          "gpu_frequency_mean": 600,
+          "gpu_frequency_range": [
+            600,
+            600
+          ],
+          "gpu_limits": [
+            [
+              200,
+              600
+            ]
+          ],
+          "engine_percent": {
+            "rcs0-busy": 49.995544829126445,
+            "vcs0-busy": 43.61991605730518,
+            "bcs0-busy": 0.0,
+            "vecs0-busy": 0.0,
+            "rc6-residency": 0.0
+          },
+          "process_cpu_percent_mean": 103.04047131625569,
+          "process_write_MB_per_second": 1.7395124283695371,
+          "device_io_busy_percent": 4.130699056492065,
+          "device_weighted_io_ms_per_second": 375.27840364300255,
+          "fps": 27.359412379123288,
+          "max_pts_gap": 0.04433300000000173,
+          "video_bit_rate": "13844929",
+          "audio_codec": "aac"
+        }
+      ]
+    }
+  },
+  "matrix_controller_original_failure_preserved": true,
+  "video_decode_inspection_completed_separately": true,
+  "all_strict_quality_cadence_passed": false,
+  "joint_later_monitor_epoch": true,
+  "PMU_off_joint_repeat_completed": true,
+  "unmonitored_means_PMU_off_not_all_trace_probes_off": true,
+  "no_randomized_or_optically_controlled_scene_claim": true,
+  "old_mesa_stop_crash_resolved": false,
+  "previous_startup_failure_resolved": false,
+  "post_camera_rtc": {
+    "functional_resume": true,
+    "s0i3_delta_us": 9248672,
+    "new_kernel_errors": []
+  },
+  "scalar_thread_sample_no_ptrace": true,
+  "GT_min_max_restored": {
+    "gt_min_freq_mhz": "200",
+    "gt_max_freq_mhz": "600"
+  },
+  "frequency_override_performed": false,
+  "all_test_processes_and_monitors_terminal": true,
+  "original_controls_and_PM0_restored": true,
+  "prior_binaries_and_r6_launcher_preserved": true,
+  "stable_saved_grub_default_preserved": true,
+  "tablet_packages_changed": false,
+  "WSL_only_libva_development_dependencies_installed": true,
+  "private_media_core_or_individual_digest_published": false,
+  "tones_or_playback": false,
+  "new_kernel_deployed": false,
+  "full_objective_complete": false,
+  "async_proposal": {
+    "commit": "c1e4a2c6dbd103ab552b08896eca355f8fb6e60b",
+    "model": {
+      "model_stdout": "2040 decision/count-model cases PASS; no VA/driver/performance proof\n",
+      "model_exit_code": 0,
+      "patch_syntax_numstat": "2\t1\tsys/va/gstvah264enc.c\n",
+      "patch_checked_against_full_upstream": false,
+      "full_plugin_built": false,
+      "device_deployed": false,
+      "archive_or_TLS_failures_retained": true,
+      "files_sha256": {
+        "contrib/mipad2/va-async-depth/README.md": "625021cb74c1edb7b65ad37133224c674da04eae50e515def2ae2c65e0b32864",
+        "contrib/mipad2/va-async-depth/0001-proposed-opt-in-live-two-frame-output.patch": "6c6e86da1c77a3501e236b9c65fe6f73b2b78932b21e4ffd07a8667c9a0a93de",
+        "contrib/mipad2/va-async-depth/delay-model-test.c": "365f93e2f12c432f9dac4e790b59ec1b960def082e9ba3b1edf6e20fb46ad543"
+      }
+    },
+    "full_source_available": false,
+    "full_plugin_built": false,
+    "patch_applied_to_upstream": false,
+    "device_deployed": false
+  },
+  "next": "Complete exact upstream source retrieval and private async-depth2 build/flag-off-on tests without lowering15Mbps/AAC or native/preview modes. Preserve failures; verify pool/latency/EOS/reopen/decode/resume before promotion."
+}
