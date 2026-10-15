@@ -1,0 +1,311 @@
+{
+  "date": "2026-10-15",
+  "built_source": "083b5d4e8a2981f80340f624591617dd95a87af3",
+  "binary_sha256": "43003fbf481244fb58cc1040b57b3f101f631d2b1a97a3c53cf751a45bbe4bda",
+  "archive_sha256": "422d6e06a5f63c2eeb20d85b28d0d71273767e10139f75752d67ab0a39d4bcb0",
+  "algorithm": "XXH3-128",
+  "dependency_version": "xxhash-rust=0.8.19",
+  "only_one_dependency_added": true,
+  "codegen_baseline_x86_64_no_native_or_avx_override": true,
+  "full_active_NV12_Y_UV_and_geometry_covered": true,
+  "sampled_rows": false,
+  "padding_excluded": true,
+  "readable_NO_REF_maps_preserved": true,
+  "individual_digests_or_pixels_exported": false,
+  "framework_tests": 57,
+  "all_prior_56_retained": true,
+  "build_phases": [
+    {
+      "phase": "prefix",
+      "exit_code": 0
+    },
+    {
+      "phase": "format-check",
+      "exit_code": 0
+    },
+    {
+      "phase": "tests",
+      "exit_code": 0
+    },
+    {
+      "phase": "resources-release",
+      "exit_code": 0
+    }
+  ],
+  "arms": {
+    "control-hardware": {
+      "requested_seconds_each": 30,
+      "process_exit_success": true,
+      "original_controls_restored": true,
+      "camera_pm0_suspended": true,
+      "cycles": [
+        {
+          "sensor": "front",
+          "fps": 29.997712919469244,
+          "packets": 919,
+          "max_pts_gap_seconds": 0.034000000000000696,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 71000,
+          "decoded_frames": 919,
+          "consecutive_exact_decoded_repeats": 0,
+          "video_audio_decode_passed": true
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.016730636748353,
+          "packets": 916,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 77000,
+          "decoded_frames": 916,
+          "consecutive_exact_decoded_repeats": 23,
+          "video_audio_decode_passed": true
+        }
+      ]
+    },
+    "content-hardware": {
+      "requested_seconds_each": 30,
+      "process_exit_success": true,
+      "original_controls_restored": true,
+      "camera_pm0_suspended": true,
+      "cycles": [
+        {
+          "sensor": "front",
+          "fps": 30.00098363880783,
+          "packets": 916,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 73000,
+          "decoded_frames": 916,
+          "consecutive_exact_decoded_repeats": 0,
+          "video_audio_decode_passed": true,
+          "terminal_encoder_counters": {
+            "epoch": 2,
+            "native-epoch": 2,
+            "seen": 916,
+            "valid": 916,
+            "repeated": 0,
+            "map-failed": 0,
+            "native-match": 916,
+            "ambiguous": 0,
+            "missing": 0,
+            "reused": 0,
+            "backwards": 0,
+            "skipped": 0,
+            "pts-mismatch": 0,
+            "stale-owner": 0,
+            "cost-us": 2154096,
+            "max-cost-us": 6269
+          },
+          "average_encoder_probe_cost_us": 2351.633187772926
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.977770355437304,
+          "packets": 918,
+          "max_pts_gap_seconds": 0.07633299999999998,
+          "strict_cadence_gate": false,
+          "max_thermal_millidegrees": 75000,
+          "decoded_frames": 918,
+          "consecutive_exact_decoded_repeats": 20,
+          "video_audio_decode_passed": true,
+          "terminal_encoder_counters": {
+            "epoch": 4,
+            "native-epoch": 3,
+            "seen": 918,
+            "valid": 918,
+            "repeated": 0,
+            "map-failed": 0,
+            "native-match": 918,
+            "ambiguous": 0,
+            "missing": 0,
+            "reused": 0,
+            "backwards": 0,
+            "skipped": 0,
+            "pts-mismatch": 0,
+            "stale-owner": 0,
+            "cost-us": 2222874,
+            "max-cost-us": 10686
+          },
+          "average_encoder_probe_cost_us": 2421.4313725490197
+        }
+      ]
+    },
+    "content-repeat": {
+      "requested_seconds_each": 30,
+      "process_exit_success": true,
+      "original_controls_restored": true,
+      "camera_pm0_suspended": true,
+      "cycles": [
+        {
+          "sensor": "front",
+          "fps": 29.998691442030882,
+          "packets": 918,
+          "max_pts_gap_seconds": 0.03433300000000017,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 69000,
+          "decoded_frames": 918,
+          "consecutive_exact_decoded_repeats": 1,
+          "video_audio_decode_passed": true,
+          "terminal_encoder_counters": {
+            "epoch": 2,
+            "native-epoch": 2,
+            "seen": 918,
+            "valid": 918,
+            "repeated": 0,
+            "map-failed": 0,
+            "native-match": 918,
+            "ambiguous": 0,
+            "missing": 0,
+            "reused": 0,
+            "backwards": 0,
+            "skipped": 0,
+            "pts-mismatch": 0,
+            "stale-owner": 0,
+            "cost-us": 2174994,
+            "max-cost-us": 6349
+          },
+          "average_encoder_probe_cost_us": 2369.274509803922
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.00878814846851,
+          "packets": 923,
+          "max_pts_gap_seconds": 0.03433300000000017,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 73000,
+          "decoded_frames": 923,
+          "consecutive_exact_decoded_repeats": 24,
+          "video_audio_decode_passed": true,
+          "terminal_encoder_counters": {
+            "epoch": 4,
+            "native-epoch": 3,
+            "seen": 923,
+            "valid": 923,
+            "repeated": 0,
+            "map-failed": 0,
+            "native-match": 923,
+            "ambiguous": 0,
+            "missing": 0,
+            "reused": 0,
+            "backwards": 0,
+            "skipped": 0,
+            "pts-mismatch": 0,
+            "stale-owner": 0,
+            "cost-us": 2133508,
+            "max-cost-us": 5811
+          },
+          "average_encoder_probe_cost_us": 2311.492957746479
+        }
+      ]
+    }
+  },
+  "first_startup_cadence_failure_retained": true,
+  "all_strict_cadence_gates_passed": false,
+  "gap_inspection": {
+    "control": [
+      {
+        "sensor": "front",
+        "packets": 919,
+        "max_gap_seconds": 0.034000000000000696,
+        "gaps_above50ms": [],
+        "steady_max_gap_seconds": 0.034000000000000696,
+        "near_zero_gaps": 0
+      },
+      {
+        "sensor": "rear",
+        "packets": 916,
+        "max_gap_seconds": 0.03400000000000247,
+        "gaps_above50ms": [],
+        "steady_max_gap_seconds": 0.03400000000000247,
+        "near_zero_gaps": 0
+      }
+    ],
+    "content": [
+      {
+        "sensor": "front",
+        "packets": 916,
+        "max_gap_seconds": 0.03400000000000247,
+        "gaps_above50ms": [],
+        "steady_max_gap_seconds": 0.03400000000000247,
+        "near_zero_gaps": 0
+      },
+      {
+        "sensor": "rear",
+        "packets": 918,
+        "max_gap_seconds": 0.07633299999999998,
+        "gaps_above50ms": [
+          {
+            "index": 4,
+            "gap_seconds": 0.07633299999999998,
+            "pts_seconds": 0.176333,
+            "nearby_gaps_seconds": [
+              0.033333,
+              0.033334,
+              0.033333,
+              0.07633299999999998,
+              0.02233400000000002,
+              0.035666,
+              0.032667
+            ]
+          }
+        ],
+        "steady_max_gap_seconds": 0.03433300000000017,
+        "near_zero_gaps": 0
+      }
+    ],
+    "content-repeat": [
+      {
+        "sensor": "front",
+        "packets": 918,
+        "max_gap_seconds": 0.03433300000000017,
+        "gaps_above50ms": [],
+        "steady_max_gap_seconds": 0.03400000000000247,
+        "near_zero_gaps": 0
+      },
+      {
+        "sensor": "rear",
+        "packets": 923,
+        "max_gap_seconds": 0.03433300000000017,
+        "gaps_above50ms": [],
+        "steady_max_gap_seconds": 0.03433300000000017,
+        "near_zero_gaps": 0
+      }
+    ]
+  },
+  "post_camera_rtc": {
+    "functional_resume": true,
+    "s0i3_delta_us": 9312608,
+    "new_kernel_errors": []
+  },
+  "serial": {
+    "bytes": 1608,
+    "kernel_panics": 0,
+    "oops": 0,
+    "segfaults": 0
+  },
+  "old_mesa_stop_crash_resolved": false,
+  "production_AE_video_bitrate_or_audio_codec_changed": false,
+  "default_launcher_changed": false,
+  "diagnostics_default_enabled": false,
+  "prior_binaries_preserved": true,
+  "new_kernel_deployed": false,
+  "media_core_or_individual_digest_published": false,
+  "full_objective_complete": false,
+  "quality_reference": {
+    "url": "https://raw.githubusercontent.com/latte-dev/android_vendor_xiaomi_latte/aaf390134608e033e8c5b545568e68dab1ed2bdf/proprietary/etc/media_profiles.xml",
+    "sha256": "8e54f5ecb4df2d637470c85eebe184b611c4db101df903b3619e5f59281c7bcd",
+    "declared_video_bps": 15000000,
+    "declared_audio": "AAC192kbps48kHz stereo",
+    "observed_current_vah264enc_kbps": 2048,
+    "observed_current_audio": "MP3",
+    "header_marks_dummy_MRD7_T100": true,
+    "active_MIUI_profile_proven": false
+  },
+  "harness_notes": [
+    "Packaging invoked while build still live: immutable built-state guard rejected it before packaging; same build handle observed terminal0, then package succeeded.",
+    "Repeat cooldown wrapper failed locally due missing __file__; no remote cooldown action. Repeat then ran with per-sample thermal monitoring and80C stop threshold; recorded maxima69/73C. No claim that repeat passed an explicit cooldown gate.",
+    "Repeat packet-inspector shell quoting and then namespace construction failed read-only; saved script corrected, same clips inspected successfully. No recordings restarted for these observer errors."
+  ],
+  "next": "Retain startup/collapse and GL failure gates. Resolve actual encoding quality/codec mismatch and measure controlled motion; about30fps, raw hash uniqueness or one successful stop do not prove Android parity."
+}
