@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //! Diagnostic-only content accounting. Digests never leave process memory.
-use gtk::glib::{Checksum, ChecksumType};
 use std::collections::VecDeque;
+use xxhash_rust::xxh3::Xxh3;
 
 pub(super) type Digest = [u8; 16];
 
@@ -21,7 +21,9 @@ pub(super) fn fingerprint(
     if width == 0 || height == 0 || width % 2 != 0 || height % 2 != 0 {
         return None;
     }
-    let mut checksum = Checksum::new(ChecksumType::Md5)?;
+    // SSE2 baseline on x86_64; do not compile with target-cpu=native/AVX.
+    // Diagnostic content identity only, not a cryptographic authenticity check.
+    let mut checksum = Xxh3::new();
     checksum.update(b"NV12");
     checksum.update(&(width as u64).to_le_bytes());
     checksum.update(&(height as u64).to_le_bytes());
@@ -42,7 +44,7 @@ pub(super) fn fingerprint(
             }
         }
     }
-    checksum.digest().try_into().ok()
+    Some(checksum.digest128().to_le_bytes())
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -185,6 +187,33 @@ mod tests {
             fingerprint(4, 4, &[7; 16], 4, &[9; 8], 4),
             fingerprint(8, 2, &[7; 16], 8, &[9; 8], 8)
         );
+    }
+
+    #[test]
+    fn content_fingerprint_matches_reference_serialization() {
+        let y: Vec<_> = (0..128).map(|n| n as u8).collect();
+        let uv: Vec<_> = (0..64).map(|n| (n * 3) as u8).collect();
+        let mut data = b"NV12".to_vec();
+        data.extend_from_slice(&16u64.to_le_bytes());
+        data.extend_from_slice(&8u64.to_le_bytes());
+        data.extend_from_slice(&y);
+        data.extend_from_slice(&uv);
+        assert_eq!(
+            fingerprint(16, 8, &y, 16, &uv, 16),
+            Some(xxhash_rust::xxh3::xxh3_128(&data).to_le_bytes())
+        );
+        // Every active byte contributes, including both planes' last bytes.
+        let expected = fingerprint(16, 8, &y, 16, &uv, 16).unwrap();
+        for i in 0..y.len() {
+            let mut changed = y.clone();
+            changed[i] ^= 1;
+            assert_ne!(fingerprint(16, 8, &changed, 16, &uv, 16), Some(expected));
+        }
+        for i in 0..uv.len() {
+            let mut changed = uv.clone();
+            changed[i] ^= 1;
+            assert_ne!(fingerprint(16, 8, &y, 16, &changed, 16), Some(expected));
+        }
     }
 
     #[test]

@@ -20,3 +20,4 @@ gst-video = { workspace = true }
 gtk = { workspace = true }
 log = { workspace = true }
 rqrr = { version = "0.10", default-features = false }
+xxhash-rust = { version = "=0.8.19", features = ["xxh3"] }
