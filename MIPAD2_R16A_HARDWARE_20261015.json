@@ -1,0 +1,201 @@
+{
+  "date": "2026-10-15",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_built_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_built_source": "cb59e2acc6f2549470024874327334b14de2e01a",
+  "app_binary_sha256": "ed040bf10d58d2ef85825d360d2990a4e27f4f99d12a944911cf0fe70e5ef2ad",
+  "serial_boot_verified": true,
+  "one_shot_boot_count": 1,
+  "stable_saved_grub_default_preserved": true,
+  "initial_control_stop_crash": {
+    "signal": "SIGSEGV",
+    "thread": "gstglcontext",
+    "library": "libgallium-26.2.2-arch1.1.so",
+    "library_offset": "0x3dc53a",
+    "content_flag": false,
+    "media_finalized_and_video_audio_decode_passed": true,
+    "root_cause_proven": false,
+    "core_not_exported": true
+  },
+  "r15c_short_baseline": {
+    "execution_state": "completed",
+    "requested_seconds": 15,
+    "cycles": [
+      {
+        "sensor": "front",
+        "fps": 30.00132522410096,
+        "packets": 454,
+        "max_pts_gap_seconds": 0.034000000000000696,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 67000,
+        "decoded_frames": 454,
+        "consecutive_exact_decoded_repeats": 0
+      }
+    ]
+  },
+  "r16a_control": {
+    "execution_state": "completed",
+    "requested_seconds": 30,
+    "cycles": [
+      {
+        "sensor": "front",
+        "fps": 30.001321974550883,
+        "packets": 909,
+        "max_pts_gap_seconds": 0.03400000000000247,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 69000,
+        "decoded_frames": 909,
+        "consecutive_exact_decoded_repeats": 0
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.01205808123735,
+        "packets": 897,
+        "max_pts_gap_seconds": 0.03400000000000247,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 897,
+        "consecutive_exact_decoded_repeats": 20
+      }
+    ]
+  },
+  "r16a_content": {
+    "execution_state": "needs_review",
+    "requested_seconds": 30,
+    "cycles": [
+      {
+        "sensor": "front",
+        "fps": 24.059181855191515,
+        "packets": 723,
+        "max_pts_gap_seconds": 0.052666999999999575,
+        "cadence_gate": false,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 723,
+        "consecutive_exact_decoded_repeats": 0
+      },
+      {
+        "sensor": "rear",
+        "fps": 23.2177063875564,
+        "packets": 700,
+        "max_pts_gap_seconds": 0.0533330000000003,
+        "cadence_gate": false,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 700,
+        "consecutive_exact_decoded_repeats": 28
+      }
+    ]
+  },
+  "r16a_requested_gl_renderer": {
+    "execution_state": "completed",
+    "requested_seconds": 30,
+    "cycles": [
+      {
+        "sensor": "front",
+        "fps": 30.001333059232262,
+        "packets": 901,
+        "max_pts_gap_seconds": 0.034333999999999976,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 901,
+        "consecutive_exact_decoded_repeats": 1
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.011580764224554,
+        "packets": 908,
+        "max_pts_gap_seconds": 0.03400000000000247,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 908,
+        "consecutive_exact_decoded_repeats": 26
+      }
+    ]
+  },
+  "content_diagnostics": [
+    {
+      "sensor": "front",
+      "terminal_encoder_counters": {
+        "epoch": 2,
+        "native-epoch": 2,
+        "seen": 723,
+        "valid": 723,
+        "repeated": 0,
+        "map-failed": 0,
+        "native-match": 723,
+        "ambiguous": 0,
+        "missing": 0,
+        "reused": 0,
+        "backwards": 0,
+        "skipped": 0,
+        "pts-mismatch": 0,
+        "stale-owner": 0,
+        "cost-us": 9300044,
+        "max-cost-us": 24356
+      },
+      "average_encoder_fingerprint_cost_us": 12863.131396957124,
+      "mean_process_cpu_percent": 125.54810562359752
+    },
+    {
+      "sensor": "rear",
+      "terminal_encoder_counters": {
+        "epoch": 2,
+        "native-epoch": 2,
+        "seen": 723,
+        "valid": 723,
+        "repeated": 0,
+        "map-failed": 0,
+        "native-match": 723,
+        "ambiguous": 0,
+        "missing": 0,
+        "reused": 0,
+        "backwards": 0,
+        "skipped": 0,
+        "pts-mismatch": 0,
+        "stale-owner": 0,
+        "cost-us": 9300044,
+        "max-cost-us": 24356
+      },
+      "average_encoder_fingerprint_cost_us": 12863.131396957124,
+      "mean_process_cpu_percent": 124.7541078258524
+    }
+  ],
+  "instrumentation_performance_gate_passed": false,
+  "content_mapping_failed": 0,
+  "decoded_repeats_prove_dropped_physical_motion": false,
+  "gui_motion_or_android_optical_parity_proven": false,
+  "gl_renderer_is_proven_fix": false,
+  "post_camera_rtc": {
+    "seconds_requested": 10,
+    "functional_resume": true,
+    "s0i3_delta_us": 9713472,
+    "new_kernel_errors": []
+  },
+  "serial_summary": {
+    "bytes": 45473,
+    "kernel_panics": 0,
+    "oops": 0,
+    "userspace_segfault_lines": 1
+  },
+  "protected_prior_binaries_and_r6_launcher_unchanged": true,
+  "original_cached_controls_restored": true,
+  "camera_pm0_suspended": true,
+  "usb_configured_after_resume": true,
+  "wifi_link_up_after_resume": true,
+  "no_idle_service_active": true,
+  "candidate_promoted": false,
+  "system_packages_changed": false,
+  "new_kernel_beyond_r19_deployed": false,
+  "media_core_or_individual_digest_published": false,
+  "tones_or_playback": false,
+  "full_objective_complete": false,
+  "caveats": [
+    "One short old-binary baseline is not a matched-duration crash-frequency comparison.",
+    "Initial Mesa/GstGL crash is retained; later default/GL successes do not establish a fix.",
+    "MD5 content probes slow recording to23-24fps, so this cannot establish uninstrumented throughput or motion behavior.",
+    "All observed instrumented encoder inputs uniquely match native frames, with zero repeated/reused raw hashes; rear decoded repeats still occur.",
+    "Lossy H264 can quantize distinct near-static raw frames identically; decoded hash equality alone is not physical-motion loss proof.",
+    "Content close returned nonzero at the existing >850 decoded-frame gate; app had already quit cleanly and restored controls. Separate inspection decoded both lower-frame-count clips; original RED remains.",
+    "Per-process GSK_RENDERER=gl requested for a separate arm only; no global configuration or launch default changed.",
+    "R22 remains source-only research with unresolved failed-reset/SP/DMA ownership gates."
+  ]
+}

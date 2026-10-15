@@ -46,3 +46,10 @@ R16 was never packaged/installed. R16a has not been sent to or launched on
 the device. No runtime overhead, repeated-frame cause or Android parity
 claim follows from these host gates. Previous binary archives/manifests and
 the r6 launcher are unchanged. See the adjacent HOST_EVIDENCE.json file.
+
+## Hardware status update — 2026-10-15
+
+R19 serial-assisted runtime and private R16a tests are now complete for this
+bounded round. See [actual hardware ledger](MIPAD2_R16A_HARDWARE_20261015.md).
+The initial Mesa/GstGL stop crash and MD5 probe performance failure are retained;
+R16a is not promoted and Android motion parity is not established.
