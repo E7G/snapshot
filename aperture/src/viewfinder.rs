@@ -1381,8 +1381,32 @@ impl Viewfinder {
         use gst_pbutils::encoding_profile::EncodingProfileBuilder;
         use gst_pbutils::{ElementProperties, ElementPropertiesMapItem};
 
+        let quality_requested = std::env::var("MIPAD2_RECORDING_QUALITY").as_deref() == Ok("1");
+        let quality_enabled = crate::mipad2_recording_quality::policy(
+            is_mipad2(),
+            self.video_format() == VideoFormat::H264Mp4,
+            self.enable_hw_encoding(),
+            crate::mipad2_preview::android_profile_requested(
+                self.video_format() == VideoFormat::H264Mp4,
+                self.enable_hw_encoding(),
+            ),
+            quality_requested,
+            self.disable_audio_recording() || gst::ElementFactory::find("avenc_aac").is_some(),
+        );
+        if quality_requested && !quality_enabled {
+            log::warn!(
+                "Mi Pad 2 quality candidate unavailable: device/profile/hardware/AAC gate failed; legacy settings retained, not quality-validated"
+            );
+        }
+        let va_bitrate =
+            crate::mipad2_recording_quality::video_kbps(quality_enabled, DEFAULT_BITRATE);
+        if quality_enabled {
+            log::info!(
+                "Mi Pad 2 quality candidate: VA H264 15000kbps; audio AAC-LC 192kbps/48000Hz/2ch when enabled; not active-MIUI parity proof"
+            );
+        }
         let mut va_h264 =
-            ElementPropertiesMapItem::builder("vah264enc").field("bitrate", DEFAULT_BITRATE);
+            ElementPropertiesMapItem::builder("vah264enc").field("bitrate", va_bitrate);
         if crate::mipad2_preview::low_latency_reference_policy(
             is_mipad2(),
             self.video_format() == VideoFormat::H264Mp4,
@@ -1391,7 +1415,7 @@ impl Viewfinder {
         ) {
             va_h264 = va_h264.field("ref-frames", 1u32);
             log::info!(
-                "Mi Pad 2 candidate VA H264 uses one reference frame; bitrate/resolution/rate unchanged"
+                "Mi Pad 2 candidate VA H264 uses one reference frame; bitrate follows selected quality policy, resolution/rate unchanged"
             );
         }
         let camerabin = self.imp().camerabin();
@@ -1447,7 +1471,7 @@ impl Viewfinder {
             )
             .item(
                 ElementPropertiesMapItem::builder("vah264lpenc")
-                    .field("bitrate", DEFAULT_BITRATE)
+                    .field("bitrate", va_bitrate)
                     .build(),
             )
             .item(va_h264.build())
@@ -1531,7 +1555,11 @@ impl Viewfinder {
                 let caps = gst::Caps::builder("video/quicktime").build();
                 let mut container_profile = gst_pbutils::EncodingContainerProfile::builder(&caps)
                     .name("MP4 audio/video")
-                    .description("Standard MP4/H264/MP3");
+                    .description(if quality_enabled {
+                        "Candidate MP4/H264/AAC-LC"
+                    } else {
+                        "Standard MP4/H264/MPEG audio"
+                    });
 
                 let video_profile = gst_pbutils::EncodingVideoProfile::builder(
                     &gst::Caps::builder("video/x-h264").build(),
@@ -1542,10 +1570,14 @@ impl Viewfinder {
                 container_profile = container_profile.add_profile(video_profile);
 
                 if !self.disable_audio_recording() {
-                    let audio_profile = gst_pbutils::EncodingAudioProfile::builder(
-                        &gst::Caps::builder("audio/mpeg").build(),
-                    )
-                    .build();
+                    let audio_profile = if quality_enabled {
+                        crate::mipad2_recording_quality::aac_profile()
+                    } else {
+                        gst_pbutils::EncodingAudioProfile::builder(
+                            &gst::Caps::builder("audio/mpeg").build(),
+                        )
+                        .build()
+                    };
                     container_profile = container_profile.add_profile(audio_profile);
                 }
 
