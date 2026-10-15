@@ -1,0 +1,285 @@
+{
+  "date": "2026-10-15",
+  "built_source": "f51e42d27277a8c7e1a9b9dc4794e642547a7853",
+  "binary_sha256": "f5b2902141f341b2c27935da8f751eccb459a9618f7e16499759e9489f0ce0ea",
+  "archive_sha256": "feed61b0de8c7c2c362407a9dbfe6088ff46af1bea1583ae7a2e602a4bfe07b8",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "framework_tests": 61,
+  "prior57_retained": true,
+  "initial_r17_host60_passed_but_runtime_rank0_red": true,
+  "initial_r17_never_packaged_or_installed": true,
+  "private_aac_dependency": {
+    "url": "https://archive.archlinux.org/packages/g/gst-libav/gst-libav-1.28.7-1-x86_64.pkg.tar.zst",
+    "package_sha256": "173dee49bc6eb0eb9cbfda3685a54144faa0ed8da87154862535a4dca526ff71",
+    "signature_sha256": "a9e5c5a7aba8debd1ab1b836697396345dc50fbe974c3a80c367ea89eefb1ce7",
+    "signature_verified": true,
+    "signing_fingerprint": "83BC8889351B5DEBBB68416EB8AC08600F108CDF",
+    "plugin_sha256": "5588b4411a2dc6bc9748c53b2089208ea36edf771a6b3ce0044eb98eeb5ef12f",
+    "system_package_install": false,
+    "global_plugin_path_changed": false,
+    "dynamic_dependencies_resolved": true
+  },
+  "rank_raised_only_in_quality_process": true,
+  "rank_source_restores_saved_value_when_disabled": true,
+  "actual_ui_toggle_rank_restoration_tested": false,
+  "isolated_aac_test": {
+    "original_rank": 0,
+    "selected_rank": 256,
+    "no_playback": true,
+    "synthetic_silence_only": true,
+    "global_registry_untouched": true,
+    "set_state": "2",
+    "message": "1",
+    "rank_restored": true,
+    "probe_code": 0,
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "mime_codec_string": "mp4a.40.2",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x1",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 123893,
+        "duration": "2.581104",
+        "bit_rate": "2296",
+        "nb_frames": "121",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "creation_time": "2026-10-15T10:12:04.000000Z",
+          "language": "und",
+          "handler_name": "SoundHandler"
+        }
+      }
+    ],
+    "decode_code": 0,
+    "decode_errors": ""
+  },
+  "comparison": {
+    "arms": {
+      "control": [
+        {
+          "sensor": "front",
+          "fps": 30.00229057836793,
+          "max_pts_gap_seconds": 0.03433300000000017,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 69000,
+          "video": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "bit_rate": "1984206",
+            "duration": "30.597667",
+            "nb_read_packets": "918"
+          },
+          "audio": {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 1,
+            "bit_rate": "51183",
+            "duration": "30.275918"
+          },
+          "decoded_frames": 918,
+          "decoded_adjacent_repeats": 1,
+          "va_15000_dot": false,
+          "va_2048_dot": true,
+          "aac_192000_dot": false,
+          "profile_gate": true
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.012256329712393,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 71000,
+          "video": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "bit_rate": "1985155",
+            "duration": "30.221000",
+            "nb_read_packets": "907"
+          },
+          "audio": {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 1,
+            "bit_rate": "50483",
+            "duration": "29.805669"
+          },
+          "decoded_frames": 907,
+          "decoded_adjacent_repeats": 26,
+          "va_15000_dot": false,
+          "va_2048_dot": true,
+          "aac_192000_dot": false,
+          "profile_gate": true
+        }
+      ],
+      "quality": [
+        {
+          "sensor": "front",
+          "fps": 30.002346552244312,
+          "max_pts_gap_seconds": 0.034000000000000696,
+          "strict_cadence_gate": true,
+          "max_thermal_millidegrees": 71000,
+          "video": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "bit_rate": "14956104",
+            "duration": "29.864333",
+            "nb_read_packets": "896"
+          },
+          "audio": {
+            "codec_name": "aac",
+            "sample_rate": "48000",
+            "channels": 2,
+            "bit_rate": "192059",
+            "duration": "29.561333"
+          },
+          "decoded_frames": 896,
+          "decoded_adjacent_repeats": 0,
+          "va_15000_dot": true,
+          "va_2048_dot": false,
+          "aac_192000_dot": true,
+          "profile_gate": true
+        },
+        {
+          "sensor": "rear",
+          "fps": 28.75,
+          "max_pts_gap_seconds": 0.050333999999999435,
+          "strict_cadence_gate": false,
+          "max_thermal_millidegrees": 70000,
+          "video": {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "bit_rate": "14600146",
+            "duration": "29.633333",
+            "nb_read_packets": "852"
+          },
+          "audio": {
+            "codec_name": "aac",
+            "sample_rate": "48000",
+            "channels": 2,
+            "bit_rate": "192824",
+            "duration": "29.525333"
+          },
+          "decoded_frames": 852,
+          "decoded_adjacent_repeats": 0,
+          "va_15000_dot": true,
+          "va_2048_dot": false,
+          "aac_192000_dot": true,
+          "profile_gate": true
+        }
+      ]
+    },
+    "quality_setting_does_not_prove_optical_or_motion_parity": true,
+    "old_gl_crash_resolved": false,
+    "default_launcher_changed": false,
+    "all_profile_gates_passed": true,
+    "all_strict_cadence_gates_passed": false
+  },
+  "audio_scalar_analysis": {
+    "no_playback": true,
+    "no_media_export": true,
+    "encoded_stereo_not_proof_of_native_stereo": true,
+    "clips": [
+      {
+        "arm": "control",
+        "sensor": "front",
+        "levels_db": {
+          "mean_volume": -71.8,
+          "max_volume": -31.8
+        }
+      },
+      {
+        "arm": "control",
+        "sensor": "rear",
+        "levels_db": {
+          "mean_volume": -74.6,
+          "max_volume": -38.9
+        }
+      },
+      {
+        "arm": "quality",
+        "sensor": "front",
+        "levels_db": {
+          "mean_volume": -72.2,
+          "max_volume": -32.2
+        },
+        "left_minus_right_levels_db": {
+          "mean_volume": -70.2,
+          "max_volume": -30.5
+        }
+      },
+      {
+        "arm": "quality",
+        "sensor": "rear",
+        "levels_db": {
+          "mean_volume": -71.9,
+          "max_volume": -32.1
+        },
+        "left_minus_right_levels_db": {
+          "mean_volume": -69.9,
+          "max_volume": -30.4
+        }
+      }
+    ],
+    "aac_available_without_private_plugin_path": false
+  },
+  "post_camera_rtc": {
+    "functional_resume": true,
+    "s0i3_delta_us": 9762240,
+    "new_kernel_errors": []
+  },
+  "nominal_joint_quality_performance_passed": false,
+  "old_mesa_stop_crash_resolved": false,
+  "prior_startup_failure_resolved": false,
+  "controlled_motion_or_android_optical_parity": false,
+  "microphone_subjective_quality_proven": false,
+  "default_launcher_changed": false,
+  "normal_settings_and_original_cached_controls_restored": true,
+  "sensors_pm0_suspended": true,
+  "stable_grub_default_preserved": true,
+  "new_kernel_deployed": false,
+  "private_media_core_published": false,
+  "tones_or_playback": false,
+  "full_objective_complete": false,
+  "next": "Isolate bitrate15Mbps vs AAC192k48k2ch in a same-binary factorial; measure queues/latency/GPU/CPU and retain the failed joint rear28.75fps result. Do not lower target quality to manufacture a pass."
+}
