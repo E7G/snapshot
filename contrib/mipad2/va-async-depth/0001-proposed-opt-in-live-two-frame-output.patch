@@ -1,0 +1,13 @@
+diff --git a/sys/va/gstvah264enc.c b/sys/va/gstvah264enc.c
+--- a/sys/va/gstvah264enc.c
++++ b/sys/va/gstvah264enc.c
+@@ -1493,7 +1493,8 @@ gst_va_h264_enc_reconfig (GstVaBaseEnc * base)
+   gst_va_base_enc_reset_state (base);
+   if (base->is_live) {
+-    base->preferred_output_delay = 0;
++    base->preferred_output_delay =
++        g_strcmp0 (g_getenv ("MIPAD2_VA_ASYNC_DEPTH"), "2") == 0 ? 2 : 0;
+   } else {
+     /* FIXME: An experience value for most of the platforms. */
+     base->preferred_output_delay = 4;
+   }
