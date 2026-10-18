@@ -1,0 +1,976 @@
+{
+  "date": "2026-10-19",
+  "campaign_started": "2026-10-18",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_source": "a8682b92bf8aa198dec04dd1a07cfa39db39b991",
+  "app_binary_sha256": "994d8357c1e42d6cf7c753a2a5cfc68420a82f1e4d082723c82e9df984232517",
+  "private_plugin_sha256": "30297a3daf6115c4c0e8d1fa67c8d5a64552d144db58144354bf6a9c7dad1754",
+  "private_plugin_bytes": 764952,
+  "patch_sha256": "3ce3a569feb997396c0f69cdcf5dec1e71a7ffb2c51a7a2582dd0a222ef8476c",
+  "upstream_source": {
+    "started_at": 1792338477.462154,
+    "url": "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.7.tar.xz",
+    "host_only": true,
+    "complete": true,
+    "archive_download": {
+      "code": 0,
+      "stderr": ""
+    },
+    "bytes": 8347976,
+    "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+    "primary_files": {
+      "gstvah264enc.c": {
+        "url": "https://raw.githubusercontent.com/GStreamer/gstreamer/1.28.7/subprojects/gst-plugins-bad/sys/va/gstvah264enc.c",
+        "sha256": "840ff55c395a42c8c3d11ece7bf9ee82da1a4600de5d9ebd1a149409db41789c"
+      },
+      "gstvabaseenc.c": {
+        "url": "https://raw.githubusercontent.com/GStreamer/gstreamer/1.28.7/subprojects/gst-plugins-bad/sys/va/gstvabaseenc.c",
+        "sha256": "6b104dd3909f47c3b5903c83e646ab933b11cfb4d484be1d08cde74a30237dba"
+      }
+    },
+    "source": "/tmp/mipad2-va-async-20261018-v2/gst-plugins-bad-1.28.7",
+    "finished_at": 1792338514.2270374
+  },
+  "official_checksum": {
+    "url": "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.7.tar.xz.sha256sum",
+    "code": 0,
+    "stderr": "",
+    "checksum_text": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe  gst-plugins-bad-1.28.7.tar.xz\n",
+    "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+    "official_checksum_matches": true
+  },
+  "original_proposal_failed_real_apply": true,
+  "corrected_patch_applied_and_full_plugin_built": true,
+  "system_plugin_replaced": false,
+  "default_launcher_changed": false,
+  "tablet_packages_changed": false,
+  "quality_downgraded": false,
+  "analysis": {
+    "renderer_20261015": {
+      "default": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 26.03337959985104,
+            "max_pts_gap_seconds": 0.04466699999999868,
+            "cadence_gate": false,
+            "packets": 770,
+            "decoded_frames": 770,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 13307167,
+            "actual_audio_bitrate": 191887,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [],
+            "max_thermal_millidegrees": 70000
+          },
+          {
+            "sensor": "rear",
+            "fps": 27.402072420054537,
+            "max_pts_gap_seconds": 0.04333300000000051,
+            "cadence_gate": false,
+            "packets": 833,
+            "decoded_frames": 833,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 13966988,
+            "actual_audio_bitrate": 192706,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [],
+            "max_thermal_millidegrees": 71000
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-15T21:03:43+08:00 mipad2 snapshot[302638]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-15T21:03:43+08:00 mipad2 snapshot[302638]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-15T21:03:43+08:00 mipad2 snapshot[302638]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          },
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      },
+      "gl": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 26.118660921445144,
+            "max_pts_gap_seconds": 0.04600000000000293,
+            "cadence_gate": false,
+            "packets": 789,
+            "decoded_frames": 789,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 12961607,
+            "actual_audio_bitrate": 191833,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [],
+            "max_thermal_millidegrees": 74000
+          },
+          {
+            "sensor": "rear",
+            "fps": 27.253807274288924,
+            "max_pts_gap_seconds": 0.04366700000000012,
+            "cadence_gate": false,
+            "packets": 826,
+            "decoded_frames": 826,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 13852894,
+            "actual_audio_bitrate": 192069,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [],
+            "max_thermal_millidegrees": 76000
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-15T21:06:32+08:00 mipad2 snapshot[306832]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-15T21:06:32+08:00 mipad2 snapshot[306832]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-15T21:06:32+08:00 mipad2 snapshot[306832]: Environment variable GSK_RENDERER=gl set, trying GskGLRenderer",
+          "2026-10-15T21:06:32+08:00 mipad2 snapshot[306832]: Using renderer 'GskGLRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          },
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      }
+    },
+    "queue_20261018": {
+      "0": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 28.410762742341518,
+            "max_pts_gap_seconds": 0.043666999999999234,
+            "cadence_gate": false,
+            "packets": 870,
+            "decoded_frames": 870,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 14402539,
+            "actual_audio_bitrate": 192769,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=0 min-buffers=1 latency=0:00:00.000000000"
+            ],
+            "max_thermal_millidegrees": 64000
+          },
+          {
+            "sensor": "rear",
+            "fps": 26.57613569319294,
+            "max_pts_gap_seconds": 0.05600000000000005,
+            "cadence_gate": false,
+            "packets": 806,
+            "decoded_frames": 806,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 13575951,
+            "actual_audio_bitrate": 192139,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=0 min-buffers=1 latency=0:00:00.000000000"
+            ],
+            "max_thermal_millidegrees": 69000
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-18T23:52:45+08:00 mipad2 snapshot[7864]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-18T23:52:45+08:00 mipad2 snapshot[7864]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-18T23:52:45+08:00 mipad2 snapshot[7864]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      },
+      "2": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 30.001342006338742,
+            "max_pts_gap_seconds": 0.034000000000000696,
+            "cadence_gate": true,
+            "packets": 895,
+            "decoded_frames": 895,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15168085,
+            "actual_audio_bitrate": 192227,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 74000
+          },
+          {
+            "sensor": "rear",
+            "fps": 30.01176932130247,
+            "max_pts_gap_seconds": 0.0343340000000012,
+            "cadence_gate": true,
+            "packets": 919,
+            "decoded_frames": 919,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15244723,
+            "actual_audio_bitrate": 192148,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 77000
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-18T23:55:28+08:00 mipad2 snapshot[11875]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-18T23:55:28+08:00 mipad2 snapshot[11875]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-18T23:55:28+08:00 mipad2 snapshot[11875]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      }
+    },
+    "quality_downgraded": false,
+    "default_promotion": false,
+    "media_or_individual_hashes_exported": false,
+    "full_objective_complete": false,
+    "all_queue_cadence_passed": false
+  },
+  "followup": {
+    "post_functional_resume": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.992175628182043,
+          "max_pts_gap_seconds": 0.035667000000000115,
+          "cadence_gate": true,
+          "packets": 921,
+          "decoded_frames": 921,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14969607,
+          "actual_audio_bitrate": 192154,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 75000
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.994922191445262,
+          "max_pts_gap_seconds": 0.04266600000000054,
+          "cadence_gate": true,
+          "packets": 887,
+          "decoded_frames": 887,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15153105,
+          "actual_audio_bitrate": 191911,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 76000
+        }
+      ],
+      "renderer_lines": [
+        "2026-10-19T00:01:13+08:00 mipad2 snapshot[19716]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+        "2026-10-19T00:01:13+08:00 mipad2 snapshot[19716]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+        "2026-10-19T00:01:13+08:00 mipad2 snapshot[19716]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+      ],
+      "all_decode_passed": true,
+      "controls_restored": {
+        "t4ka3 6-0037": {
+          "values": {
+            "exposure": 2486,
+            "analogue_gain": 128
+          },
+          "matched": true
+        },
+        "ov5693 6-0036": {
+          "values": {
+            "exposure": 1976,
+            "analogue_gain": 8
+          },
+          "matched": true
+        }
+      },
+      "PM": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "content_instrumented": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 27.06150953532098,
+          "max_pts_gap_seconds": 0.05033300000000196,
+          "cadence_gate": false,
+          "packets": 807,
+          "decoded_frames": 807,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 13601945,
+          "actual_audio_bitrate": 192021,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 69000
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.874090329729956,
+          "max_pts_gap_seconds": 0.047333000000001846,
+          "cadence_gate": true,
+          "packets": 886,
+          "decoded_frames": 886,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15214745,
+          "actual_audio_bitrate": 191902,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 73000
+        }
+      ],
+      "renderer_lines": [
+        "2026-10-19T06:04:25+08:00 mipad2 snapshot[476266]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+        "2026-10-19T06:04:25+08:00 mipad2 snapshot[476266]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+        "2026-10-19T06:04:25+08:00 mipad2 snapshot[476266]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+      ],
+      "all_decode_passed": true,
+      "controls_restored": {
+        "t4ka3 6-0037": {
+          "values": {
+            "exposure": 2486,
+            "analogue_gain": 128
+          },
+          "matched": true
+        },
+        "ov5693 6-0036": {
+          "values": {
+            "exposure": 1976,
+            "analogue_gain": 8
+          },
+          "matched": true
+        }
+      },
+      "PM": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "content_aggregates": [
+      {
+        "epoch": 2,
+        "native-epoch": 2,
+        "seen": 807,
+        "valid": 807,
+        "repeated": 0,
+        "map-failed": 0,
+        "native-match": 807,
+        "ambiguous": 0,
+        "missing": 0,
+        "reused": 0,
+        "backwards": 0,
+        "skipped": 0,
+        "pts-mismatch": 0,
+        "stale-owner": 0,
+        "cost-us": 2966076,
+        "max-cost-us": 7193,
+        "sensor": "front",
+        "packets": 807,
+        "native_input_match_passed": true
+      },
+      {
+        "epoch": 4,
+        "native-epoch": 3,
+        "seen": 888,
+        "valid": 888,
+        "repeated": 0,
+        "map-failed": 0,
+        "native-match": 888,
+        "ambiguous": 0,
+        "missing": 0,
+        "reused": 0,
+        "backwards": 0,
+        "skipped": 0,
+        "pts-mismatch": 0,
+        "stale-owner": 0,
+        "cost-us": 3159096,
+        "max-cost-us": 7755,
+        "sensor": "rear",
+        "packets": 886,
+        "native_input_match_passed": false
+      }
+    ],
+    "instrumented_timing_is_separate": true,
+    "default_promotion": false
+  },
+  "drain_inspection": {
+    "cases": [
+      {
+        "tag": "r17b-va0-20261018",
+        "sensor": "front",
+        "packets": 870,
+        "decoded_frames": 870,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": []
+      },
+      {
+        "tag": "r17b-va0-20261018",
+        "sensor": "rear",
+        "packets": 806,
+        "decoded_frames": 806,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": []
+      },
+      {
+        "tag": "r17b-va2-20261018",
+        "sensor": "front",
+        "packets": 895,
+        "decoded_frames": 895,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": []
+      },
+      {
+        "tag": "r17b-va2-20261018",
+        "sensor": "rear",
+        "packets": 919,
+        "decoded_frames": 919,
+        "drain_warnings": [
+          "Still 1 frame in the output list after drain"
+        ],
+        "flow_failures": [],
+        "lifecycle_timeline": [
+          "0:01:40.908085339      11875      11981 WARN               vabaseenc gstvabaseenc.c:707:gst_va_base_enc_drain:<vah264enc0> Still 1 frame in the output list after drain"
+        ]
+      },
+      {
+        "tag": "r17b-va2-resume-20261018",
+        "sensor": "front",
+        "packets": 921,
+        "decoded_frames": 921,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": []
+      },
+      {
+        "tag": "r17b-va2-resume-20261018",
+        "sensor": "rear",
+        "packets": 887,
+        "decoded_frames": 887,
+        "drain_warnings": [
+          "Still 1 frame in the output list after drain"
+        ],
+        "flow_failures": [],
+        "lifecycle_timeline": [
+          "0:02:52+08:00 mipad2 snapshot[19716]: 0:01:40.042122084      19716      19741 WARN               vabaseenc gstvabaseenc.c:707:gst_va_base_enc_drain:<vah264enc0> Still 1 frame in the output list after drain"
+        ]
+      },
+      {
+        "tag": "r17b-va2-content-20261018",
+        "sensor": "front",
+        "packets": 807,
+        "decoded_frames": 807,
+        "encoder_input_aggregate": {
+          "epoch": 2,
+          "native-epoch": 2,
+          "seen": 807,
+          "valid": 807,
+          "repeated": 0,
+          "map-failed": 0,
+          "native-match": 807,
+          "ambiguous": 0,
+          "missing": 0,
+          "reused": 0,
+          "backwards": 0,
+          "skipped": 0,
+          "pts-mismatch": 0,
+          "stale-owner": 0,
+          "cost-us": 2966076,
+          "max-cost-us": 7193
+        },
+        "all_observed_inputs_uniquely_match_native": true,
+        "input_minus_packets": 0,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": []
+      },
+      {
+        "tag": "r17b-va2-content-20261018",
+        "sensor": "rear",
+        "packets": 886,
+        "decoded_frames": 886,
+        "encoder_input_aggregate": {
+          "epoch": 4,
+          "native-epoch": 3,
+          "seen": 888,
+          "valid": 888,
+          "repeated": 0,
+          "map-failed": 0,
+          "native-match": 888,
+          "ambiguous": 0,
+          "missing": 0,
+          "reused": 0,
+          "backwards": 0,
+          "skipped": 0,
+          "pts-mismatch": 0,
+          "stale-owner": 0,
+          "cost-us": 3159096,
+          "max-cost-us": 7755
+        },
+        "all_observed_inputs_uniquely_match_native": true,
+        "input_minus_packets": 2,
+        "drain_warnings": [
+          "Still 1 frame in the output list after drain"
+        ],
+        "flow_failures": [],
+        "lifecycle_timeline": [
+          "0:01:40.222743407     476266     476292 WARN               vabaseenc gstvabaseenc.c:707:gst_va_base_enc_drain:<vah264enc0> Still 1 frame in the output list after drain"
+        ]
+      },
+      {
+        "tag": "r17b-va2-eos-20261019",
+        "sensor": "front",
+        "packets": 273,
+        "decoded_frames": 273,
+        "encoder_input_aggregate": {
+          "epoch": 2,
+          "native-epoch": 2,
+          "seen": 273,
+          "valid": 273,
+          "repeated": 0,
+          "map-failed": 0,
+          "native-match": 273,
+          "ambiguous": 0,
+          "missing": 0,
+          "reused": 0,
+          "backwards": 0,
+          "skipped": 0,
+          "pts-mismatch": 0,
+          "stale-owner": 0,
+          "cost-us": 925550,
+          "max-cost-us": 7279
+        },
+        "all_observed_inputs_uniquely_match_native": true,
+        "input_minus_packets": 0,
+        "drain_warnings": [],
+        "flow_failures": [],
+        "lifecycle_timeline": [
+          "0:00:11.006442062     485089     485095 DEBUG              vabaseenc gstvabaseenc.c:653:gst_va_base_enc_drain:<vah264enc0> Encoder is draining",
+          "0:00:21.172412820     485089     485095 DEBUG              vabaseenc gstvabaseenc.c:653:gst_va_base_enc_drain:<vah264enc0> Encoder is draining",
+          "0:00:21.422211074     485089     485180 DEBUG              camerabin gstcamerabin2.c:1080:gst_camera_bin_handle_message:<camerabin0> EOS from video branch",
+          "0:00:21.422838329     485089     485680 DEBUG              camerabin gstcamerabin2.c:957:gst_camera_bin_video_reset_elements:<camerabin0> Resetting video elements state",
+          "0:00:21.442902202     485089     485680 DEBUG              camerabin gstcamerabin2.c:987:gst_camera_bin_video_reset_elements:<camerabin0> Setting video state to idle"
+        ]
+      },
+      {
+        "tag": "r17b-va2-eos-20261019",
+        "sensor": "rear",
+        "packets": 306,
+        "decoded_frames": 306,
+        "encoder_input_aggregate": {
+          "epoch": 4,
+          "native-epoch": 3,
+          "seen": 308,
+          "valid": 308,
+          "repeated": 0,
+          "map-failed": 0,
+          "native-match": 308,
+          "ambiguous": 0,
+          "missing": 0,
+          "reused": 0,
+          "backwards": 0,
+          "skipped": 0,
+          "pts-mismatch": 0,
+          "stale-owner": 0,
+          "cost-us": 749167,
+          "max-cost-us": 5790
+        },
+        "all_observed_inputs_uniquely_match_native": true,
+        "input_minus_packets": 2,
+        "drain_warnings": [
+          "Still 1 frame in the output list after drain"
+        ],
+        "flow_failures": [
+          [
+            "579",
+            "eos"
+          ]
+        ],
+        "lifecycle_timeline": [
+          "0:00:54.858931912     485089     485194 DEBUG              vabaseenc gstvabaseenc.c:653:gst_va_base_enc_drain:<vah264enc0> Encoder is draining",
+          "0:01:05.151062749     485089     485194 DEBUG              vabaseenc gstvabaseenc.c:653:gst_va_base_enc_drain:<vah264enc0> Encoder is draining",
+          "0:01:05.151929524     485089     485194 DEBUG              vabaseenc gstvabaseenc.c:610:_push_out_one_buffer:<vah264enc0> fails to push one buffer, system_frame_number 579: eos",
+          "0:01:05.151999931     485089     485194 WARN               vabaseenc gstvabaseenc.c:707:gst_va_base_enc_drain:<vah264enc0> Still 1 frame in the output list after drain",
+          "0:01:05.153174857     485089     485181 DEBUG              camerabin gstcamerabin2.c:1080:gst_camera_bin_handle_message:<camerabin0> EOS from video branch",
+          "0:01:05.153836547     485089     486682 DEBUG              camerabin gstcamerabin2.c:957:gst_camera_bin_video_reset_elements:<camerabin0> Resetting video elements state",
+          "0:01:05.171032670     485089     486682 DEBUG              camerabin gstcamerabin2.c:987:gst_camera_bin_video_reset_elements:<camerabin0> Setting video state to idle"
+        ]
+      }
+    ],
+    "frame_conservation_or_lifecycle_gate_passed": false,
+    "not_yet_proven_whether_recording_tail_or_post_capture_boundary": true
+  },
+  "full_objective_complete": false,
+  "default_promotion_allowed": false,
+  "synthetic_cases": [
+    {
+      "tag": "live-unset",
+      "delay": 0,
+      "packets": 120,
+      "video_decode_code": 0
+    },
+    {
+      "tag": "live-two",
+      "delay": 2,
+      "packets": 120,
+      "video_decode_code": 0
+    },
+    {
+      "tag": "live-invalid",
+      "delay": 0,
+      "packets": 120,
+      "video_decode_code": 0
+    },
+    {
+      "tag": "nonlive-two",
+      "delay": 4,
+      "packets": 120,
+      "video_decode_code": 0
+    }
+  ],
+  "power_cases": {
+    "first_rtc": {
+      "functional_resume": true,
+      "s0i3_delta_us": 0,
+      "new_kernel_errors": []
+    },
+    "repeat20_rtc": {
+      "functional_resume": true,
+      "s0i3_delta_us": 19693952,
+      "new_kernel_errors": []
+    },
+    "final_rtc": {
+      "functional_resume": true,
+      "s0i3_delta_us": 9552992,
+      "new_kernel_errors": []
+    },
+    "post_eos_rtc": {
+      "functional_resume": true,
+      "s0i3_delta_us": 9925728,
+      "new_kernel_errors": []
+    }
+  },
+  "serial": {
+    "bounded_windows": true,
+    "continuous_capture_claim": false,
+    "twenty_second_repeat_was_SSH_observed": true,
+    "final_capture": {
+      "seconds": 632.3596604000195,
+      "opens": 3,
+      "error_count": 24,
+      "tail_errors": [
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)",
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)",
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)"
+      ],
+      "bytes": 5567,
+      "requested_stop": true
+    },
+    "panic_count": 0,
+    "oops_count": 0,
+    "segfault_count": 0
+  },
+  "restoration": {
+    "protected_binaries_and_original_plugins_match": true,
+    "normal_settings_preserved": true,
+    "controls": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 8
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "gpu_limits": {
+      "gt_min_freq_mhz": "200",
+      "gt_max_freq_mhz": "600"
+    },
+    "stable_saved_default": "mipad2-bqdiag1",
+    "next_entry_empty": true,
+    "anti_idle_active": true,
+    "all_jobs_terminal": true
+  },
+  "private_media_core_or_individual_pixel_digests_published": false,
+  "tones_or_playback": false,
+  "remaining": [
+    "Depth2 rear encoder-input/packet count differs by2 with a drain warning; distinguish recording tail from post-capture boundary before promotion",
+    "First10-second RTC suspend had functional wake but zero S0I3; subsequent20-second repeat succeeds, cause not established",
+    "Pixel fingerprint instrumentation changes throughput and cannot prove uninstrumented optical motion parity",
+    "Earlier Mesa stop crash remains unresolved",
+    "Kernel SP/CSS timeout and failed-reset DMA ownership still needs coordinated physical power fence",
+    "Full Android/Windows parity and branch/default/flash integration remain incomplete"
+  ]
+}

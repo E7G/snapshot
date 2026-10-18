@@ -1,8 +1,8 @@
-diff --git a/sys/va/gstvah264enc.c b/sys/va/gstvah264enc.c
 --- a/sys/va/gstvah264enc.c
 +++ b/sys/va/gstvah264enc.c
-@@ -1493,7 +1493,8 @@ gst_va_h264_enc_reconfig (GstVaBaseEnc * base)
+@@ -1604,7 +1604,8 @@
    gst_va_base_enc_reset_state (base);
+ 
    if (base->is_live) {
 -    base->preferred_output_delay = 0;
 +    base->preferred_output_delay =
@@ -10,4 +10,13 @@ diff --git a/sys/va/gstvah264enc.c b/sys/va/gstvah264enc.c
    } else {
      /* FIXME: An experience value for most of the platforms. */
      base->preferred_output_delay = 4;
-   }
+@@ -1670,6 +1671,9 @@
+       self->gop.highest_pyramid_level + 2 : self->gop.num_ref_frames;
+   max_ref_frames += base->preferred_output_delay;
+   base->min_buffers = max_ref_frames;
++  GST_INFO_OBJECT (self, "Mi Pad 2 VA queue: live=%d delay=%u min-buffers=%u "
++      "latency=%" GST_TIME_FORMAT, base->is_live,
++      base->preferred_output_delay, base->min_buffers, GST_TIME_ARGS (latency));
+   max_ref_frames += 3 /* scratch frames */ ;
+ 
+   if (!gst_va_encoder_open (base->encoder, base->profile,
