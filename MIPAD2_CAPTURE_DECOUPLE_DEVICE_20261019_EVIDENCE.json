@@ -1,0 +1,633 @@
+{
+  "source_commit": "d7e1a9deb21c3e54978658e77e0db8adb370a4c2",
+  "binary_sha256": "c81abd3c95c8ec001149a124a4ca8e650e5a17be6fda2e36576786af2a9cd4d7",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "same_binary_same_profile_except_decouple_flag": true,
+  "randomized_or_temperature_matched": false,
+  "native_pool_observed_same_4_each_camera": true,
+  "requested_profile": {
+    "native": [
+      1920,
+      1080,
+      30
+    ],
+    "preview": [
+      1280,
+      720,
+      30
+    ],
+    "h264_bitrate": 15000000,
+    "aac_bitrate": 192000,
+    "audio_rate": 48000,
+    "audio_channels": 2,
+    "content_tracing": false
+  },
+  "arms": {
+    "control": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.96608201742992,
+          "max_pts_gap_seconds": 0.05466699999999999,
+          "cadence_gate": false,
+          "packets": 911,
+          "decoded_frames": 911,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15256342,
+          "actual_audio_bitrate": 196311,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 72000
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.97584760596702,
+          "max_pts_gap_seconds": 0.07133299999999998,
+          "cadence_gate": false,
+          "packets": 907,
+          "decoded_frames": 907,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14907092,
+          "actual_audio_bitrate": 196610,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 73000
+        }
+      ],
+      "conservation": [
+        {
+          "cycle": 0,
+          "encoder_inputs": 911,
+          "encoder_outputs": 911,
+          "mp4_packets": 911,
+          "same_counts": true,
+          "encoder_relative_pts_exact": true,
+          "native_unique": 911,
+          "native_missing": 0,
+          "native_ambiguous": 0,
+          "mp4_tick_ns": 333333.3333333333,
+          "max_mux_relative_pts_residual_ns": 166566.66666666666,
+          "mux_within_one_declared_tick": true,
+          "encoder_eos": true,
+          "encoder_source_events": [
+            "segment",
+            "segment",
+            "segment",
+            "segment",
+            "eos"
+          ],
+          "gate": true
+        },
+        {
+          "cycle": 1,
+          "encoder_inputs": 907,
+          "encoder_outputs": 907,
+          "mp4_packets": 907,
+          "same_counts": true,
+          "encoder_relative_pts_exact": true,
+          "native_unique": 907,
+          "native_missing": 0,
+          "native_ambiguous": 0,
+          "mp4_tick_ns": 333333.3333333333,
+          "max_mux_relative_pts_residual_ns": 166300.0,
+          "mux_within_one_declared_tick": true,
+          "encoder_eos": true,
+          "encoder_source_events": [
+            "eos",
+            "segment",
+            "segment",
+            "segment",
+            "segment",
+            "eos"
+          ],
+          "gate": true
+        }
+      ],
+      "conservation_gate": true,
+      "queue_dwell": {
+        "chain_pre": 0,
+        "src_push_pre": 0,
+        "strict_unique_matches": 0,
+        "unmatched_input_keys": 0,
+        "ambiguous_keys": 0,
+        "negative_order_keys": 0,
+        "sink_chain_pre_to_src_push_pre_ns": {
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "maximum": null
+        },
+        "matched_admitted_not_dispatched_peak": 0,
+        "counter_scope": "ONLY strict-unique matched buffers: sink chain entry to source push entry. Includes scheduling/enqueue waits; NOT GObject current-level-buffers or physical exposure/AV latency. Repeated keys and right-censored inputs remain explicit.",
+        "no_payload_read": true,
+        "default_promoted": false
+      },
+      "source_gap_qualification": {
+        "confirmed_recording_gaps": [
+          {
+            "cycle": 0,
+            "driver_gap_ns": 54736000,
+            "encoder_adjacent_matches": 1,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 32082000,
+            "queue": 1
+          },
+          {
+            "cycle": 1,
+            "driver_gap_ns": 71226000,
+            "encoder_adjacent_matches": 1,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 48485000,
+            "queue": 2
+          }
+        ],
+        "not_confirmed_recording_gaps": [],
+        "native_push_call_max_ns": 18077015,
+        "native_push_p95_ns": 2924385,
+        "native_push_paired_calls": 3524,
+        "native_push_calls": 3524
+      },
+      "native_pools": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "requeue_p99_ns": [
+        3329000,
+        4684000
+      ],
+      "owner_association": {
+        "unique": 3524,
+        "ambiguous": 0,
+        "missing": 0
+      },
+      "kernel_trace_records": 112977,
+      "kernel_trace_loss_zero": true,
+      "scalar_trace_integrity": {
+        "complete": true,
+        "reserved": 268758,
+        "capacity": 524288,
+        "overflow": 0,
+        "incomplete": 0,
+        "unmatched_pre": 34,
+        "unmatched_post": 0
+      },
+      "all_calls_balanced": false,
+      "rtc": {
+        "s0i3_delta_us": 9499776,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      }
+    },
+    "enabled": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.721134698884374,
+          "max_pts_gap_seconds": 0.05399999999999999,
+          "cadence_gate": false,
+          "packets": 892,
+          "decoded_frames": 892,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15140916,
+          "actual_audio_bitrate": 191926,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 73000
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.773907222409772,
+          "max_pts_gap_seconds": 0.11499999999999999,
+          "cadence_gate": false,
+          "packets": 882,
+          "decoded_frames": 882,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15162491,
+          "actual_audio_bitrate": 198506,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "queue_configuration": [
+            "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+          ],
+          "max_thermal_millidegrees": 77000
+        }
+      ],
+      "conservation": [
+        {
+          "cycle": 0,
+          "encoder_inputs": 892,
+          "encoder_outputs": 892,
+          "mp4_packets": 892,
+          "same_counts": true,
+          "encoder_relative_pts_exact": true,
+          "native_unique": 892,
+          "native_missing": 0,
+          "native_ambiguous": 0,
+          "mp4_tick_ns": 333333.3333333333,
+          "max_mux_relative_pts_residual_ns": 166282.33333333334,
+          "mux_within_one_declared_tick": true,
+          "encoder_eos": true,
+          "encoder_source_events": [
+            "segment",
+            "segment",
+            "segment",
+            "segment",
+            "eos"
+          ],
+          "gate": true
+        },
+        {
+          "cycle": 1,
+          "encoder_inputs": 882,
+          "encoder_outputs": 882,
+          "mp4_packets": 882,
+          "same_counts": true,
+          "encoder_relative_pts_exact": true,
+          "native_unique": 882,
+          "native_missing": 0,
+          "native_ambiguous": 0,
+          "mp4_tick_ns": 333333.3333333333,
+          "max_mux_relative_pts_residual_ns": 166391.66666666666,
+          "mux_within_one_declared_tick": true,
+          "encoder_eos": true,
+          "encoder_source_events": [
+            "eos",
+            "segment",
+            "segment",
+            "segment",
+            "segment",
+            "eos"
+          ],
+          "gate": true
+        }
+      ],
+      "conservation_gate": true,
+      "queue_dwell": {
+        "chain_pre": 3519,
+        "src_push_pre": 3519,
+        "strict_unique_matches": 3519,
+        "unmatched_input_keys": 0,
+        "ambiguous_keys": 0,
+        "negative_order_keys": 0,
+        "sink_chain_pre_to_src_push_pre_ns": {
+          "p50": 411025,
+          "p95": 309898980,
+          "p99": 319126609,
+          "maximum": 327495579
+        },
+        "matched_admitted_not_dispatched_peak": 9,
+        "counter_scope": "ONLY strict-unique matched buffers: sink chain entry to source push entry. Includes scheduling/enqueue waits; NOT GObject current-level-buffers or physical exposure/AV latency. Repeated keys and right-censored inputs remain explicit.",
+        "no_payload_read": true,
+        "default_promoted": false
+      },
+      "source_gap_qualification": {
+        "confirmed_recording_gaps": [
+          {
+            "cycle": 0,
+            "driver_gap_ns": 53909000,
+            "encoder_adjacent_matches": 1,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 30826000,
+            "queue": 1
+          },
+          {
+            "cycle": 1,
+            "driver_gap_ns": 103445000,
+            "encoder_adjacent_matches": 1,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 80891000,
+            "queue": 2
+          },
+          {
+            "cycle": 1,
+            "driver_gap_ns": 114800000,
+            "encoder_adjacent_matches": 1,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 91983000,
+            "queue": 2
+          }
+        ],
+        "not_confirmed_recording_gaps": [
+          {
+            "cycle": 0,
+            "driver_gap_ns": 86031000,
+            "encoder_adjacent_matches": 0,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 62852000,
+            "queue": 1
+          },
+          {
+            "cycle": 1,
+            "driver_gap_ns": 85808000,
+            "encoder_adjacent_matches": 0,
+            "unique_vb2_queue_matches": 1,
+            "driver_owned_zero_overlap_ns": 62878000,
+            "queue": 2
+          }
+        ],
+        "native_push_call_max_ns": 43833013,
+        "native_push_p95_ns": 35555112,
+        "native_push_paired_calls": 3519,
+        "native_push_calls": 3519
+      },
+      "native_pools": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "requeue_p99_ns": [
+        9309000,
+        11005000
+      ],
+      "owner_association": {
+        "unique": 3519,
+        "ambiguous": 0,
+        "missing": 0
+      },
+      "kernel_trace_records": 112449,
+      "kernel_trace_loss_zero": true,
+      "scalar_trace_integrity": {
+        "complete": true,
+        "reserved": 280170,
+        "capacity": 524288,
+        "overflow": 0,
+        "incomplete": 0,
+        "unmatched_pre": 34,
+        "unmatched_post": 0
+      },
+      "all_calls_balanced": false,
+      "rtc": {
+        "s0i3_delta_us": 9547328,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      }
+    }
+  },
+  "queue_candidate_rejected": true,
+  "default_promoted": false,
+  "new_kernel_deployed": false,
+  "full_objective_complete": false,
+  "wait_diagnostic": {
+    "binary_sha256": "2e32f6fc1236a6981ccee2b1a37e73c80d50c36dd1b5d075292eeebdcc1f553c",
+    "host_cases": [
+      {
+        "flag": "0",
+        "testcase": "normal",
+        "code": 0,
+        "slow_lines": 0
+      },
+      {
+        "flag": "1",
+        "testcase": "normal",
+        "code": 0,
+        "slow_lines": 2
+      },
+      {
+        "flag": "1",
+        "testcase": "cap",
+        "code": 0,
+        "slow_lines": 128
+      }
+    ],
+    "clips": [
+      {
+        "sensor": "front",
+        "fps": 29.96876220226474,
+        "max_pts_gap_seconds": 0.07933299999999999,
+        "cadence_gate": false,
+        "packets": 922,
+        "decoded_frames": 922,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 14971770,
+        "actual_audio_bitrate": 192089,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 71000
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.011846781624325,
+        "max_pts_gap_seconds": 0.046332999999999985,
+        "cadence_gate": true,
+        "packets": 913,
+        "decoded_frames": 913,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 15273818,
+        "actual_audio_bitrate": 191853,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 69000
+      }
+    ],
+    "recording_confirmed": [
+      {
+        "cycle": 0,
+        "driver_gap_ns": 79517000,
+        "encoder_adjacent_matches": 1,
+        "unique_vb2_queue_matches": 1,
+        "driver_owned_zero_ns": 56564000,
+        "slow_operations_overlapping_zero_window": []
+      }
+    ],
+    "not_recording_confirmed": [],
+    "slow_span_summary": {
+      "gst_v4l2src_decide_allocation": {
+        "count": 1,
+        "max_ns": 138169998
+      },
+      "create/parent-alloc": {
+        "count": 2,
+        "max_ns": 75492209
+      },
+      "gst_v4l2src_create": {
+        "count": 2,
+        "max_ns": 75615510
+      }
+    },
+    "conservation": [
+      {
+        "cycle": 0,
+        "encoder_inputs": 922,
+        "encoder_outputs": 922,
+        "mp4_packets": 922,
+        "same_counts": true,
+        "encoder_relative_pts_exact": true,
+        "native_unique": 922,
+        "native_missing": 0,
+        "native_ambiguous": 0,
+        "mp4_tick_ns": 333333.3333333333,
+        "max_mux_relative_pts_residual_ns": 166633.33333333334,
+        "mux_within_one_declared_tick": true,
+        "encoder_eos": true,
+        "encoder_source_events": [
+          "segment",
+          "segment",
+          "segment",
+          "segment",
+          "eos"
+        ],
+        "gate": true
+      },
+      {
+        "cycle": 1,
+        "encoder_inputs": 913,
+        "encoder_outputs": 913,
+        "mp4_packets": 913,
+        "same_counts": true,
+        "encoder_relative_pts_exact": true,
+        "native_unique": 913,
+        "native_missing": 0,
+        "native_ambiguous": 0,
+        "mp4_tick_ns": 333333.3333333333,
+        "max_mux_relative_pts_residual_ns": 166583.33333333334,
+        "mux_within_one_declared_tick": true,
+        "encoder_eos": true,
+        "encoder_source_events": [
+          "eos",
+          "segment",
+          "segment",
+          "segment",
+          "segment",
+          "eos"
+        ],
+        "gate": true
+      }
+    ],
+    "rtc": {
+      "s0i3_delta_us": 8979232,
+      "wakeup_irq": "9",
+      "functional_resume": true
+    },
+    "scalar_trace_integrity": {
+      "complete": true,
+      "reserved": 269476,
+      "capacity": 524288,
+      "overflow": 0,
+      "incomplete": 0,
+      "unmatched_pre": 34,
+      "unmatched_post": 0
+    },
+    "private_only": true,
+    "first_v1_never_installed": true
+  },
+  "all_this_turn_hardware_and_build_jobs_terminal": true,
+  "media_cores_owner_tokens_or_individual_pixel_hashes_published": false,
+  "retained_failures": [
+    "Control combined analyzer completed device/full-quality JSON then NameError: re not defined in host-only sparse tail. Separate stamp-only recovery; no recordings rerun or reports overwritten.",
+    "An attempted shell one-liner to prepare recovery had SyntaxError; no mutation executed.",
+    "Early source timer generator had a host SyntaxError (no execution), then stopped before source writes at an absent set_caps signature. V1 compiled/tested but was never installed: goto could bypass metadata-timer initialization. V2 initializes the sentinel at function entry and tests the early-error cleanup path and 128-line cap."
+  ],
+  "limitations": [
+    "Queue entry-to-exit matched counter is not GObject occupancy or optical/AV latency.",
+    "Generic sparse driver logs also include preview/stop transitions; only exact adjacent encoder PTS+offset matches count as recording-confirmed.",
+    "Full-clip frame conservation does not repair missing capture intervals or establish image quality, AV sync, photo/flush/visible UX.",
+    "34 preview/thumbnail calls remain right-censored at app exit in each original pair; no invented completion durations.",
+    "Prior zero-S0I3, thermal abort, Mesa stop crash and kernel failed-reset DMA-fence findings remain open."
+  ],
+  "broader_open_gates": [
+    "Kernel SP/CSS failed-reset DMA ownership fence and buffer/parameter lifetime",
+    "Mesa/GstGL stop crash",
+    "Automatic exposure/white balance/autofocus/physical AV-sync and full foreground camera/photo lifecycle",
+    "Full 6.14 kernel/flash and Android/Windows parity; not camera-only completion"
+  ]
+}

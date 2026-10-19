@@ -1,0 +1,114 @@
+--- a/sys/v4l2/gstv4l2src.c
++++ b/sys/v4l2/gstv4l2src.c
+@@ -140,6 +140,53 @@
+ static void gst_v4l2src_get_property (GObject * object, guint prop_id,
+     GValue * value, GParamSpec * pspec);
+ 
++/* Opt-in slow-operation scalar timing. No payload reads, caps/PTS/flow changes. */
++typedef struct {
++  GstObject *object; /* borrowed for the synchronous lexical scope */
++  const gchar *operation;
++  GstClockTime begin;
++} Mp2WaitSpan;
++
++static gboolean
++mp2_wait_enabled (void)
++{
++  static gsize enabled_once;
++  if (g_once_init_enter (&enabled_once)) {
++    gboolean enabled = g_strcmp0 (g_getenv ("MIPAD2_V4L2_WAIT_DIAG"), "1") == 0;
++    g_once_init_leave (&enabled_once, enabled ? 2 : 1);
++  }
++  return enabled_once == 2;
++}
++
++static Mp2WaitSpan
++mp2_wait_begin (GstObject *object, const gchar *operation)
++{
++  Mp2WaitSpan span = { object, operation, GST_CLOCK_TIME_NONE };
++  if (mp2_wait_enabled ())
++    span.begin = gst_util_get_timestamp ();
++  return span;
++}
++
++static void
++mp2_wait_end (Mp2WaitSpan *span)
++{
++  static gint emitted;
++  GstClockTime end, elapsed;
++  if (!GST_CLOCK_TIME_IS_VALID (span->begin))
++    return;
++  end = gst_util_get_timestamp ();
++  elapsed = end - span->begin;
++  if (elapsed < 40 * GST_MSECOND)
++    return;
++  /* A bounded process-wide slow-only log. No normal-frame logging or writes. */
++  if (g_atomic_int_add (&emitted, 1) < 128)
++    g_printerr ("MP2_V4L2_WAIT source=%s op=%s begin=%" G_GUINT64_FORMAT
++        " end=%" G_GUINT64_FORMAT " elapsed=%" G_GUINT64_FORMAT "\n",
++        GST_OBJECT_NAME (span->object), span->operation, span->begin, end, elapsed);
++}
++
++G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC (Mp2WaitSpan, mp2_wait_end)
++
+ static void
+ gst_v4l2src_class_init (GstV4l2SrcClass * klass)
+ {
+@@ -765,6 +812,7 @@
+ static gboolean
+ gst_v4l2src_negotiate (GstBaseSrc * basesrc)
+ {
++  g_auto(Mp2WaitSpan) mp2_wait_scope = mp2_wait_begin (GST_OBJECT (basesrc), "gst_v4l2src_negotiate");
+   GstV4l2Src *v4l2src = GST_V4L2SRC (basesrc);
+   GstCaps *thiscaps;
+   GstCaps *caps = NULL;
+@@ -880,6 +928,7 @@
+ static gboolean
+ gst_v4l2src_decide_allocation (GstBaseSrc * bsrc, GstQuery * query)
+ {
++  g_auto(Mp2WaitSpan) mp2_wait_scope = mp2_wait_begin (GST_OBJECT (bsrc), "gst_v4l2src_decide_allocation");
+   GstV4l2Src *src = GST_V4L2SRC (bsrc);
+   GstBufferPool *bpool = gst_v4l2_object_get_buffer_pool (src->v4l2object);
+   gboolean ret = TRUE;
+@@ -1197,6 +1246,8 @@
+ static GstFlowReturn
+ gst_v4l2src_create (GstPushSrc * src, GstBuffer ** buf)
+ {
++  g_auto(Mp2WaitSpan) mp2_wait_scope = mp2_wait_begin (GST_OBJECT (src), "gst_v4l2src_create");
++  g_auto(Mp2WaitSpan) mp2_metadata_scope = { GST_OBJECT (src), "create/metadata-and-controls", GST_CLOCK_TIME_NONE };
+   GstV4l2Src *v4l2src = GST_V4L2SRC (src);
+   GstV4l2Object *obj = v4l2src->v4l2object;
+   GstFlowReturn ret;
+@@ -1208,8 +1259,11 @@
+   gboolean half_frame;
+ 
+   do {
++    {
++      g_auto(Mp2WaitSpan) mp2_alloc_scope = mp2_wait_begin (GST_OBJECT (src), "create/parent-alloc");
+     ret = GST_BASE_SRC_CLASS (parent_class)->alloc (GST_BASE_SRC (src), 0,
+         obj->info.vinfo.size, buf);
++    }
+ 
+     if (G_UNLIKELY (ret != GST_FLOW_OK)) {
+       if (ret == GST_V4L2_FLOW_RESOLUTION_CHANGE) {
+@@ -1226,9 +1280,12 @@
+     {
+       GstV4l2BufferPool *obj_pool =
+           GST_V4L2_BUFFER_POOL_CAST (gst_v4l2_object_get_buffer_pool (obj));
++      {
++        g_auto(Mp2WaitSpan) mp2_pool_scope = mp2_wait_begin (GST_OBJECT (src), "create/pool-process-and-unref");
+       ret = gst_v4l2_buffer_pool_process (obj_pool, buf, NULL);
+       if (obj_pool)
+         gst_object_unref (obj_pool);
++      }
+ 
+       if (G_UNLIKELY (ret == GST_V4L2_FLOW_RESOLUTION_CHANGE)) {
+         if (!gst_v4l2src_handle_resolution_change (v4l2src)) {
+@@ -1244,6 +1301,7 @@
+   if (G_UNLIKELY (ret != GST_FLOW_OK))
+     goto error;
+ 
++  mp2_metadata_scope = mp2_wait_begin (GST_OBJECT (src), "create/metadata-and-controls");
+   timestamp = GST_BUFFER_TIMESTAMP (*buf);
+   mp2_driver_stamp = timestamp;
+   duration = obj->duration;

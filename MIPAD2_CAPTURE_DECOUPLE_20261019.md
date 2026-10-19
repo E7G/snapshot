@@ -1,3 +1,7 @@
+> **Later hardware result: queue candidate FAILED and was not promoted.**
+> See [same-binary real-device comparison](MIPAD2_CAPTURE_DECOUPLE_DEVICE_20261019.md).
+> The original host-tested-only phase below is retained as history.
+
 # Buffer depletion measured; opt-in copied-source queue candidate
 
 This is an experimental source-thread decoupling candidate, NOT a verified tablet
