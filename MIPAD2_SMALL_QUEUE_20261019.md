@@ -59,7 +59,9 @@ behavior was weakened to pass it. A first flush test's5s timeout was insufficien
 liveness evidence; a stronger test exposed an uninterruptible user handoff mock.
 The mock now honors FLUSH_START explicitly, with EVENT_FLUSH subscribed separately
 from EVENT_DOWNSTREAM as required by GstPad docs. Earlier failed/weak receipts
-remain; only the current V6 actual source/logs support the70-test claim.
+remain; only the current V7 actual source/logs support the70-test claim.
+V7 additionally explicitly rejects old queued offsets after flush; only the
+already delivered first in-flight frame may precede the twelve new frames.
 
 ## Source-filter installation correction
 

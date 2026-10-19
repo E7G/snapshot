@@ -907,6 +907,10 @@ mod tests {
         assert!(matches!(msg.view(), gst::MessageView::Eos(_)), "{msg:?}");
         let mut after = Vec::new();
         while let Ok((offset, bytes)) = frames_rx.try_recv() {
+            assert!(
+                offset == 0 || offset >= 20,
+                "old queued frame leaked across flush: {offset}"
+            );
             if offset >= 20 {
                 after.push((offset, bytes));
             }

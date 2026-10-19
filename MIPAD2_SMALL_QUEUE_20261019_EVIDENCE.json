@@ -2,7 +2,7 @@
   "prior": "b778f1e092df180e363ca077a354271215f2c33d",
   "production_files_sha256": {
     "aperture/src/viewfinder.rs": "b21d23b806256de660ca896d9f00f876cd4bd9286b117e5f571f079aff8e93ec",
-    "aperture/src/mipad2_capture_copy.rs": "12d9163f7e7c4615249d5a9b60bea52fcef4cb2d8f3ef9f39ebebeecd25ba042"
+    "aperture/src/mipad2_capture_copy.rs": "e3f275e74fd89a14275df78005b07d58c3e66bff5fa9ce6d9dd7d5479491c38b"
   },
   "focused_tests": 10,
   "workspace_tests": 70,
@@ -42,5 +42,7 @@
   "hardware_tested": false,
   "device_efficacy_proven": false,
   "full_objective_complete": false,
-  "failed_test_logs_retained": true
+  "failed_test_logs_retained": true,
+  "current_test_version": "v7-strict-old-tail",
+  "explicit_old_queued_tail_rejected": true
 }
