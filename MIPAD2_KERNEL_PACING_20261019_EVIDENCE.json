@@ -1,0 +1,703 @@
+{
+  "at": 1792390646.073941,
+  "all_jobs_terminal": true,
+  "full_objective_complete": false,
+  "new_kernel_deployed": false,
+  "default_promoted": false,
+  "quality_reduced": false,
+  "global_tracing_restored": true,
+  "source_kernel": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "normal_cohort": [
+    {
+      "index": 0,
+      "fps": 29.999336297869515,
+      "max_pts_gap_s": 0.034333,
+      "packets": 905,
+      "cadence_gate": true,
+      "max_thermal_millidegrees": 67000,
+      "decoded_frames": 905
+    },
+    {
+      "index": 1,
+      "fps": 30.01195199428923,
+      "max_pts_gap_s": 0.04266699999999998,
+      "packets": 905,
+      "cadence_gate": true,
+      "max_thermal_millidegrees": 69000,
+      "decoded_frames": 905
+    }
+  ],
+  "soak": {
+    "planned": 6,
+    "recorded": 2,
+    "completed_plan": false,
+    "abort_reason": "AssertionError('Thermal ceiling reached; no further recordings')",
+    "clips": [
+      {
+        "index": 0,
+        "fps": 29.96524335472642,
+        "max_pts_gap_s": 0.04966699999999999,
+        "packets": 889,
+        "cadence_gate": true,
+        "max_thermal_millidegrees": 71000,
+        "decoded_frames": 889
+      },
+      {
+        "index": 1,
+        "fps": 29.93009746972531,
+        "max_pts_gap_s": 0.07833399999999999,
+        "packets": 913,
+        "cadence_gate": false,
+        "max_thermal_millidegrees": 80000,
+        "decoded_frames": 913
+      }
+    ],
+    "actual_completed_clips_fully_decoded": true
+  },
+  "captures": {
+    "v2": {
+      "irq": 146,
+      "irq_thread": {
+        "pid": 528,
+        "comm": "irq/146-isp_irq"
+      },
+      "functions": [
+        "vb2_buffer_done",
+        "atomisp_isr",
+        "atomisp_buf_done",
+        "atomisp_isr_thread",
+        "atomisp_qbuf_wrapper.llvm.10484958833732377754",
+        "atomisp_dqbuf_wrapper.llvm.10484958833732377754",
+        "atomisp_s_ctrl.llvm.10484958833732377754"
+      ],
+      "event_filters": {
+        "irq/irq_handler_entry": "irq == 146",
+        "irq/irq_handler_exit": "irq == 146",
+        "sched/sched_waking": "pid == 528",
+        "sched/sched_wakeup": "pid == 528",
+        "sched/sched_switch": "prev_pid == 528 || next_pid == 528"
+      },
+      "trace_lines": 84546,
+      "trace_bytes": 9402366,
+      "loss_counts": {
+        "cpu3": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu2": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu1": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu0": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        }
+      },
+      "loss_gate": true,
+      "instance_removed": true,
+      "global_state_changed": false,
+      "systemd_terminal": {
+        "ActiveState": "inactive",
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainStatus": "0"
+      },
+      "terminal": true
+    },
+    "soak": {
+      "irq": 146,
+      "irq_thread": {
+        "pid": 528,
+        "comm": "irq/146-isp_irq"
+      },
+      "functions": [
+        "vb2_buffer_done",
+        "atomisp_isr",
+        "atomisp_buf_done",
+        "atomisp_isr_thread",
+        "atomisp_qbuf_wrapper.llvm.10484958833732377754",
+        "atomisp_dqbuf_wrapper.llvm.10484958833732377754",
+        "atomisp_s_ctrl.llvm.10484958833732377754"
+      ],
+      "event_filters": {
+        "irq/irq_handler_entry": "irq == 146",
+        "irq/irq_handler_exit": "irq == 146",
+        "sched/sched_waking": "pid == 528",
+        "sched/sched_wakeup": "pid == 528",
+        "sched/sched_switch": "prev_pid == 528 || next_pid == 528"
+      },
+      "trace_lines": 84904,
+      "trace_bytes": 9453024,
+      "loss_counts": {
+        "cpu3": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu2": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu1": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu0": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        }
+      },
+      "loss_gate": true,
+      "instance_removed": true,
+      "global_state_changed": false,
+      "systemd_terminal": {
+        "ActiveState": "inactive",
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainStatus": "0"
+      },
+      "terminal": true
+    }
+  },
+  "observed_anomalies": [
+    {
+      "cycle": 1,
+      "driver_prev": 51517353076000,
+      "driver": 51517431237000,
+      "gap_ns": 78161000,
+      "before_match": {
+        "matches": 1,
+        "bracket": {
+          "begin": 51517353024000,
+          "end": 51517353078000,
+          "pid": 528,
+          "cpu_begin": 1,
+          "cpu_end": 1,
+          "begin_line": 48403,
+          "end_line": 48404
+        }
+      },
+      "after_match": {
+        "matches": 1,
+        "bracket": {
+          "begin": 51517431050000,
+          "end": 51517431239000,
+          "pid": 528,
+          "cpu_begin": 1,
+          "cpu_end": 1,
+          "begin_line": 48429,
+          "end_line": 48430
+        }
+      },
+      "irq_entries": [
+        {
+          "ts": 51517363966000,
+          "cpu": 1
+        },
+        {
+          "ts": 51517423733000,
+          "cpu": 1
+        },
+        {
+          "ts": 51517430381000,
+          "cpu": 1
+        },
+        {
+          "ts": 51517430597000,
+          "cpu": 1
+        }
+      ],
+      "irq_exits": [
+        {
+          "ts": 51517364002000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        },
+        {
+          "ts": 51517423831000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        },
+        {
+          "ts": 51517430475000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        },
+        {
+          "ts": 51517430862000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        }
+      ],
+      "threaded_handler_entries": [
+        {
+          "ts": 51517423928000,
+          "pid": 528
+        },
+        {
+          "ts": 51517430898000,
+          "pid": 528
+        }
+      ],
+      "latest_thread_entry": {
+        "ts": 51517430898000,
+        "age_to_driver_ns": 339000
+      },
+      "irq_thread_offcpu": [
+        {
+          "out": 51517353102000,
+          "back": 51517423923000,
+          "duration": 70821000,
+          "state": "S",
+          "wake": 51517423841000,
+          "post_wake_delay_ns": 82000,
+          "cpu_out": 1,
+          "cpu_back": 1,
+          "overlap_ns": 70821000
+        },
+        {
+          "out": 51517424345000,
+          "back": 51517430893000,
+          "duration": 6548000,
+          "state": "S",
+          "wake": 51517430477000,
+          "post_wake_delay_ns": 416000,
+          "cpu_out": 1,
+          "cpu_back": 1,
+          "overlap_ns": 6548000
+        }
+      ],
+      "functions_in_gap": [
+        {
+          "ts": 51517353078000,
+          "pid": 528,
+          "name": "vb2_buffer_done"
+        },
+        {
+          "ts": 51517363971000,
+          "pid": 535,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517407796000,
+          "pid": 1100263,
+          "name": "atomisp_qbuf_wrapper.llvm.10484958833732377754"
+        },
+        {
+          "ts": 51517423739000,
+          "pid": 535,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517423928000,
+          "pid": 528,
+          "name": "atomisp_isr_thread"
+        },
+        {
+          "ts": 51517424084000,
+          "pid": 528,
+          "name": "atomisp_buf_done"
+        },
+        {
+          "ts": 51517430385000,
+          "pid": 1,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517430597000,
+          "pid": 1,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517430898000,
+          "pid": 528,
+          "name": "atomisp_isr_thread"
+        },
+        {
+          "ts": 51517431050000,
+          "pid": 528,
+          "name": "atomisp_buf_done"
+        }
+      ],
+      "caution": "Function entries only: no invented return durations. IRQ delivery is not sensor SOF; contiguous software sequence does not prove optical continuity."
+    },
+    {
+      "cycle": 1,
+      "driver_prev": 51517474761000,
+      "driver": 51517525800000,
+      "gap_ns": 51039000,
+      "before_match": {
+        "matches": 1,
+        "bracket": {
+          "begin": 51517474716000,
+          "end": 51517474763000,
+          "pid": 528,
+          "cpu_begin": 1,
+          "cpu_end": 1,
+          "begin_line": 48452,
+          "end_line": 48453
+        }
+      },
+      "after_match": {
+        "matches": 1,
+        "bracket": {
+          "begin": 51517525734000,
+          "end": 51517525802000,
+          "pid": 528,
+          "cpu_begin": 1,
+          "cpu_end": 1,
+          "begin_line": 48476,
+          "end_line": 48477
+        }
+      },
+      "irq_entries": [
+        {
+          "ts": 51517518919000,
+          "cpu": 1
+        },
+        {
+          "ts": 51517525606000,
+          "cpu": 1
+        },
+        {
+          "ts": 51517525674000,
+          "cpu": 1
+        }
+      ],
+      "irq_exits": [
+        {
+          "ts": 51517518940000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        },
+        {
+          "ts": 51517525646000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        },
+        {
+          "ts": 51517525702000,
+          "cpu": 1,
+          "fields": {
+            "irq": "146",
+            "ret": "handled"
+          }
+        }
+      ],
+      "threaded_handler_entries": [
+        {
+          "ts": 51517518971000,
+          "pid": 528
+        },
+        {
+          "ts": 51517525720000,
+          "pid": 528
+        }
+      ],
+      "latest_thread_entry": {
+        "ts": 51517525720000,
+        "age_to_driver_ns": 80000
+      },
+      "irq_thread_offcpu": [
+        {
+          "out": 51517474788000,
+          "back": 51517518966000,
+          "duration": 44178000,
+          "state": "S",
+          "wake": 51517518942000,
+          "post_wake_delay_ns": 24000,
+          "cpu_out": 1,
+          "cpu_back": 1,
+          "overlap_ns": 44178000
+        },
+        {
+          "out": 51517519068000,
+          "back": 51517525715000,
+          "duration": 6647000,
+          "state": "S",
+          "wake": 51517525648000,
+          "post_wake_delay_ns": 67000,
+          "cpu_out": 1,
+          "cpu_back": 1,
+          "overlap_ns": 6647000
+        }
+      ],
+      "functions_in_gap": [
+        {
+          "ts": 51517474763000,
+          "pid": 528,
+          "name": "vb2_buffer_done"
+        },
+        {
+          "ts": 51517492275000,
+          "pid": 1101653,
+          "name": "atomisp_dqbuf_wrapper.llvm.10484958833732377754"
+        },
+        {
+          "ts": 51517503139000,
+          "pid": 1101651,
+          "name": "atomisp_qbuf_wrapper.llvm.10484958833732377754"
+        },
+        {
+          "ts": 51517518924000,
+          "pid": 1100263,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517518971000,
+          "pid": 528,
+          "name": "atomisp_isr_thread"
+        },
+        {
+          "ts": 51517518985000,
+          "pid": 528,
+          "name": "atomisp_buf_done"
+        },
+        {
+          "ts": 51517525614000,
+          "pid": 1086876,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517525675000,
+          "pid": 1086876,
+          "name": "atomisp_isr"
+        },
+        {
+          "ts": 51517525720000,
+          "pid": 528,
+          "name": "atomisp_isr_thread"
+        },
+        {
+          "ts": 51517525734000,
+          "pid": 528,
+          "name": "atomisp_buf_done"
+        }
+      ],
+      "caution": "Function entries only: no invented return durations. IRQ delivery is not sensor SOF; contiguous software sequence does not prove optical continuity."
+    }
+  ],
+  "baseline": {
+    "video_completion_brackets_in_irq_thread": 3535,
+    "handler_to_completion_entry_p50_ns": 17000,
+    "handler_to_completion_entry_p99_ns": 68000,
+    "longest_handler_spans": [
+      {
+        "handler_entry": 51495771571000,
+        "completion_entry": 51495772009000,
+        "elapsed_ns": 438000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51466203053000,
+        "completion_entry": 51466203325000,
+        "elapsed_ns": 272000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51541687506000,
+        "completion_entry": 51541687742000,
+        "elapsed_ns": 236000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51475103362000,
+        "completion_entry": 51475103570000,
+        "elapsed_ns": 208000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51533717802000,
+        "completion_entry": 51533717984000,
+        "elapsed_ns": 182000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51544260099000,
+        "completion_entry": 51544260277000,
+        "elapsed_ns": 178000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51458302741000,
+        "completion_entry": 51458302894000,
+        "elapsed_ns": 153000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51512887762000,
+        "completion_entry": 51512887914000,
+        "elapsed_ns": 152000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51517430898000,
+        "completion_entry": 51517431050000,
+        "elapsed_ns": 152000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51483970215000,
+        "completion_entry": 51483970366000,
+        "elapsed_ns": 151000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51454370186000,
+        "completion_entry": 51454370331000,
+        "elapsed_ns": 145000,
+        "offcpu": [],
+        "offcpu_overlap_ns": 0
+      },
+      {
+        "handler_entry": 51547047098000,
+        "completion_entry": 51547047243000,
+        "elapsed_ns": 145000,
+        "offcpu": [
+          {
+            "out": 51547047119000,
+            "back": 51547047225000,
+            "duration": 106000,
+            "state": "D",
+            "wake": 51547047210000,
+            "post_wake_delay_ns": 15000,
+            "cpu_out": 1,
+            "cpu_back": 1,
+            "overlap_ns": 106000
+          }
+        ],
+        "offcpu_overlap_ns": 106000
+      }
+    ],
+    "irq_thread_offcpu_states": {
+      "S": 7069,
+      "R+": 1,
+      "D": 1
+    },
+    "semantic_caution": "atomisp_buf_done handles statistics and other buffer types too; entries without a subsequent VB2 completion are not automatically lost frames or lifecycle failures. Entry-only spans do not identify a blocking primitive or return time."
+  },
+  "analysis_qualification": "In these two thermal-cohort anomalies, unique driver-stamp/VB2 brackets match; IRQ thread sleeps S until later ISP events and handles wakeups quickly. This does not prove sensor continuity, firmware cause, a unique buffer-starvation cause, or absence of other scheduling/mutex bugs.",
+  "observer_qualification": "Analysis of the earlier baseline capture ran on the tablet during part of the soak. Additional CPU/memory observer load may affect heat/timing; no unique thermal or Android-performance attribution. Baseline parser subsequently optimized and revalidated only after camera stopped.",
+  "parser_verification": {
+    "current_source_sha256": "a36396799c84cce62718bfa54f276e223a70031ee4a0760b244dd4ab551d7658",
+    "real_capture_reanalysis_identical": true,
+    "optimized_baseline_cpu_seconds": 0.26401673800000003,
+    "no_new_capture": true,
+    "no_active_camera_during_reanalysis": true,
+    "synthetic_cases": 13,
+    "capture_source_sha256": "14881b7eac7fbbb76dcd7908e4d35b84e0389553b752c9b674aab2fbdbd8b4e4"
+  },
+  "function_selftest": {
+    "passed": true,
+    "global_state_changed": false,
+    "marker_clock_bound_ns": [
+      388548,
+      551402
+    ]
+  },
+  "failed_graph_selftest": {
+    "passed": false,
+    "reason": "RuntimeError('Instance option affected global state; restored and aborted: funcgraph-abstime')",
+    "shared_abstime_option_restored": true,
+    "global_state_changed": false
+  },
+  "failed_initial_irq_label_guard": {
+    "camera_dispatched": false,
+    "actual_irq": 146,
+    "actual_name": "isp_irq",
+    "terminal": true,
+    "global_state_changed": false
+  },
+  "post_normal_RTC": {
+    "s0i3_delta_us": 9935744,
+    "functional_resume": true,
+    "deep_residency_gate": true,
+    "wakeup_irq": "9",
+    "boot_unchanged": true,
+    "new_kernel_errors": []
+  },
+  "post_soak_RTC_performed": false,
+  "prior_zero_S0I3_failure_retained": true,
+  "cleanup": {
+    "controls_restored": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "matched": true
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "matched": true
+      }
+    },
+    "sensor_pm": {
+      "t4ka3 6-0037": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693 6-0036": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "normal_settings_preserved": true,
+    "process": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStatus": "0"
+    }
+  },
+  "media_core_or_individual_pixel_digest_exported": false,
+  "raw_kernel_traces_published": false,
+  "next_measurement": "V4L2/VB2 indexed queue/done timestamps and owned_by_drv counters exist in R19 tracepoint formats (read-only inventory only, not yet recorded). Test queue-starvation hypothesis when cooled; do not fabricate timestamps or promote unsafe DMA-BUF reuse.",
+  "remaining": [
+    "Startup cadence reproducibly RED despite fast IRQ-thread handling; buffer availability / ISP readiness remains unresolved.",
+    "Thermal80C aborted planned6-clip soak after2; do not call all six passed or erase aborted state.",
+    "Earlier intermittent zero S0I3, Mesa stop crash, failed-reset SP/DMA ownership, AF/WB, physical AV sync, foreground UX and full Android/Windows/kernel/flash parity remain unfinished."
+  ]
+}
