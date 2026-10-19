@@ -1,0 +1,46 @@
+{
+  "prior": "b778f1e092df180e363ca077a354271215f2c33d",
+  "production_files_sha256": {
+    "aperture/src/viewfinder.rs": "b21d23b806256de660ca896d9f00f876cd4bd9286b117e5f571f079aff8e93ec",
+    "aperture/src/mipad2_capture_copy.rs": "12d9163f7e7c4615249d5a9b60bea52fcef4cb2d8f3ef9f39ebebeecd25ba042"
+  },
+  "focused_tests": 10,
+  "workspace_tests": 70,
+  "source_filter_helper_tests": 4,
+  "canonical_helper_sha256": {
+    "mp2_source_filters_v2.py": "47cb4f75056a57b597b5f89aa8744a7b9d0ae90e24cb3791f7c8db8474e2e4bd",
+    "test_mp2_source_filters_v2.py": "c8ba6b0ee81338b55fed53b61c937df4af028ead369bdb5648c06d555a58decb"
+  },
+  "old_trace_boundary_audit": {
+    "raw_strict_failure_preserved": true,
+    "whole_trace_syscall_pairing_claimed": false,
+    "source_count": 2,
+    "original_duplicate_entries": 10,
+    "all_duplicate_entries_before_own_source_commit": true,
+    "duplicate_entry_distance_before_commit_ns": [
+      101974000,
+      101827000,
+      101685000,
+      101578000,
+      101515000,
+      71871000,
+      69672000,
+      69544000,
+      69410000,
+      69336000
+    ],
+    "committed_pairs": 19276,
+    "committed_duplicate_entries": 0,
+    "committed_mismatched_exit_numbers": 0,
+    "committed_left_censored_exits": 2,
+    "committed_right_censored_entries": 2,
+    "committed_pairing_validated": true,
+    "interpretation": "All original unpaired entries are qualified against explicit MP2_SOURCE_TASKS filter-install commit markers. Existing recorder writes enter filter before exit filter. Boundary confinement supports filter-install censoring; no invented missing syscall durations or complete-global-pair claim.",
+    "privacy": "No syscall arguments or pointers exported."
+  },
+  "default_changed": false,
+  "hardware_tested": false,
+  "device_efficacy_proven": false,
+  "full_objective_complete": false,
+  "failed_test_logs_retained": true
+}

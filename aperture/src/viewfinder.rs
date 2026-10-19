@@ -1709,45 +1709,49 @@ impl Viewfinder {
         if let Some(pad) = device_src.static_pad("src") {
             crate::mipad2_trace::pad(&pad, "native-source");
         }
-        if crate::mipad2_capture_copy::enabled(
+        let native_factory = device_src
+            .factory()
+            .as_ref()
+            .map(|f| f.name().to_string())
+            .unwrap_or_default();
+        let copy = crate::mipad2_capture_copy::enabled(
             is_mipad2(),
             std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
-            device_src
-                .factory()
-                .as_ref()
-                .map(|f| f.name().to_string())
-                .unwrap_or_default()
-                .as_str(),
-        ) {
+            &native_factory,
+        );
+        if copy {
             crate::mipad2_capture_copy::install(device_src);
         }
-        let capture_queue = if crate::mipad2_capture_copy::decoupling_enabled(
+        let guarded = crate::mipad2_capture_copy::allocation_guard_enabled(
             is_mipad2(),
-            std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
-            std::env::var("MIPAD2_CAPTURE_DECOUPLE").as_deref() == Ok("1"),
-            device_src
-                .factory()
-                .as_ref()
-                .map(|f| f.name().to_string())
-                .unwrap_or_default()
-                .as_str(),
-        ) {
-            log::info!("Mi Pad 2 bounded copied capture source queue enabled: buffers=8 leaky=no");
-            Some(crate::mipad2_capture_copy::source_queue()?)
-        } else {
-            None
-        };
-        let allocation_guard = if crate::mipad2_capture_copy::allocation_guard_enabled(
-            is_mipad2(),
-            std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
+            copy,
             std::env::var("MIPAD2_CAPTURE_ALLOCATION_GUARD").as_deref() == Ok("1"),
-            device_src
-                .factory()
-                .as_ref()
-                .map(|f| f.name().to_string())
-                .unwrap_or_default()
-                .as_str(),
-        ) {
+            &native_factory,
+        );
+        let mode = crate::mipad2_capture_copy::queue_mode(
+            is_mipad2(),
+            copy,
+            guarded,
+            std::env::var("MIPAD2_CAPTURE_DECOUPLE").as_deref() == Ok("1"),
+            std::env::var("MIPAD2_CAPTURE_DECOUPLE_SMALL").as_deref() == Ok("1"),
+            &native_factory,
+        )?;
+        let capture_queue = match mode {
+            crate::mipad2_capture_copy::QueueMode::Disabled => None,
+            crate::mipad2_capture_copy::QueueMode::LegacyEight => {
+                log::info!(
+                    "Mi Pad 2 bounded copied capture source queue enabled: buffers=8 leaky=no"
+                );
+                Some(crate::mipad2_capture_copy::source_queue()?)
+            }
+            crate::mipad2_capture_copy::QueueMode::GuardedTwo => {
+                log::info!(
+                    "Mi Pad 2 guarded small copied capture queue enabled: buffers=2 leaky=no allocation-guard=true"
+                );
+                Some(crate::mipad2_capture_copy::source_small_queue()?)
+            }
+        };
+        let allocation_guard = if guarded {
             log::info!(
                 "Mi Pad 2 copied native allocation boundary enabled: allocation-query=false frames=unchanged"
             );

@@ -68,6 +68,67 @@ pub(crate) fn source_allocation_guard() -> Result<gst::Element, gst::glib::BoolE
         .build()
 }
 
+/// Explicit source scheduling experiments; production defaults remain disabled.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum QueueMode {
+    Disabled,
+    LegacyEight,
+    GuardedTwo,
+}
+
+/// Never silently turn a malformed small-queue request into the rejected legacy
+/// queue. A physical Mi Pad 2 source needs both deep copying and the allocation
+/// boundary before this new buffer-push scheduling experiment is allowed.
+pub(crate) fn queue_mode(
+    device: bool,
+    copy: bool,
+    allocation_guard: bool,
+    legacy_requested: bool,
+    small_requested: bool,
+    factory: &str,
+) -> Result<QueueMode, gst::glib::BoolError> {
+    if !device || factory != "v4l2src" {
+        return Ok(QueueMode::Disabled);
+    }
+    if legacy_requested && small_requested {
+        return Err(gst::glib::bool_error!(
+            "Mi Pad 2 legacy and small capture queues are mutually exclusive"
+        ));
+    }
+    if small_requested {
+        if !copy || !allocation_guard {
+            return Err(gst::glib::bool_error!(
+                "Mi Pad 2 small capture queue requires native copy and allocation guard"
+            ));
+        }
+        return Ok(QueueMode::GuardedTwo);
+    }
+    if decoupling_enabled(device, copy, legacy_requested, factory) {
+        Ok(QueueMode::LegacyEight)
+    } else {
+        Ok(QueueMode::Disabled)
+    }
+}
+
+/// Two queued copies, plus separate producer/consumer in-flight buffers. This
+/// bounds this queue, not all downstream allocations or end-to-end latency.
+/// Never leak frames, wait for a prefill threshold, or discard the EOS tail.
+pub(crate) fn source_small_queue() -> Result<gst::Element, gst::glib::BoolError> {
+    let queue = gst::ElementFactory::make("queue")
+        .name("mipad2-capture-decouple-small")
+        .property("max-size-buffers", 2u32)
+        .property("max-size-bytes", 0u32)
+        .property("max-size-time", 0u64)
+        .property("min-threshold-buffers", 0u32)
+        .property("min-threshold-bytes", 0u32)
+        .property("min-threshold-time", 0u64)
+        .property("flush-on-eos", false)
+        .property("silent", true)
+        .build()?;
+    queue.set_property_from_str("leaky", "no");
+    Ok(queue)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -432,5 +493,429 @@ mod tests {
             assert_eq!(*duration, Some(gst::ClockTime::from_nseconds(33_333_333)));
             assert_eq!(bytes, &vec![n as u8; info.size()]);
         }
+    }
+    #[test]
+    fn small_queue_configuration_is_scoped_guarded_and_never_legacy_fallback() {
+        for device in [false, true] {
+            for copy in [false, true] {
+                for guard in [false, true] {
+                    for legacy in [false, true] {
+                        for small in [false, true] {
+                            for factory in ["v4l2src", "appsrc", "pipewiresrc", ""] {
+                                let result =
+                                    queue_mode(device, copy, guard, legacy, small, factory);
+                                if !device || factory != "v4l2src" {
+                                    assert_eq!(result.unwrap(), QueueMode::Disabled);
+                                } else if legacy && small || small && (!copy || !guard) {
+                                    assert!(result.is_err());
+                                } else if small {
+                                    assert_eq!(result.unwrap(), QueueMode::GuardedTwo);
+                                } else if legacy && copy {
+                                    assert_eq!(result.unwrap(), QueueMode::LegacyEight);
+                                } else {
+                                    assert_eq!(result.unwrap(), QueueMode::Disabled);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn actual_guarded_two_queue_bounds_copy_ahead_preserves_padded_frames_and_eos() {
+        use std::sync::{Condvar, Mutex, atomic::AtomicUsize, mpsc};
+        use std::time::{Duration, Instant};
+        gst::init().unwrap();
+        for queued in [false, true] {
+            let pipeline = gst::Pipeline::new();
+            let gate = Arc::new((Mutex::new(false), Condvar::new()));
+            struct Stop(gst::Pipeline, Arc<(Mutex<bool>, Condvar)>);
+            impl Drop for Stop {
+                fn drop(&mut self) {
+                    *self.1.0.lock().unwrap() = true;
+                    self.1.1.notify_all();
+                    let _ = self.0.set_state(gst::State::Null);
+                }
+            }
+            let _stop = Stop(pipeline.clone(), gate.clone());
+            let source = gst::ElementFactory::make("appsrc")
+                .property("is-live", true)
+                .property_from_str("format", "time")
+                .property(
+                    "caps",
+                    gst::Caps::from_str("video/x-raw,format=NV12,width=8,height=4,framerate=30/1")
+                        .unwrap(),
+                )
+                .build()
+                .unwrap();
+            install(&source);
+            let pumped = Arc::new(AtomicUsize::new(0));
+            let source_thread = Arc::new(Mutex::new(None));
+            let count = pumped.clone();
+            let thread = source_thread.clone();
+            source
+                .static_pad("src")
+                .unwrap()
+                .add_probe(gst::PadProbeType::BUFFER, move |_, _| {
+                    *thread.lock().unwrap() = Some(std::thread::current().id());
+                    count.fetch_add(1, Ordering::SeqCst);
+                    gst::PadProbeReturn::Ok
+                });
+            let guard = source_allocation_guard().unwrap();
+            let sink = gst::ElementFactory::make("fakesink")
+                .property("sync", false)
+                .property("async", false)
+                .property("signal-handoffs", true)
+                .property("enable-last-sample", false)
+                .build()
+                .unwrap();
+            let allocations = Arc::new(AtomicUsize::new(0));
+            let count = allocations.clone();
+            sink.static_pad("sink").unwrap().add_probe(
+                gst::PadProbeType::QUERY_DOWNSTREAM,
+                move |_, info| {
+                    if info
+                        .query()
+                        .is_some_and(|q| matches!(q.view(), gst::QueryView::Allocation(_)))
+                    {
+                        count.fetch_add(1, Ordering::SeqCst);
+                        return gst::PadProbeReturn::Handled;
+                    }
+                    gst::PadProbeReturn::Ok
+                },
+            );
+            let (entered_tx, entered_rx) = mpsc::channel();
+            let (frames_tx, frames_rx) = mpsc::channel();
+            let first = Arc::new(AtomicBool::new(true));
+            let gate_worker = gate.clone();
+            sink.connect("handoff", false, move |values| {
+                let frame = values[1].get::<gst::Buffer>().unwrap();
+                let _ = frames_tx.send(frame);
+                if first.swap(false, Ordering::SeqCst) {
+                    let _ = entered_tx.send(std::thread::current().id());
+                    let (mutex, cv) = &*gate_worker;
+                    let ready = mutex.lock().unwrap();
+                    let _ = cv.wait_timeout_while(ready, Duration::from_secs(5), |v| !*v);
+                }
+                None
+            });
+            pipeline.add_many([&source, &guard, &sink]).unwrap();
+            let queue = queued.then(|| source_small_queue().unwrap());
+            if let Some(q) = queue.as_ref() {
+                pipeline.add(q).unwrap();
+                gst::Element::link_many([&source, &guard, q, &sink]).unwrap();
+                assert_eq!(q.property::<u32>("max-size-buffers"), 2);
+                assert_eq!(q.property::<u32>("max-size-bytes"), 0);
+                assert_eq!(q.property::<u64>("max-size-time"), 0);
+                assert_eq!(q.property::<u32>("min-threshold-buffers"), 0);
+                assert_eq!(q.property::<u64>("min-threshold-time"), 0);
+                assert!(!q.property::<bool>("flush-on-eos"));
+                assert_eq!(
+                    q.property_value("leaky").serialize().unwrap().as_str(),
+                    "no"
+                );
+            } else {
+                gst::Element::link_many([&source, &guard, &sink]).unwrap();
+            }
+            pipeline.set_state(gst::State::Playing).unwrap();
+            // The capture thread queries allocation before pushing a frame.
+            // Do not demand an auxiliary thread bypass a currently held stream
+            // lock: bounded nonleaky backpressure is intentional when full.
+            let guard_queries = Arc::new(AtomicUsize::new(0));
+            let count = guard_queries.clone();
+            guard.static_pad("sink").unwrap().add_probe(
+                gst::PadProbeType::QUERY_DOWNSTREAM,
+                move |_, info| {
+                    if info
+                        .query()
+                        .is_some_and(|q| matches!(q.view(), gst::QueryView::Allocation(_)))
+                    {
+                        count.fetch_add(1, Ordering::SeqCst);
+                    }
+                    gst::PadProbeReturn::Ok
+                },
+            );
+            let before = guard_queries.load(Ordering::SeqCst);
+            let mut query = gst::query::Allocation::new(None, false);
+            assert!(!source.static_pad("src").unwrap().peer_query(&mut query));
+            assert!(guard_queries.load(Ordering::SeqCst) > before);
+            let mut leases = Vec::new();
+            for n in 0..12u64 {
+                let released = Arc::new(AtomicBool::new(false));
+                leases.push(released.clone());
+                let mut buffer = gst::Buffer::from_mut_slice(Owned {
+                    data: (0..96).map(|i| (i as u8).wrapping_add(n as u8)).collect(),
+                    released,
+                });
+                let b = buffer.get_mut().unwrap();
+                b.set_pts(gst::ClockTime::from_nseconds(n * 33_333_333));
+                b.set_dts(gst::ClockTime::from_nseconds(n * 33_333_333));
+                b.set_duration(gst::ClockTime::from_nseconds(33_333_333));
+                b.set_offset(n);
+                b.set_offset_end(n + 1);
+                if n == 0 {
+                    b.set_flags(gst::BufferFlags::DISCONT);
+                }
+                gst_video::VideoMeta::add_full(
+                    b,
+                    gst_video::VideoFrameFlags::empty(),
+                    gst_video::VideoFormat::Nv12,
+                    8,
+                    4,
+                    &[0, 64],
+                    &[16, 16],
+                )
+                .unwrap();
+                assert_eq!(
+                    source.emit_by_name::<gst::FlowReturn>("push-buffer", &[&buffer]),
+                    gst::FlowReturn::Ok
+                );
+            }
+            assert_eq!(
+                source.emit_by_name::<gst::FlowReturn>("end-of-stream", &[]),
+                gst::FlowReturn::Ok
+            );
+            let consumer_thread = entered_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+            let expected = if queued { 4 } else { 1 }; // consumer + two queued + producer, or synchronous
+            let deadline = Instant::now() + Duration::from_secs(2);
+            while pumped.load(Ordering::SeqCst) < expected && Instant::now() < deadline {
+                std::thread::sleep(Duration::from_millis(2));
+            }
+            std::thread::sleep(Duration::from_millis(20));
+            let pumped_blocked = pumped.load(Ordering::SeqCst);
+            let freed_blocked = leases.iter().filter(|v| v.load(Ordering::SeqCst)).count();
+            let level = queue
+                .as_ref()
+                .map(|q| q.property::<u32>("current-level-buffers"));
+            let different_thread = source_thread.lock().unwrap().unwrap() != consumer_thread;
+            // Unblock before assertions; Stop also guarantees teardown on panic.
+            *gate.0.lock().unwrap() = true;
+            gate.1.notify_all();
+            assert_eq!(pumped_blocked, expected);
+            assert_eq!(different_thread, queued);
+            assert_eq!(allocations.load(Ordering::SeqCst), 0);
+            if queued {
+                assert_eq!(level, Some(2));
+                assert!(
+                    (3..=4).contains(&freed_blocked),
+                    "native leases freed={freed_blocked}"
+                );
+            } else {
+                assert!(freed_blocked <= 1);
+            }
+            for n in 0..12u64 {
+                let frame = frames_rx.recv_timeout(Duration::from_secs(3)).unwrap();
+                assert_eq!(frame.offset(), n);
+                assert_eq!(frame.offset_end(), n + 1);
+                assert_eq!(
+                    frame.pts(),
+                    Some(gst::ClockTime::from_nseconds(n * 33_333_333))
+                );
+                assert_eq!(frame.dts(), frame.pts());
+                assert_eq!(
+                    frame.duration(),
+                    Some(gst::ClockTime::from_nseconds(33_333_333))
+                );
+                if n == 0 {
+                    assert!(frame.flags().contains(gst::BufferFlags::DISCONT));
+                }
+                let expected: Vec<u8> = (0..96).map(|i| (i as u8).wrapping_add(n as u8)).collect();
+                assert_eq!(
+                    frame.map_readable().unwrap().as_slice(),
+                    expected.as_slice()
+                );
+                let meta = frame.meta::<gst_video::VideoMeta>().unwrap();
+                assert_eq!((meta.width(), meta.height()), (8, 4));
+                assert_eq!(meta.offset(), &[0, 64]);
+                assert_eq!(meta.stride(), &[16, 16]);
+            }
+            let msg = pipeline
+                .bus()
+                .unwrap()
+                .timed_pop_filtered(
+                    gst::ClockTime::from_seconds(3),
+                    &[gst::MessageType::Eos, gst::MessageType::Error],
+                )
+                .unwrap();
+            assert!(matches!(msg.view(), gst::MessageView::Eos(_)), "{msg:?}");
+            pipeline.set_state(gst::State::Null).unwrap();
+            assert!(leases.iter().all(|v| v.load(Ordering::SeqCst)));
+        }
+    }
+    #[test]
+    fn guarded_small_queue_flush_wakes_blocked_producer_and_restarts_stream() {
+        use std::sync::{Condvar, Mutex, atomic::AtomicUsize, mpsc};
+        use std::time::{Duration, Instant};
+        gst::init().unwrap();
+        let pipeline = gst::Pipeline::new();
+        let gate = Arc::new((Mutex::new(false), Condvar::new()));
+        struct Stop(gst::Pipeline, Arc<(Mutex<bool>, Condvar)>);
+        impl Drop for Stop {
+            fn drop(&mut self) {
+                *self.1.0.lock().unwrap() = true;
+                self.1.1.notify_all();
+                let _ = self.0.set_state(gst::State::Null);
+            }
+        }
+        let _stop = Stop(pipeline.clone(), gate.clone());
+        let source = gst::ElementFactory::make("identity").build().unwrap();
+        install(&source);
+        let guard = source_allocation_guard().unwrap();
+        let queue = source_small_queue().unwrap();
+        let sink = gst::ElementFactory::make("fakesink")
+            .property("sync", false)
+            .property("async", false)
+            .property("signal-handoffs", true)
+            .property("enable-last-sample", false)
+            .build()
+            .unwrap();
+        // A real flushing consumer must cancel its own blocking operation.
+        // fakesink's user handoff cannot do that automatically: explicitly
+        // release this test-only gate when FLUSH_START reaches its sink pad.
+        let flush_observed = Arc::new(AtomicBool::new(false));
+        let observed = flush_observed.clone();
+        let flush_gate = gate.clone();
+        sink.static_pad("sink").unwrap().add_probe(
+            gst::PadProbeType::EVENT_DOWNSTREAM | gst::PadProbeType::EVENT_FLUSH,
+            move |_, info| {
+                if info
+                    .event()
+                    .is_some_and(|event| matches!(event.view(), gst::EventView::FlushStart(_)))
+                {
+                    observed.store(true, Ordering::SeqCst);
+                    *flush_gate.0.lock().unwrap() = true;
+                    flush_gate.1.notify_all();
+                }
+                gst::PadProbeReturn::Ok
+            },
+        );
+        pipeline.add_many([&source, &guard, &queue, &sink]).unwrap();
+        gst::Element::link_many([&source, &guard, &queue, &sink]).unwrap();
+        let (entered_tx, entered_rx) = mpsc::channel();
+        let (frames_tx, frames_rx) = mpsc::channel();
+        let first = Arc::new(AtomicBool::new(true));
+        let consumer_returned = Arc::new(AtomicBool::new(false));
+        let returned = consumer_returned.clone();
+        let worker_gate = gate.clone();
+        sink.connect("handoff", false, move |values| {
+            let frame = values[1].get::<gst::Buffer>().unwrap();
+            let _ = frames_tx.send((
+                frame.offset(),
+                frame.map_readable().unwrap().as_slice().to_vec(),
+            ));
+            if first.swap(false, Ordering::SeqCst) {
+                let _ = entered_tx.send(());
+                let ready = worker_gate.0.lock().unwrap();
+                let _ = worker_gate
+                    .1
+                    .wait_timeout_while(ready, Duration::from_secs(5), |v| !*v);
+                returned.store(true, Ordering::SeqCst);
+            }
+            None
+        });
+        let pushed = Arc::new(AtomicUsize::new(0));
+        let count = pushed.clone();
+        let pad = source.static_pad("src").unwrap();
+        pad.add_probe(gst::PadProbeType::BUFFER, move |_, _| {
+            count.fetch_add(1, Ordering::SeqCst);
+            gst::PadProbeReturn::Ok
+        });
+        pipeline.set_state(gst::State::Playing).unwrap();
+        let caps =
+            gst::Caps::from_str("video/x-raw,format=NV12,width=8,height=4,framerate=30/1").unwrap();
+        assert!(pad.push_event(gst::event::StreamStart::new("small-queue-flush-before")));
+        assert!(pad.push_event(gst::event::Caps::new(&caps)));
+        let segment = gst::FormattedSegment::<gst::ClockTime>::new();
+        assert!(pad.push_event(gst::event::Segment::new(&segment)));
+        let native_released = Arc::new(AtomicUsize::new(0));
+        let released = native_released.clone();
+        let producer_pad = pad.clone();
+        let (result_tx, result_rx) = mpsc::channel();
+        let producer = std::thread::spawn(move || {
+            for n in 0..12u64 {
+                struct Lease(Vec<u8>, Arc<AtomicUsize>);
+                impl AsMut<[u8]> for Lease {
+                    fn as_mut(&mut self) -> &mut [u8] {
+                        &mut self.0
+                    }
+                }
+                impl Drop for Lease {
+                    fn drop(&mut self) {
+                        self.1.fetch_add(1, Ordering::SeqCst);
+                    }
+                }
+                let mut buffer =
+                    gst::Buffer::from_mut_slice(Lease(vec![n as u8; 48], released.clone()));
+                let b = buffer.get_mut().unwrap();
+                b.set_pts(gst::ClockTime::from_nseconds(n * 33_333_333));
+                b.set_duration(gst::ClockTime::from_nseconds(33_333_333));
+                b.set_offset(n);
+                let result = producer_pad.push(buffer);
+                if result.is_err() {
+                    let _ = result_tx.send((n, result));
+                    return;
+                }
+            }
+            let _ = result_tx.send((12, Ok(gst::FlowSuccess::Ok)));
+        });
+        entered_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        let deadline = Instant::now() + Duration::from_secs(2);
+        while pushed.load(Ordering::SeqCst) < 4 && Instant::now() < deadline {
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        let full = queue.property::<u32>("current-level-buffers");
+        // FLUSH_START must reach the responsive consumer and release the
+        // full-queue producer without depending on the five-second safety timer.
+        let flush_started = Instant::now();
+        let flush_pad = pad.clone();
+        let flusher =
+            std::thread::spawn(move || flush_pad.push_event(gst::event::FlushStart::new()));
+        let interrupted = result_rx.recv_timeout(Duration::from_secs(1));
+        *gate.0.lock().unwrap() = true;
+        gate.1.notify_all();
+        producer.join().unwrap();
+        assert!(flusher.join().unwrap());
+        assert!(flush_started.elapsed() < Duration::from_secs(1));
+        assert!(flush_observed.load(Ordering::SeqCst));
+        assert_eq!(full, 2);
+        assert_eq!(interrupted.unwrap(), (3, Err(gst::FlowError::Flushing)));
+        assert!(consumer_returned.load(Ordering::SeqCst));
+        assert_eq!(native_released.load(Ordering::SeqCst), 4);
+        assert!(pad.push_event(gst::event::FlushStop::new(true)));
+        assert!(pad.push_event(gst::event::StreamStart::new("small-queue-flush-after")));
+        assert!(pad.push_event(gst::event::Caps::new(&caps)));
+        assert!(pad.push_event(gst::event::Segment::new(&segment)));
+        for n in 20..32u64 {
+            let mut buffer = gst::Buffer::from_mut_slice(vec![n as u8; 48]);
+            let b = buffer.get_mut().unwrap();
+            b.set_pts(gst::ClockTime::from_nseconds((n - 20) * 33_333_333));
+            b.set_duration(gst::ClockTime::from_nseconds(33_333_333));
+            b.set_offset(n);
+            assert_eq!(pad.push(buffer), Ok(gst::FlowSuccess::Ok));
+        }
+        assert!(pad.push_event(gst::event::Eos::new()));
+        let msg = pipeline
+            .bus()
+            .unwrap()
+            .timed_pop_filtered(
+                gst::ClockTime::from_seconds(3),
+                &[gst::MessageType::Eos, gst::MessageType::Error],
+            )
+            .unwrap();
+        assert!(matches!(msg.view(), gst::MessageView::Eos(_)), "{msg:?}");
+        let mut after = Vec::new();
+        while let Ok((offset, bytes)) = frames_rx.try_recv() {
+            if offset >= 20 {
+                after.push((offset, bytes));
+            }
+        }
+        assert_eq!(after.len(), 12);
+        for (n, (offset, bytes)) in after.iter().enumerate() {
+            assert_eq!(*offset, n as u64 + 20);
+            assert_eq!(bytes, &vec![*offset as u8; 48]);
+        }
+        pipeline.set_state(gst::State::Null).unwrap();
     }
 }
