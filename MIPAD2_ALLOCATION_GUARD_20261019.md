@@ -1,3 +1,5 @@
+> Follow-up: [same-binary R17d hardware results](MIPAD2_R17D_HARDWARE_20261019.md). The host-only/not-packaged status below is historical; the follow-up records private installation and sequential on/off/on tests. Defaults remain unchanged.
+
 # Native capture stalls on serialized allocation query; opt-in boundary candidate
 
 This follows the rejected source-queue experiment. No kernel/launcher defaults
