@@ -1721,6 +1721,22 @@ impl Viewfinder {
         ) {
             crate::mipad2_capture_copy::install(device_src);
         }
+        let capture_queue = if crate::mipad2_capture_copy::decoupling_enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
+            std::env::var("MIPAD2_CAPTURE_DECOUPLE").as_deref() == Ok("1"),
+            device_src
+                .factory()
+                .as_ref()
+                .map(|f| f.name().to_string())
+                .unwrap_or_default()
+                .as_str(),
+        ) {
+            log::info!("Mi Pad 2 bounded copied capture source queue enabled: buffers=8 leaky=no");
+            Some(crate::mipad2_capture_copy::source_queue()?)
+        } else {
+            None
+        };
         let bin = gst::Bin::new();
 
         let capsfilter = gst::ElementFactory::make("capsfilter").build()?;
@@ -1735,7 +1751,12 @@ impl Viewfinder {
             &decodebin3,
             &capsfilter_post_decode,
         ])?;
-        gst::Element::link_many([device_src, &capsfilter, &decodebin3])?;
+        if let Some(queue) = capture_queue.as_ref() {
+            bin.add(queue)?;
+            gst::Element::link_many([device_src, queue, &capsfilter, &decodebin3])?;
+        } else {
+            gst::Element::link_many([device_src, &capsfilter, &decodebin3])?;
+        }
 
         self.imp().capsfilter.set(capsfilter).unwrap();
 

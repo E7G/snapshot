@@ -1,0 +1,3332 @@
+{
+  "at": 1792393106.1641061,
+  "full_objective_complete": false,
+  "goal_status": "active",
+  "new_kernel_deployed": false,
+  "default_promoted": false,
+  "all_hardware_and_host_test_jobs_terminal": true,
+  "profile": {
+    "native": [
+      1920,
+      1080,
+      30
+    ],
+    "preview": [
+      1280,
+      720,
+      30
+    ],
+    "video_bps": 15000000,
+    "audio_bps": 192000,
+    "audio_rate": 48000,
+    "audio_channels": 2,
+    "quality_reduced": false
+  },
+  "cases": {
+    "original": {
+      "clips": [
+        {
+          "index": 0,
+          "fps": 30.006169775103434,
+          "max_pts_gap_s": 0.03400000000000247,
+          "packets": 925,
+          "cadence_gate": true,
+          "max_thermal_millidegrees": 69000
+        },
+        {
+          "index": 1,
+          "fps": 30.014339423984744,
+          "max_pts_gap_s": 0.045666999999999985,
+          "packets": 922,
+          "cadence_gate": true,
+          "max_thermal_millidegrees": 69000
+        }
+      ],
+      "controls": {
+        "t4ka3 6-0037": {
+          "values": {
+            "exposure": 2486,
+            "analogue_gain": 128
+          },
+          "matched": true
+        },
+        "ov5693 6-0036": {
+          "values": {
+            "exposure": 1976,
+            "analogue_gain": 127
+          },
+          "matched": true
+        }
+      },
+      "sensor_pm": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "normal_settings_preserved": true
+    },
+    "copy_only": {
+      "clips": [
+        {
+          "index": 0,
+          "fps": 29.970127608127626,
+          "max_pts_gap_s": 0.067666,
+          "packets": 924,
+          "cadence_gate": false,
+          "max_thermal_millidegrees": 67000
+        },
+        {
+          "index": 1,
+          "fps": 30.012991528108632,
+          "max_pts_gap_s": 0.062333,
+          "packets": 902,
+          "cadence_gate": false,
+          "max_thermal_millidegrees": 69000
+        }
+      ],
+      "controls": {
+        "t4ka3 6-0037": {
+          "values": {
+            "exposure": 2486,
+            "analogue_gain": 128
+          },
+          "matched": true
+        },
+        "ov5693 6-0036": {
+          "values": {
+            "exposure": 1976,
+            "analogue_gain": 127
+          },
+          "matched": true
+        }
+      },
+      "sensor_pm": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "normal_settings_preserved": true
+    }
+  },
+  "captures": {
+    "pacing": {
+      "terminal": true,
+      "loss_gate": true,
+      "loss_counts": {
+        "cpu3": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu2": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu1": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu0": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        }
+      },
+      "instance_removed": true,
+      "global_state_changed": false,
+      "trace_lines": 112334,
+      "event_filters": {
+        "irq/irq_handler_entry": "irq == 146",
+        "irq/irq_handler_exit": "irq == 146",
+        "sched/sched_waking": "pid == 528",
+        "sched/sched_wakeup": "pid == 528",
+        "sched/sched_switch": "prev_pid == 528 || next_pid == 528",
+        "v4l2/v4l2_qbuf": "minor == 0",
+        "v4l2/v4l2_dqbuf": "minor == 0",
+        "v4l2/vb2_v4l2_buf_queue": "minor == 0",
+        "v4l2/vb2_v4l2_buf_done": "minor == 0",
+        "v4l2/vb2_v4l2_qbuf": "minor == 0",
+        "v4l2/vb2_v4l2_dqbuf": "minor == 0",
+        "vb2/vb2_buf_queue": "type == 1",
+        "vb2/vb2_buf_done": "type == 1",
+        "vb2/vb2_qbuf": "type == 1",
+        "vb2/vb2_dqbuf": "type == 1"
+      },
+      "systemd_terminal": {
+        "ActiveState": "inactive",
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainStatus": "0"
+      }
+    },
+    "copy": {
+      "terminal": true,
+      "loss_gate": true,
+      "loss_counts": {
+        "cpu3": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu2": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu1": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        },
+        "cpu0": {
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0
+        }
+      },
+      "instance_removed": true,
+      "global_state_changed": false,
+      "trace_lines": 112526,
+      "event_filters": {
+        "irq/irq_handler_entry": "irq == 146",
+        "irq/irq_handler_exit": "irq == 146",
+        "sched/sched_waking": "pid == 528",
+        "sched/sched_wakeup": "pid == 528",
+        "sched/sched_switch": "prev_pid == 528 || next_pid == 528",
+        "v4l2/v4l2_qbuf": "minor == 0",
+        "v4l2/v4l2_dqbuf": "minor == 0",
+        "v4l2/vb2_v4l2_buf_queue": "minor == 0",
+        "v4l2/vb2_v4l2_buf_done": "minor == 0",
+        "v4l2/vb2_v4l2_qbuf": "minor == 0",
+        "v4l2/vb2_v4l2_dqbuf": "minor == 0",
+        "vb2/vb2_buf_queue": "type == 1",
+        "vb2/vb2_buf_done": "type == 1",
+        "vb2/vb2_qbuf": "type == 1",
+        "vb2/vb2_dqbuf": "type == 1"
+      },
+      "systemd_terminal": {
+        "ActiveState": "inactive",
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainStatus": "0"
+      }
+    }
+  },
+  "original_buffer_observation": {
+    "owner_association": {
+      "unique": 3502,
+      "ambiguous": 0,
+      "missing": 0
+    },
+    "queue_count": 2,
+    "queues": [
+      {
+        "queue": 1,
+        "owner_verified_dequeues": 1764,
+        "buffer_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "events": {
+          "vb2_qbuf": 1771,
+          "vb2_buf_queue": 1771,
+          "vb2_buf_done": 1771,
+          "vb2_dqbuf": 1764
+        },
+        "owned_by_driver_histogram": {
+          "vb2_buf_done": {
+            "3": 4,
+            "2": 5,
+            "1": 5,
+            "0": 4,
+            "4": 263,
+            "5": 7,
+            "6": 1483
+          },
+          "vb2_buf_queue": {
+            "1": 4,
+            "2": 5,
+            "3": 5,
+            "4": 4,
+            "5": 263,
+            "6": 7,
+            "7": 1483
+          },
+          "vb2_dqbuf": {
+            "3": 3,
+            "1": 7,
+            "2": 4,
+            "4": 262,
+            "5": 5,
+            "6": 1483
+          },
+          "vb2_qbuf": {
+            "0": 7,
+            "1": 4,
+            "2": 4,
+            "3": 3,
+            "4": 263,
+            "5": 7,
+            "6": 1483
+          }
+        },
+        "zero_driver_owned_periods": [
+          {
+            "begin": 52439840782000,
+            "end": 52439840886000,
+            "duration_ns": 104000,
+            "begin_event": "vb2_qbuf",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 1,
+            "return_index": 0
+          },
+          {
+            "begin": 52440138389000,
+            "end": 52440452827000,
+            "duration_ns": 314438000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 3,
+            "return_index": 0
+          },
+          {
+            "begin": 52449302972000,
+            "end": 52449303942000,
+            "duration_ns": 970000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1
+          },
+          {
+            "begin": 52449336743000,
+            "end": 52449340168000,
+            "duration_ns": 3425000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 1,
+            "return_index": 5
+          }
+        ],
+        "zero_right_censored_begin": 52499208585000,
+        "requeue_p50_ns": 11090000,
+        "requeue_p99_ns": 32532000,
+        "requeue_max_ns": 413808000,
+        "requeue_right_censored": 0
+      },
+      {
+        "queue": 2,
+        "owner_verified_dequeues": 1738,
+        "buffer_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "events": {
+          "vb2_qbuf": 1744,
+          "vb2_buf_queue": 1744,
+          "vb2_buf_done": 1744,
+          "vb2_dqbuf": 1738
+        },
+        "owned_by_driver_histogram": {
+          "vb2_buf_done": {
+            "3": 249,
+            "2": 28,
+            "1": 3,
+            "0": 5,
+            "4": 8,
+            "5": 1451
+          },
+          "vb2_buf_queue": {
+            "1": 5,
+            "2": 3,
+            "3": 28,
+            "4": 249,
+            "5": 8,
+            "6": 1451
+          },
+          "vb2_dqbuf": {
+            "3": 249,
+            "1": 2,
+            "2": 26,
+            "0": 3,
+            "4": 7,
+            "5": 1451
+          },
+          "vb2_qbuf": {
+            "0": 8,
+            "1": 2,
+            "2": 27,
+            "3": 248,
+            "4": 8,
+            "5": 1451
+          }
+        },
+        "zero_driver_owned_periods": [
+          {
+            "begin": 52499623061000,
+            "end": 52499623183000,
+            "duration_ns": 122000,
+            "begin_event": "vb2_qbuf",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 1,
+            "return_index": 0
+          },
+          {
+            "begin": 52499887803000,
+            "end": 52500071706000,
+            "duration_ns": 183903000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 3,
+            "return_index": 0
+          },
+          {
+            "begin": 52508350179000,
+            "end": 52508372547000,
+            "duration_ns": 22368000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 2,
+            "return_index": 1
+          },
+          {
+            "begin": 52508395667000,
+            "end": 52508414970000,
+            "duration_ns": 19303000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 3,
+            "return_index": 2
+          },
+          {
+            "begin": 52508438492000,
+            "end": 52508454152000,
+            "duration_ns": 15660000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 4
+          }
+        ],
+        "zero_right_censored_begin": 52557944109000,
+        "requeue_p50_ns": 11565000,
+        "requeue_p99_ns": 96664000,
+        "requeue_max_ns": 283750000,
+        "requeue_right_censored": 0
+      }
+    ],
+    "anomalies": [],
+    "owner_tokens_exported": false,
+    "caveat": "Driver-owned VB2 count is not the private CSS queue depth. Shutdown/stream-switch zero periods are retained, not automatically recording starvation. Successful metadata joins require unique indexed driver stamps; no frame/payload memory is read.",
+    "kernel_candidates": [
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52440497980000,
+        "driver": 52440538443000,
+        "driver_gap_ns": 40463000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 52440497985000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "1",
+          "timestamp": "52440497980634",
+          "queued": "5",
+          "owned_by_drv": "4",
+          "type": "1"
+        },
+        "after": {
+          "ts": 52440538448000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "2",
+          "timestamp": "52440538443626",
+          "queued": "5",
+          "owned_by_drv": "4",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [],
+        "context": [
+          {
+            "ts": 52440452824000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52440452827000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440453945000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52440071867524",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440465105000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440465108000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52440466006000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "2",
+            "timestamp": "52440105092638",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52440466189000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "3",
+            "timestamp": "52440138385840",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52440475370000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "52440475366164",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440475638000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "0",
+            "timestamp": "52440475366164",
+            "queued": "1",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440477770000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52440477773000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52440478387000,
+            "event": "vb2_qbuf",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52440478388000,
+            "event": "vb2_buf_queue",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52440488065000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52440488068000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440495703000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440495705000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "5",
+            "type": "1"
+          },
+          {
+            "ts": 52440497985000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "52440497980634",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440498189000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52440497980634",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440506825000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440506828000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "5",
+            "type": "1"
+          },
+          {
+            "ts": 52440538448000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "52440538443626",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440538561000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "2",
+            "timestamp": "52440538443626",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440548972000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440548975000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "5",
+            "type": "1"
+          },
+          {
+            "ts": 52440572025000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "4",
+            "timestamp": "52440572020547",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440572332000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "52440572020547",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440583492000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52440583494000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "5",
+            "owned_by_drv": "5",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 0
+      },
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52499887799000,
+        "driver": 52500094364000,
+        "driver_gap_ns": 206565000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52508350175000,
+        "driver": 52508395663000,
+        "driver_gap_ns": 45488000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52508395663000,
+        "driver": 52508438488000,
+        "driver_gap_ns": 42825000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52440497980000,
+        "driver": 52440538443000,
+        "driver_gap_ns": 40463000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52499887799000,
+        "driver": 52500094364000,
+        "driver_gap_ns": 206565000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 52499887803000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "3",
+          "timestamp": "52499887799381",
+          "queued": "3",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 52500094371000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "52500094364488",
+          "queued": "3",
+          "owned_by_drv": "2",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 52499887803000,
+            "end": 52500071706000,
+            "duration_ns": 183903000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 3,
+            "return_index": 0,
+            "overlap_ns": 183903000
+          }
+        ],
+        "context": [
+          {
+            "ts": 52499787824000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "52499787819987",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52499787956000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "0",
+            "timestamp": "52499787819987",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52499821010000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "52499821006373",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52499854348000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "52499854344570",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52499887803000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "52499887799381",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52500071703000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52500071706000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52500073807000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52499821006373",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52500088278000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52500088281000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500089858000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "2",
+            "timestamp": "52499854344570",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500090025000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "3",
+            "timestamp": "52499887799381",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500090396000,
+            "event": "vb2_qbuf",
+            "pid": 1121766,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500090405000,
+            "event": "vb2_buf_queue",
+            "pid": 1121766,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500094371000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "52500094364488",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500094549000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "0",
+            "timestamp": "52500094364488",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500103676000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52500103686000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500116013000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500116016000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 52500116794000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "52500116789400",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500116971000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52500116789400",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500130033000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52500130035000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 183903000
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52508350175000,
+        "driver": 52508395663000,
+        "driver_gap_ns": 45488000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 52508350179000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "52508350175307",
+          "queued": "2",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 52508395667000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "1",
+          "timestamp": "52508395663075",
+          "queued": "3",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 52508350179000,
+            "end": 52508372547000,
+            "duration_ns": 22368000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 2,
+            "return_index": 1,
+            "overlap_ns": 22368000
+          }
+        ],
+        "context": [
+          {
+            "ts": 52508250329000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52508250159531",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52508283548000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "52508283545161",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52508283624000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "2",
+            "timestamp": "52508283545161",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52508316870000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "52508316866446",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508350179000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "52508350175307",
+            "queued": "2",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508372544000,
+            "event": "vb2_qbuf",
+            "pid": 1121764,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508372547000,
+            "event": "vb2_buf_queue",
+            "pid": 1121764,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508395667000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "52508395663075",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508414967000,
+            "event": "vb2_qbuf",
+            "pid": 1121764,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508414970000,
+            "event": "vb2_buf_queue",
+            "pid": 1121764,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508438492000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "52508438488409",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 22368000
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 52508395663000,
+        "driver": 52508438488000,
+        "driver_gap_ns": 42825000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 52508395667000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "1",
+          "timestamp": "52508395663075",
+          "queued": "3",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 52508438492000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "2",
+          "timestamp": "52508438488409",
+          "queued": "4",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 52508395667000,
+            "end": 52508414970000,
+            "duration_ns": 19303000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 3,
+            "return_index": 2,
+            "overlap_ns": 19303000
+          }
+        ],
+        "context": [
+          {
+            "ts": 52508316870000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "52508316866446",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508350179000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "52508350175307",
+            "queued": "2",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508372544000,
+            "event": "vb2_qbuf",
+            "pid": 1121764,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508372547000,
+            "event": "vb2_buf_queue",
+            "pid": 1121764,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508395667000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "52508395663075",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508414967000,
+            "event": "vb2_qbuf",
+            "pid": 1121764,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508414970000,
+            "event": "vb2_buf_queue",
+            "pid": 1121764,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508438492000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "52508438488409",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508447933000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "3",
+            "timestamp": "52508316866446",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508448335000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "0",
+            "timestamp": "52508350175307",
+            "queued": "2",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508448409000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "1",
+            "timestamp": "52508395663075",
+            "queued": "1",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508454149000,
+            "event": "vb2_qbuf",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 52508454152000,
+            "event": "vb2_buf_queue",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508454872000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "2",
+            "timestamp": "52508438488409",
+            "queued": "1",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508457883000,
+            "event": "vb2_qbuf",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 52508457886000,
+            "event": "vb2_buf_queue",
+            "pid": 1121765,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52508458505000,
+            "event": "vb2_qbuf",
+            "pid": 1121767,
+            "index": "5",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52508458508000,
+            "event": "vb2_buf_queue",
+            "pid": 1121767,
+            "index": "5",
+            "timestamp": "0",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 52508476927000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "4",
+            "timestamp": "52508476922769",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 52508477165000,
+            "event": "vb2_dqbuf",
+            "pid": 1121767,
+            "index": "4",
+            "timestamp": "52508476922769",
+            "queued": "2",
+            "owned_by_drv": "2",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 19303000
+      }
+    ],
+    "recording_anomalies_reproduced": false,
+    "source_hashes": {
+      "mp2_kernel_timing.py": "a36396799c84cce62718bfa54f276e223a70031ee4a0760b244dd4ab551d7658",
+      "mp2_buffer_timing.py": "11992b3c0d583d7b5ffea65cae70d315065cede8b7aa054779e629a85a971bf5"
+    },
+    "syntax_complete": true,
+    "records": 112322,
+    "event_counts": {
+      "tracing_mark_write": 2,
+      "vb2_qbuf": 3515,
+      "v4l2_qbuf": 3515,
+      "vb2_buf_queue": 3515,
+      "irq_handler_entry": 10537,
+      "irq_handler_exit": 10537,
+      "sched_waking": 7016,
+      "sched_wakeup": 7016,
+      "sched_switch": 14032,
+      "vb2_buf_done": 3515,
+      "vb2_dqbuf": 3502,
+      "v4l2_dqbuf": 3502
+    },
+    "kernel_candidate_qualification": "Kernel source-frame gaps >40ms/<250ms with consecutive software sequence; includes preview/startup, not automatically an MP4-recording failure or physical exposure continuity."
+  },
+  "copy_only_buffer_observation": {
+    "owner_association": {
+      "unique": 3508,
+      "ambiguous": 0,
+      "missing": 0
+    },
+    "queue_count": 2,
+    "queues": [
+      {
+        "queue": 1,
+        "owner_verified_dequeues": 1757,
+        "buffer_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "events": {
+          "vb2_qbuf": 1761,
+          "vb2_buf_queue": 1761,
+          "vb2_buf_done": 1761,
+          "vb2_dqbuf": 1757
+        },
+        "owned_by_driver_histogram": {
+          "vb2_buf_queue": {
+            "1": 3,
+            "2": 4,
+            "3": 3,
+            "4": 1751
+          },
+          "vb2_qbuf": {
+            "0": 6,
+            "3": 1750,
+            "1": 3,
+            "2": 2
+          },
+          "vb2_buf_done": {
+            "3": 1751,
+            "2": 3,
+            "1": 4,
+            "0": 3
+          },
+          "vb2_dqbuf": {
+            "3": 1750,
+            "0": 2,
+            "1": 2,
+            "2": 3
+          }
+        },
+        "zero_driver_owned_periods": [
+          {
+            "begin": 53480614327000,
+            "end": 53480614398000,
+            "duration_ns": 71000,
+            "begin_event": "vb2_qbuf",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 1,
+            "return_index": 0
+          },
+          {
+            "begin": 53480908694000,
+            "end": 53481258485000,
+            "duration_ns": 349791000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1
+          },
+          {
+            "begin": 53490308399000,
+            "end": 53490353145000,
+            "duration_ns": 44746000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1
+          }
+        ],
+        "zero_right_censored_begin": 53539804158000,
+        "requeue_p50_ns": 1875000,
+        "requeue_p99_ns": 3121000,
+        "requeue_max_ns": 12981000,
+        "requeue_right_censored": 0
+      },
+      {
+        "queue": 2,
+        "owner_verified_dequeues": 1751,
+        "buffer_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "events": {
+          "vb2_qbuf": 1755,
+          "vb2_buf_queue": 1755,
+          "vb2_buf_done": 1755,
+          "vb2_dqbuf": 1751
+        },
+        "owned_by_driver_histogram": {
+          "vb2_buf_queue": {
+            "1": 3,
+            "2": 4,
+            "3": 3,
+            "4": 1745
+          },
+          "vb2_qbuf": {
+            "0": 6,
+            "3": 1744,
+            "1": 3,
+            "2": 2
+          },
+          "vb2_buf_done": {
+            "3": 1745,
+            "2": 3,
+            "1": 4,
+            "0": 3
+          },
+          "vb2_dqbuf": {
+            "3": 1744,
+            "0": 2,
+            "1": 2,
+            "2": 3
+          }
+        },
+        "zero_driver_owned_periods": [
+          {
+            "begin": 53540204416000,
+            "end": 53540204498000,
+            "duration_ns": 82000,
+            "begin_event": "vb2_qbuf",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 1,
+            "return_index": 0
+          },
+          {
+            "begin": 53540467052000,
+            "end": 53540739850000,
+            "duration_ns": 272798000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1
+          },
+          {
+            "begin": 53549063742000,
+            "end": 53549103281000,
+            "duration_ns": 39539000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 0
+          }
+        ],
+        "zero_right_censored_begin": 53599008523000,
+        "requeue_p50_ns": 1897000,
+        "requeue_p99_ns": 3642000,
+        "requeue_max_ns": 18122000,
+        "requeue_right_censored": 0
+      }
+    ],
+    "anomalies": [
+      {
+        "queue": 1,
+        "cycle": 0,
+        "driver_prev": 53490308394000,
+        "driver": 53490375981000,
+        "driver_gap_ns": 67587000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 53490308399000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "53490308394884",
+          "queued": "4",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 53490375986000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "1",
+          "timestamp": "53490375981365",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 53490308399000,
+            "end": 53490353145000,
+            "duration_ns": 44746000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1,
+            "overlap_ns": 44746000
+          }
+        ],
+        "context": [
+          {
+            "ts": 53490208417000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53490208412556",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490241404000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53490241399668",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490274854000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "53490274850108",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490308399000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490350926000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490208412556",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353141000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353145000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490353875000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490241399668",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355953000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355955000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490356795000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53490274850108",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358302000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358304000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490361967000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371416000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371419000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490375986000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490376191000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378089000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378091000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490398505000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490398729000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409952000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409956000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 44746000
+      },
+      {
+        "queue": 1,
+        "cycle": 1,
+        "driver_prev": 53549063737000,
+        "driver": 53549125888000,
+        "driver_gap_ns": 62151000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": 0,
+        "driver_prev": 53490308394000,
+        "driver": 53490375981000,
+        "driver_gap_ns": 67587000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": 1,
+        "driver_prev": 53549063737000,
+        "driver": 53549125888000,
+        "driver_gap_ns": 62151000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 53549063742000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "3",
+          "timestamp": "53549063737648",
+          "queued": "4",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 53549125894000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "53549125888885",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 53549063742000,
+            "end": 53549103281000,
+            "duration_ns": 39539000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 0,
+            "overlap_ns": 39539000
+          }
+        ],
+        "context": [
+          {
+            "ts": 53548996780000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53548996775439",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549030428000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53549030424014",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549063742000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "53549063737648",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549101290000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53548963410769",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549103278000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549103281000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549103774000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53548996775439",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549106605000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549106608000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549106989000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53549030424014",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549114448000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549114450000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549114905000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53549063737648",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549117206000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549117210000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549125894000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53549125888885",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549126160000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53549125888885",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549133930000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549133933000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549148616000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53549148605393",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549148832000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53549148605393",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549157045000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549157047000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549170954000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53549170948199",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549171250000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53549170948199",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549173654000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549173657000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 39539000
+      }
+    ],
+    "owner_tokens_exported": false,
+    "caveat": "Driver-owned VB2 count is not the private CSS queue depth. Shutdown/stream-switch zero periods are retained, not automatically recording starvation. Successful metadata joins require unique indexed driver stamps; no frame/payload memory is read.",
+    "kernel_candidates": [
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53490308394000,
+        "driver": 53490375981000,
+        "driver_gap_ns": 67587000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 53490308399000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "53490308394884",
+          "queued": "4",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 53490375986000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "1",
+          "timestamp": "53490375981365",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 53490308399000,
+            "end": 53490353145000,
+            "duration_ns": 44746000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 1,
+            "overlap_ns": 44746000
+          }
+        ],
+        "context": [
+          {
+            "ts": 53490208417000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53490208412556",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490241404000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53490241399668",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490274854000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "53490274850108",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490308399000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490350926000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490208412556",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353141000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353145000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490353875000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490241399668",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355953000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355955000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490356795000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53490274850108",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358302000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358304000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490361967000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371416000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371419000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490375986000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490376191000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378089000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378091000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490398505000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490398729000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409952000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409956000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 44746000
+      },
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53490398497000,
+        "driver": 53490442029000,
+        "driver_gap_ns": 43532000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 53490398505000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "2",
+          "timestamp": "53490398497938",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "after": {
+          "ts": 53490442037000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "3",
+          "timestamp": "53490442029924",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [],
+        "context": [
+          {
+            "ts": 53490308399000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490350926000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490208412556",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353141000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53490353145000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490353875000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490241399668",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355953000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53490355955000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490356795000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53490274850108",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358302000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53490358304000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490361967000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53490308394884",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371416000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490371419000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490375986000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490376191000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53490375981365",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378089000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490378091000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490398505000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490398729000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53490398497938",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409952000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490409956000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490442037000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "53490442029924",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490442255000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53490442029924",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490445236000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490445241000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53490474826000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53490474820652",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490475024000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53490474820652",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490477096000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53490477100000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 0
+      },
+      {
+        "queue": 1,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53549063737000,
+        "driver": 53549125888000,
+        "driver_gap_ns": 62151000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53490308394000,
+        "driver": 53490375981000,
+        "driver_gap_ns": 67587000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53490398497000,
+        "driver": 53490442029000,
+        "driver_gap_ns": 43532000,
+        "before_matches": 0,
+        "after_matches": 0,
+        "same_minor_owner_verified": true
+      },
+      {
+        "queue": 2,
+        "cycle": "kernel-candidate-not-recording-confirmed",
+        "driver_prev": 53549063737000,
+        "driver": 53549125888000,
+        "driver_gap_ns": 62151000,
+        "before_matches": 1,
+        "after_matches": 1,
+        "same_minor_owner_verified": true,
+        "before": {
+          "ts": 53549063742000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "3",
+          "timestamp": "53549063737648",
+          "queued": "4",
+          "owned_by_drv": "0",
+          "type": "1"
+        },
+        "after": {
+          "ts": 53549125894000,
+          "event": "vb2_buf_done",
+          "pid": 528,
+          "index": "0",
+          "timestamp": "53549125888885",
+          "queued": "4",
+          "owned_by_drv": "3",
+          "type": "1"
+        },
+        "zero_driver_owned_overlaps": [
+          {
+            "begin": 53549063742000,
+            "end": 53549103281000,
+            "duration_ns": 39539000,
+            "begin_event": "vb2_buf_done",
+            "end_event": "vb2_buf_queue",
+            "queued_at_zero": 4,
+            "return_index": 0,
+            "overlap_ns": 39539000
+          }
+        ],
+        "context": [
+          {
+            "ts": 53548996780000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53548996775439",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549030428000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53549030424014",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549063742000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "3",
+            "timestamp": "53549063737648",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549101290000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53548963410769",
+            "queued": "3",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549103278000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "0",
+            "type": "1"
+          },
+          {
+            "ts": 53549103281000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549103774000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53548996775439",
+            "queued": "3",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549106605000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "1",
+            "type": "1"
+          },
+          {
+            "ts": 53549106608000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549106989000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53549030424014",
+            "queued": "3",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549114448000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "2",
+            "type": "1"
+          },
+          {
+            "ts": 53549114450000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549114905000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "53549063737648",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549117206000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549117210000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "3",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549125894000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "0",
+            "timestamp": "53549125888885",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549126160000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "53549125888885",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549133930000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549133933000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "0",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549148616000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "1",
+            "timestamp": "53549148605393",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549148832000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "53549148605393",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549157045000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549157047000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "1",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          },
+          {
+            "ts": 53549170954000,
+            "event": "vb2_buf_done",
+            "pid": 528,
+            "index": "2",
+            "timestamp": "53549170948199",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549171250000,
+            "event": "vb2_dqbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "53549170948199",
+            "queued": "3",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549173654000,
+            "event": "vb2_qbuf",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "3",
+            "type": "1"
+          },
+          {
+            "ts": 53549173657000,
+            "event": "vb2_buf_queue",
+            "pid": 1145000,
+            "index": "2",
+            "timestamp": "0",
+            "queued": "4",
+            "owned_by_drv": "4",
+            "type": "1"
+          }
+        ],
+        "observed_zero_driver_owned_ns": 39539000
+      }
+    ],
+    "recording_anomalies_reproduced": true,
+    "source_hashes": {
+      "mp2_kernel_timing.py": "a36396799c84cce62718bfa54f276e223a70031ee4a0760b244dd4ab551d7658",
+      "mp2_buffer_timing.py": "11992b3c0d583d7b5ffea65cae70d315065cede8b7aa054779e629a85a971bf5"
+    },
+    "syntax_complete": true,
+    "records": 112514,
+    "event_counts": {
+      "tracing_mark_write": 2,
+      "vb2_qbuf": 3516,
+      "v4l2_qbuf": 3516,
+      "vb2_buf_queue": 3516,
+      "irq_handler_entry": 10558,
+      "irq_handler_exit": 10558,
+      "sched_waking": 7032,
+      "sched_wakeup": 7032,
+      "sched_switch": 14064,
+      "vb2_buf_done": 3516,
+      "vb2_dqbuf": 3508,
+      "v4l2_dqbuf": 3508
+    },
+    "kernel_candidate_qualification": "Kernel source-frame gaps >40ms/<250ms with consecutive software sequence; includes preview/startup, not automatically an MP4-recording failure or physical exposure continuity."
+  },
+  "conclusion": "Exact indexed/stamped successful metadata joins prove VB2 driver-owned count reaches zero for44.746ms and39.539ms inside two actual copy-only recording gaps. Copy-only does not solve source-thread stalls. Blocking location/unique cause and decoupled candidate hardware efficacy remain unproven.",
+  "paired_control_qualification": "Single opt-in environment flag changes copying, but native pool allocation also changes from7/6 indices to4/4; sequential thermal/state conditions differ. Do not claim a randomized pool-constant throughput comparison.",
+  "failed_lineage_fits_retained": [
+    "Single global clock/order transform failed around camera switch (~59.778s residual).",
+    "Per-epoch100us clock/order transform also failed (first epoch241860ns residual); no nearest-frame or relaxed-threshold lineage claim was accepted. Baseline >40ms kernel candidates are not automatically MP4 failures."
+  ],
+  "new_candidate": {
+    "base_commit": "e1656738881d8e75ff1ab9619895aada3c83cd6c",
+    "source_sha256": {
+      "aperture/src/mipad2_capture_copy.rs": "720bd3db55607cfac26e284b1a422015c258880b82c4ca35894cd6d0223174df",
+      "aperture/src/viewfinder.rs": "18e1bd0a8e8708734598b19d68044fcd1e2c1cbc85253c0f797ff3a7489ff52f"
+    },
+    "flags": [
+      "MIPAD2_CAPTURE_COPY=1",
+      "MIPAD2_CAPTURE_DECOUPLE=1"
+    ],
+    "queue_max_buffers": 8,
+    "queue_leaky": false,
+    "default_path_unchanged": true,
+    "host_workspace_tests": 64,
+    "focused_real_copy_flow_tests": 4,
+    "hardware_tested": false,
+    "packaged": false,
+    "installed": false,
+    "test_scope": "Real Rust/GStreamer appsrc/copied-source/fakesink pipelines: blocked consumer negative control versus bounded queue, early native lease release, twelve exact synthetic frames/PTS and EOS conservation. Full NV12 bytes/layout/timing copy test retained; not simulated Android hardware proof."
+  },
+  "buffer_parser_tests": 11,
+  "parser_sha256": "11992b3c0d583d7b5ffea65cae70d315065cede8b7aa054779e629a85a971bf5",
+  "post_test_RTC": {
+    "pacing": {
+      "s0i3_delta_us": 9266816,
+      "functional_resume": true,
+      "deep_residency_gate": true,
+      "wakeup_irq": "9",
+      "new_kernel_errors": []
+    },
+    "copy": {
+      "s0i3_delta_us": 9582784,
+      "functional_resume": true,
+      "deep_residency_gate": true,
+      "wakeup_irq": "9",
+      "new_kernel_errors": []
+    }
+  },
+  "old_failures_retained": true,
+  "media_core_or_individual_pixel_digests_exported": false,
+  "raw_kernel_traces_or_owner_tokens_published": false,
+  "unresolved": [
+    "Native zero-queue intervals and source dequeue gaps remain; source blocking site versus scheduling/renegotiation needs discrimination.",
+    "Copied eight-frame queue is host-tested only; full hardware cadence/stop/reopen/photo/AV-sync/foreground/PM gates remain.",
+    "SP failed-reset DMA ownership, Mesa stop crash, AF/WB, intermittent S0I3 and complete Android/Windows/kernel/flash integration remain open."
+  ]
+}
