@@ -1,0 +1,92 @@
+--- a/sys/v4l2/gstv4l2src.c
++++ b/sys/v4l2/gstv4l2src.c
+@@ -1146,6 +1146,54 @@
+   return gst_base_src_negotiate (GST_BASE_SRC (v4l2src));
+ }
+ 
++/* Opt-in scalar diagnostics only. Never changes timestamps, buffers or flow. */
++typedef struct {
++  GstClockTime pts, driver, mono, clock, base;
++  guint64 offset, count;
++  guint logs;
++} Mp2StampState;
++
++static void
++mp2_stamp_diag (GstV4l2Src *src, GstBuffer *buffer, GstClockTime driver,
++    GstClockTime mono, GstClockTime clock, GstClockTime base, GstClockTime delay)
++{
++  static gsize enabled_once;
++  static GQuark key;
++  Mp2StampState *state;
++  GstClockTime pts = GST_BUFFER_PTS (buffer);
++  guint64 offset = GST_BUFFER_OFFSET (buffer);
++  if (g_once_init_enter (&enabled_once)) {
++    gboolean enabled = g_strcmp0 (g_getenv ("MIPAD2_V4L2_STAMP_DIAG"), "1") == 0;
++    key = g_quark_from_static_string ("mipad2-v4l2-stamp-diagnostic-v1");
++    g_once_init_leave (&enabled_once, enabled ? 2 : 1);
++  }
++  if (enabled_once != 2)
++    return;
++  /* GstPushSrc serializes create(). State belongs to this source instance. */
++  state = g_object_get_qdata (G_OBJECT (src), key);
++  if (!state) {
++    state = g_new0 (Mp2StampState, 1);
++    g_object_set_qdata_full (G_OBJECT (src), key, state, g_free);
++  }
++  if (state->count && GST_CLOCK_TIME_IS_VALID (pts) &&
++      GST_CLOCK_TIME_IS_VALID (state->pts) && pts > state->pts + 50 * GST_MSECOND &&
++      state->logs < 100) {
++    state->logs++;
++    g_printerr ("MP2_V4L2_STAMP source=%s n=%" G_GUINT64_FORMAT
++        " pts-prev=%" G_GUINT64_FORMAT " pts=%" G_GUINT64_FORMAT
++        " driver-prev=%" G_GUINT64_FORMAT " driver=%" G_GUINT64_FORMAT
++        " mono-prev=%" G_GUINT64_FORMAT " mono=%" G_GUINT64_FORMAT
++        " clock-prev=%" G_GUINT64_FORMAT " clock=%" G_GUINT64_FORMAT
++        " base-prev=%" G_GUINT64_FORMAT " base=%" G_GUINT64_FORMAT
++        " offset-prev=%" G_GUINT64_FORMAT " offset=%" G_GUINT64_FORMAT
++        " delay=%" G_GUINT64_FORMAT "\n", GST_OBJECT_NAME (src), state->count,
++        state->pts, pts, state->driver, driver, state->mono, mono,
++        state->clock, clock, state->base, base, state->offset, offset, delay);
++  }
++  state->pts = pts; state->driver = driver; state->mono = mono;
++  state->clock = clock; state->base = base; state->offset = offset; state->count++;
++}
++
+ static GstFlowReturn
+ gst_v4l2src_create (GstPushSrc * src, GstBuffer ** buf)
+ {
+@@ -1155,6 +1203,7 @@
+   GstClock *clock;
+   GstClockTime abs_time, base_time, timestamp, duration;
+   GstClockTime delay;
++  GstClockTime mp2_driver_stamp, mp2_mono_stamp;
+   GstMessage *qos_msg;
+   gboolean half_frame;
+ 
+@@ -1196,6 +1245,7 @@
+     goto error;
+ 
+   timestamp = GST_BUFFER_TIMESTAMP (*buf);
++  mp2_driver_stamp = timestamp;
+   duration = obj->duration;
+ 
+   /* timestamps, LOCK to get clock and base time. */
+@@ -1219,6 +1269,8 @@
+     abs_time = GST_CLOCK_TIME_NONE;
+   }
+ 
++  mp2_mono_stamp = gst_util_get_timestamp ();
++
+ retry:
+   if (!v4l2src->has_bad_timestamp && timestamp != GST_CLOCK_TIME_NONE) {
+     struct timespec now;
+@@ -1359,6 +1411,9 @@
+   GST_BUFFER_TIMESTAMP (*buf) = timestamp;
+   GST_BUFFER_DURATION (*buf) = duration;
+ 
++  mp2_stamp_diag (v4l2src, *buf, mp2_driver_stamp, mp2_mono_stamp,
++      abs_time, base_time, delay);
++
+   return ret;
+ 
+   /* ERROR */

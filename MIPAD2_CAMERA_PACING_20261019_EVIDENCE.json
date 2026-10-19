@@ -1,0 +1,282 @@
+{
+  "at": 1792388974.1633897,
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_commit": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "boot_unchanged": true,
+  "app_sha256": "994d8357c1e42d6cf7c753a2a5cfc68420a82f1e4d082723c82e9df984232517",
+  "full_quality_preserved": true,
+  "baseline_scalar_tracer": [
+    {
+      "sensor": "front",
+      "fps": 29.93480897085025,
+      "max_pts_gap_seconds": 0.07733300000000001,
+      "cadence_gate": false,
+      "packets": 901,
+      "decoded_frames": 901,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 15237406,
+      "actual_audio_bitrate": 191986,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "max_thermal_millidegrees": 67000
+    },
+    {
+      "sensor": "rear",
+      "fps": 30.01220276376109,
+      "max_pts_gap_seconds": 0.03999999999999998,
+      "cadence_gate": true,
+      "packets": 911,
+      "decoded_frames": 911,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 14923786,
+      "actual_audio_bitrate": 191919,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "max_thermal_millidegrees": 71000
+    }
+  ],
+  "driver_stamp_diagnostic": [
+    {
+      "sensor": "front",
+      "fps": 29.941650125683243,
+      "max_pts_gap_seconds": 0.06,
+      "cadence_gate": false,
+      "packets": 899,
+      "decoded_frames": 899,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 15242846,
+      "actual_audio_bitrate": 191955,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "max_thermal_millidegrees": 73000
+    },
+    {
+      "sensor": "rear",
+      "fps": 29.9807106657735,
+      "max_pts_gap_seconds": 0.060667,
+      "cadence_gate": false,
+      "packets": 918,
+      "decoded_frames": 918,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 15253071,
+      "actual_audio_bitrate": 191966,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "max_thermal_millidegrees": 73000
+    }
+  ],
+  "anomalies": [
+    {
+      "cycle": 0,
+      "deltas": {
+        "pts": 52980425,
+        "driver": 52980000,
+        "mono": 14794588,
+        "clock": 14795001,
+        "base": 0,
+        "offset": 1
+      },
+      "clock_minus_monotonic_delta_ns": 413,
+      "equation_residual_ns": 12
+    },
+    {
+      "cycle": 0,
+      "deltas": {
+        "pts": 59924263,
+        "driver": 59925000,
+        "mono": 8382273,
+        "clock": 8381773,
+        "base": 0,
+        "offset": 1
+      },
+      "clock_minus_monotonic_delta_ns": -500,
+      "equation_residual_ns": -237
+    },
+    {
+      "cycle": 1,
+      "deltas": {
+        "pts": 60688937,
+        "driver": 60688000,
+        "mono": 103065,
+        "clock": 103677,
+        "base": 0,
+        "offset": 1
+      },
+      "clock_minus_monotonic_delta_ns": 612,
+      "equation_residual_ns": 325
+    }
+  ],
+  "diagnosis": "In these observed anomalies, native-source PTS jumps match driver-delivered timestamp jumps, not encoder rewriting or a pipeline-clock/base-time jump. Does not establish optical frame loss versus delayed completion, IRQ/ISP scheduling, or a unique physical cause.",
+  "trace_integrity": {
+    "first": {
+      "trace_complete": true,
+      "reserved": 266788,
+      "capacity": 524288,
+      "overflow": 0,
+      "incomplete": 0,
+      "unmatched_post": 0,
+      "unmatched_pre": 34,
+      "recording_encoder_unmatched_pre": 0,
+      "strict_all_calls_balanced": false
+    },
+    "second": {
+      "complete": true,
+      "reserved": 268164,
+      "capacity": 524288,
+      "overflow": 0,
+      "incomplete": 0,
+      "unmatched_pre": 34,
+      "unmatched_post": 0
+    },
+    "first_strict_exit_failure_preserved": true,
+    "right_censored_call_durations_not_inferred": true
+  },
+  "sleep": [
+    {
+      "s0i3_delta_us": 9074976,
+      "wakeup_irq": "9",
+      "functional_resume": true,
+      "deep_residency_gate": true,
+      "new_kernel_errors": [],
+      "boot_unchanged": true
+    },
+    {
+      "s0i3_delta_us": 0,
+      "wakeup_irq": "9",
+      "functional_resume": true,
+      "deep_residency_gate": false,
+      "new_kernel_errors": [],
+      "boot_unchanged": true
+    }
+  ],
+  "source_hashes": {
+    "tracer": "c62e9d3dfc7381db7e6152135a3ae8e66ed48e80ea8a5e9cf029cc672d2b8c2f",
+    "decoder": "066358db345e56e42ae69b423fac53c1e9e86614cae62cc72e8c6bd059dff684",
+    "v4l2_original": "fa5e65d80eefd77f14a3a395395aff0b55e93b166239a84207d2d5f5c9a7ed0a",
+    "v4l2_diagnostic": "e521e953869b81119fa150a325dba5e020c43540f6b0b74778a9f0155e5e150c",
+    "diagnostic_patch": "f36b40bf91d726b0aaab2bb64c78a1cf71c6c6eb86e931c1ff77c8294613d395"
+  },
+  "binary_hashes": {
+    "tracer": "4fb6b24dc89a2d8ef82aeb8d3c35bcf8057abaf25776612aab3c236c6a8a234f",
+    "private_v4l2_diagnostic": "d1523c3465f962960f10ea351529105696ef941093ffe80399d858a9a364cc0d"
+  },
+  "synthetic_tests": {
+    "parser_cases": 10,
+    "tracer_host": [
+      {
+        "tag": "normal",
+        "complete": true,
+        "reserved": 80,
+        "overflow": 0,
+        "unmatched_pre": 0,
+        "unmatched_post": 0
+      },
+      {
+        "tag": "delay",
+        "complete": true,
+        "reserved": 132,
+        "overflow": 0,
+        "unmatched_pre": 0,
+        "unmatched_post": 0
+      },
+      {
+        "tag": "overflow",
+        "complete": false,
+        "reserved": 80,
+        "overflow": 64,
+        "unmatched_pre": 0,
+        "unmatched_post": 0
+      },
+      {
+        "tag": "early-eos",
+        "complete": true,
+        "reserved": 30,
+        "overflow": 0,
+        "unmatched_pre": 0,
+        "unmatched_post": 0
+      }
+    ],
+    "tracer_target": [
+      {
+        "tag": "normal",
+        "records": 80,
+        "complete": true,
+        "overflow": 0
+      },
+      {
+        "tag": "delay",
+        "records": 132,
+        "complete": true,
+        "overflow": 0
+      },
+      {
+        "tag": "overflow",
+        "records": 80,
+        "complete": false,
+        "overflow": 64
+      },
+      {
+        "tag": "early-eos",
+        "records": 30,
+        "complete": true,
+        "overflow": 0
+      }
+    ],
+    "exact_diagnostic_helper": {
+      "real_helper_source_sha256": "26be7f3e63727933411ab1754c8995304ddf2af8ccc2399e70960e832e1a6432",
+      "synthetic_only": true,
+      "cases": [
+        {
+          "enabled": "0",
+          "logs": 0,
+          "pts_and_offset_unchanged": true
+        },
+        {
+          "enabled": "1",
+          "logs": 100,
+          "pts_and_offset_unchanged": true
+        }
+      ]
+    }
+  },
+  "android_reference": {
+    "repository": "https://github.com/latte-dev/android_kernel_xiaomi_latte",
+    "commit": "d2afb1de9a761ff01dafdf9efe4736e521ab71f6"
+  },
+  "no_media_core_or_individual_pixel_digest_export": true,
+  "no_default_promotion": true,
+  "no_new_kernel_deployed": true,
+  "tracefs_read_only": true,
+  "all_jobs_terminal": true,
+  "full_objective_complete": false,
+  "unresolved": [
+    "Startup source/driver timestamp gaps remain RED in full-clip cadence gates; no smoothing/drop/duplicate/forced-OK workaround.",
+    "Latest10s RTC functional wake IRQ9 but S0I3 delta0; earlier9.074976s pass does not erase it.",
+    "Pipeline shutdown leaves34 right-censored trace calls; original strict all-balanced failure retained.",
+    "Kernel SP failed-reset DMA ownership, Mesa stop crash, AF/WB, physical AV sync, foreground UX and Android/Windows parity remain open."
+  ]
+}
