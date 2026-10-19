@@ -27,3 +27,9 @@ Keep original/fixed plugins in separate fresh process-only plugin paths/registri
 The patch resets only after successful parent deactivation and never masks flow
 errors or bypasses buffer lifetime/fences. Broader seek/flush/concurrent workload
 coverage and end-to-end packaging are not claimed by this regression.
+
+## Subsequent copy-path companion
+
+The EOS conservation fix remains distinct from a newly reproduced default
+videoflip identity-copy issue. See [copy fix and retained rear cadence failure](../../../MIPAD2_CAMERA_IDENTITY_COPY_20261019.md).
+Both companions remain private candidates; no default/flash promotion.

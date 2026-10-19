@@ -1,0 +1,1295 @@
+{
+  "date": "2026-10-19",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_sha256": "994d8357c1e42d6cf7c753a2a5cfc68420a82f1e4d082723c82e9df984232517",
+  "source": {
+    "at": 1792375114.9934363,
+    "references": {
+      "release": {
+        "url": "https://raw.githubusercontent.com/GStreamer/gstreamer/1.28.7/subprojects/gst-plugins-good/gst/videofilter/gstvideoflip.c",
+        "sha256": "289800184bd698192abfe2a0d1723f96bc81e55c5112137203da4e3162557cd7",
+        "bytes": 72847,
+        "same_init_proposed_identity": true
+      },
+      "main": {
+        "url": "https://raw.githubusercontent.com/GStreamer/gstreamer/main/subprojects/gst-plugins-good/gst/videofilter/gstvideoflip.c",
+        "sha256": "85aef7c3aee3f0cbe86a22d01de572fe863edc82655e54ead73f9fdd7ac727ef",
+        "bytes": 72911,
+        "same_init_proposed_identity": true
+      }
+    },
+    "patch_sha256": "cd2bf5abbd0c40bfa30c4dc72322702705268c3a507c1382697f3487eeeed8f2",
+    "fixed_source_sha256": "5f8ea46ea3915d568a633986f228f770cb05f2a4b435f59125f29e4aaff7f096",
+    "verified_source_root": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-03\\v\\work\\videoflip-identity-apply-v2-20261019",
+    "actual_source_patch_check_and_apply": true,
+    "git_logs": [
+      {
+        "check": true,
+        "code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "check": false,
+        "code": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "compiled": false,
+    "default_promoted": false,
+    "first_attempt_note": "Windows git autocrlf converted applied file to CRLF, failing exact-byte comparison. Original attempt preserved; V2 disables autocrlf and proves exact patched bytes.",
+    "first_attempt_patched_crlf_bytes": 2128,
+    "reason": "Initial proposed_method already IDENTITY makes constructed()->set_method(default) skip its passthrough setter. AUTO sentinel forces initial effective IDENTITY setup; later transitions use unchanged existing code. Real installed-plugin RED/public-API controls retained separately."
+  },
+  "release_build": {
+    "archive_url": "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.28.7.tar.xz",
+    "archive_sha256": "87256969c82cf3bc8574301f3e7044a90de0ac500a5a27d8ba38c4dde894dd8b",
+    "official_checksum": "87256969c82cf3bc8574301f3e7044a90de0ac500a5a27d8ba38c4dde894dd8b  gst-plugins-good-1.28.7.tar.xz\n",
+    "compiler": "cc (Debian 16.2.0-1) 16.2.0",
+    "variants": {
+      "original": {
+        "sha256": "13b821b5c4c45bd22ea9ff1b2bc726d34061d461779768671cd44870a7d4b471",
+        "bytes": 117504,
+        "build_commands": [
+          [
+            "meson",
+            "setup",
+            "/tmp/mipad2-videofilter-release-20261019/build-original",
+            "/tmp/mipad2-videofilter-release-20261019/source-original",
+            "--buildtype=release",
+            "-Dauto_features=disabled",
+            "-Dvideofilter=enabled",
+            "-Dtests=disabled",
+            "-Dexamples=disabled",
+            "-Ddoc=disabled",
+            "-Dnls=disabled"
+          ],
+          [
+            "ninja",
+            "-C",
+            "/tmp/mipad2-videofilter-release-20261019/build-original",
+            "-j2",
+            "gst/videofilter/libgstvideofilter.so"
+          ]
+        ]
+      },
+      "fixed": {
+        "sha256": "1c7d687e9b27ee4b02ec43e959a85090d53c1aecbcc5c827b2d432ece179ed2f",
+        "bytes": 117504,
+        "build_commands": [
+          [
+            "meson",
+            "setup",
+            "/tmp/mipad2-videofilter-release-20261019/build-fixed",
+            "/tmp/mipad2-videofilter-release-20261019/source-fixed",
+            "--buildtype=release",
+            "-Dauto_features=disabled",
+            "-Dvideofilter=enabled",
+            "-Dtests=disabled",
+            "-Dexamples=disabled",
+            "-Ddoc=disabled",
+            "-Dnls=disabled"
+          ],
+          [
+            "ninja",
+            "-C",
+            "/tmp/mipad2-videofilter-release-20261019/build-fixed",
+            "-j2",
+            "gst/videofilter/libgstvideofilter.so"
+          ]
+        ]
+      }
+    }
+  },
+  "host_regression": {
+    "original": {
+      "actual_exit_code": 1,
+      "all_pixel_mappings_passed": true,
+      "zero_copy_and_mapping_gate": false,
+      "actual_plugin_filename": "/tmp/mipad2-videofilter-release-20261019/build-original/gst/videofilter/libgstvideofilter.so",
+      "actual_plugin_sha256": "13b821b5c4c45bd22ea9ff1b2bc726d34061d461779768671cd44870a7d4b471",
+      "results": [
+        {
+          "format": "RGB",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": false
+        },
+        {
+          "format": "RGB",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": false
+        },
+        {
+          "format": "NV12",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        }
+      ]
+    },
+    "fixed": {
+      "actual_exit_code": 0,
+      "all_pixel_mappings_passed": true,
+      "zero_copy_and_mapping_gate": true,
+      "actual_plugin_filename": "/tmp/mipad2-videofilter-release-20261019/build-fixed/gst/videofilter/libgstvideofilter.so",
+      "actual_plugin_sha256": "1c7d687e9b27ee4b02ec43e959a85090d53c1aecbcc5c827b2d432ece179ed2f",
+      "results": [
+        {
+          "format": "RGB",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": true,
+          "active_passthrough": true,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": true,
+          "active_passthrough": true,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "target_regression": {
+    "original": {
+      "actual_exit_code": 1,
+      "all_pixel_mappings_passed": true,
+      "zero_copy_and_mapping_gate": false,
+      "loaded_binary_sha256": "13b821b5c4c45bd22ea9ff1b2bc726d34061d461779768671cd44870a7d4b471",
+      "results": [
+        {
+          "format": "RGB",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": false
+        },
+        {
+          "format": "RGB",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": false
+        },
+        {
+          "format": "NV12",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        }
+      ]
+    },
+    "fixed": {
+      "actual_exit_code": 0,
+      "all_pixel_mappings_passed": true,
+      "zero_copy_and_mapping_gate": true,
+      "loaded_binary_sha256": "1c7d687e9b27ee4b02ec43e959a85090d53c1aecbcc5c827b2d432ece179ed2f",
+      "results": [
+        {
+          "format": "RGB",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": true,
+          "active_passthrough": true,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "RGB",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 24,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 0,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": true,
+          "active_passthrough": true,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 1,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 2,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 3,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 4,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 5,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 6,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        },
+        {
+          "format": "NV12",
+          "method": 7,
+          "geometry_correct": true,
+          "checked_active_component_values": 12,
+          "wrong_component_values": 0,
+          "same_pixel_memory": false,
+          "active_passthrough": false,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "profiled_same_compiler_pair": {
+    "at": 1792376347.0042977,
+    "variants": {
+      "original": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 29.9996644730264,
+            "max_pts_gap_seconds": 0.03433299999999995,
+            "cadence_gate": true,
+            "packets": 896,
+            "decoded_frames": 896,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15271565,
+            "actual_audio_bitrate": 192092,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 65000,
+            "cpu_profile": {
+              "total_user_cpu_samples": 1196,
+              "callchain_samples": 1196,
+              "videofilter_frame_copy_samples": 198,
+              "va_import_frame_copy_samples": 149,
+              "cpu_scaler_samples": 311
+            },
+            "user_cpu_thread_samples": {
+              "audiosrc-actual": 21,
+              "audiosrc-ringbu": 9,
+              "gstglcontext": 90,
+              "mipad2-ae": 1,
+              "multiqueue0:src": 121,
+              "muxer:src": 13,
+              "queue0:src": 32,
+              "queue1:src": 1,
+              "queue2:src": 255,
+              "queue5:src": 2,
+              "queue6:src": 191,
+              "snapshot": 26,
+              "threaded-ml": 10,
+              "v4l2src0:src": 10,
+              "viewfinderbin-q": 414
+            },
+            "drain_warning_count": 0,
+            "audio_minus_video_end_seconds": -0.4156669999999991
+          },
+          {
+            "sensor": "rear",
+            "fps": 29.977240381735772,
+            "max_pts_gap_seconds": 0.07233399999999998,
+            "cadence_gate": false,
+            "packets": 923,
+            "decoded_frames": 923,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 14936334,
+            "actual_audio_bitrate": 192006,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 68000,
+            "cpu_profile": {
+              "total_user_cpu_samples": 1261,
+              "callchain_samples": 1261,
+              "videofilter_frame_copy_samples": 206,
+              "va_import_frame_copy_samples": 159,
+              "cpu_scaler_samples": 352
+            },
+            "user_cpu_thread_samples": {
+              "audiosrc-actual": 20,
+              "audiosrc-ringbu": 8,
+              "gstglcontext": 87,
+              "mipad2-ae": 1,
+              "multiqueue0:src": 138,
+              "muxer:src": 11,
+              "queue0:src": 29,
+              "queue1:src": 1,
+              "queue2:src": 254,
+              "queue5:src": 1,
+              "queue6:src": 230,
+              "snapshot": 18,
+              "threaded-ml": 10,
+              "v4l2src0:src": 4,
+              "viewfinderbin-q": 449
+            },
+            "drain_warning_count": 0,
+            "audio_minus_video_end_seconds": -0.41866699999999923
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-19T10:12:30+08:00 mipad2 snapshot[795019]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-19T10:12:30+08:00 mipad2 snapshot[795019]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-19T10:12:30+08:00 mipad2 snapshot[795019]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 127
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        },
+        "actual_videoflip_factory": "Filename                 /var/tmp/mipad2-videofilter-pair-v6-20261019/original/plugin/libgstvideofilter.so",
+        "full_clip_cadence_and_drain_gate": false
+      },
+      "fixed": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 29.940919256316967,
+            "max_pts_gap_seconds": 0.063333,
+            "cadence_gate": false,
+            "packets": 898,
+            "decoded_frames": 898,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15252392,
+            "actual_audio_bitrate": 191918,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 68000,
+            "cpu_profile": {
+              "total_user_cpu_samples": 974,
+              "callchain_samples": 974,
+              "videofilter_frame_copy_samples": 0,
+              "va_import_frame_copy_samples": 106,
+              "cpu_scaler_samples": 337
+            },
+            "user_cpu_thread_samples": {
+              "audiosrc-actual": 19,
+              "audiosrc-ringbu": 7,
+              "gstglcontext": 92,
+              "mipad2-ae": 1,
+              "multiqueue0:src": 10,
+              "muxer:src": 7,
+              "queue0:src": 41,
+              "queue1:src": 2,
+              "queue2:src": 187,
+              "queue5:src": 3,
+              "queue6:src": 225,
+              "snapshot": 18,
+              "threaded-ml": 11,
+              "v4l2src0:src": 7,
+              "viewfinderbin-q": 344
+            },
+            "drain_warning_count": 0,
+            "audio_minus_video_end_seconds": -0.3409999999999975
+          },
+          {
+            "sensor": "rear",
+            "fps": 29.950738916256157,
+            "max_pts_gap_seconds": 0.08399999999999999,
+            "cadence_gate": false,
+            "packets": 913,
+            "decoded_frames": 913,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 14928283,
+            "actual_audio_bitrate": 192040,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 67000,
+            "cpu_profile": {
+              "total_user_cpu_samples": 974,
+              "callchain_samples": 974,
+              "videofilter_frame_copy_samples": 0,
+              "va_import_frame_copy_samples": 91,
+              "cpu_scaler_samples": 338
+            },
+            "user_cpu_thread_samples": {
+              "audiosrc-actual": 18,
+              "audiosrc-ringbu": 9,
+              "gstglcontext": 97,
+              "mipad2-ae": 1,
+              "multiqueue0:src": 7,
+              "muxer:src": 11,
+              "queue0:src": 41,
+              "queue1:src": 1,
+              "queue2:src": 181,
+              "queue5:src": 3,
+              "queue6:src": 228,
+              "snapshot": 18,
+              "threaded-ml": 11,
+              "v4l2src0:src": 5,
+              "viewfinderbin-q": 343
+            },
+            "drain_warning_count": 0,
+            "audio_minus_video_end_seconds": -0.3319999999999972
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-19T10:15:27+08:00 mipad2 snapshot[799208]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-19T10:15:27+08:00 mipad2 snapshot[799208]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-19T10:15:27+08:00 mipad2 snapshot[799208]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 127
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        },
+        "actual_videoflip_factory": "Filename                 /var/tmp/mipad2-videofilter-pair-v6-20261019/fixed/plugin/libgstvideofilter.so",
+        "full_clip_cadence_and_drain_gate": false
+      }
+    },
+    "default_promoted": false,
+    "optical_android_parity_proven": false,
+    "quality_or_clock_reduction": false,
+    "measurement_scope": "Sequential paired same-compiler runs,24s per-clip userspace CPU profiling has nonzero overhead. Copy-path sampling plus separately tested byte-correct shared-memory semantics; not proof of unique cause or foreground UI parity.",
+    "original_synthetic": {
+      "pixel_mapping_pass": true,
+      "zero_copy_and_mapping_gate": false,
+      "actual_exit_code": 1,
+      "binary_sha256": "09f39bfb6351ac2c0fc553711d9857991b972de2d5205d9ae1779b72112d4e00"
+    },
+    "fixed_synthetic": {
+      "pixel_mapping_pass": true,
+      "zero_copy_and_mapping_gate": true,
+      "actual_exit_code": 0,
+      "binary_sha256": "96bb816250d91a78c5f6136ea31fbf0fbd2e90276e9526996f4509e756c7bccd"
+    },
+    "copy_path_removed_in_profile": true,
+    "narrow_identity_zero_copy_fix_verified": true,
+    "remaining_unresolved": [
+      "CPU720p scaler and VA importer copies remain; optimize only after ownership/negotiation proof.",
+      "Earlier SP/CSS failed-reset DMA ownership, Mesa stop crash, intermittent zero-S0I3 and full AF/WB/flash/default integration remain open.",
+      "Not a new kernel build; R19 and default r6 preserved."
+    ]
+  },
+  "unprofiled_GCC_release": {
+    "clips": [
+      {
+        "sensor": "front",
+        "fps": 30.001002594752638,
+        "max_pts_gap_seconds": 0.04166599999999998,
+        "cadence_gate": true,
+        "packets": 899,
+        "decoded_frames": 899,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 15277935,
+        "actual_audio_bitrate": 192219,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 67000,
+        "drain_warning_count": 0,
+        "video_duration": 29.965667,
+        "audio_duration": 29.651333,
+        "audio_minus_video_end_seconds": -0.3143339999999988
+      },
+      {
+        "sensor": "rear",
+        "fps": 29.9775583643802,
+        "max_pts_gap_seconds": 0.07399999999999998,
+        "cadence_gate": false,
+        "packets": 896,
+        "decoded_frames": 896,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 15096779,
+        "actual_audio_bitrate": 192749,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 68000,
+        "drain_warning_count": 0,
+        "video_duration": 29.889,
+        "audio_duration": 29.601333,
+        "audio_minus_video_end_seconds": -0.287666999999999
+      }
+    ],
+    "renderer_lines": [
+      "2026-10-19T10:29:04+08:00 mipad2 snapshot[817541]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+      "2026-10-19T10:29:04+08:00 mipad2 snapshot[817541]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+      "2026-10-19T10:29:04+08:00 mipad2 snapshot[817541]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+    ],
+    "all_decode_passed": true,
+    "controls_restored": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "matched": true
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "matched": true
+      }
+    },
+    "PM": {
+      "t4ka3 6-0037": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693 6-0036": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "full_clip_cadence_and_drain_passed": false,
+    "physical_av_sync_proven": false
+  },
+  "post_camera_RTC": {
+    "s0i3_delta_us": 9049888,
+    "wakeup_irq": "9",
+    "functional_resume": true,
+    "new_kernel_errors": [],
+    "boot_unchanged": true,
+    "sensors_after": {
+      "t4ka3 6-0037": {
+        "controls": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "controls": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    }
+  },
+  "cpu_profiler_build": {
+    "at": 1792374559.171606,
+    "go_version": "go version go1.23.4 windows/amd64",
+    "GOOS": "linux",
+    "GOARCH": "amd64",
+    "CGO_ENABLED": "0",
+    "source_sha256": {
+      "mp2-cpuprof\\main_linux.go": "0220f8a7dcfde66fd4c84cae851adbee6cacd66048d95842eb283728fcf9bba4",
+      "mp2-cpuprof\\parser.go": "34d58dfe793e6193fa3ed7ad9d63907f68432ec1fe1f115c99ec658c5e0c3d32"
+    },
+    "binary_sha256": "4f7e1156b4a9f5c380dfb580a320090fd289eb7ab032e783748f7f30459fbb6f",
+    "binary_bytes": 3236633,
+    "no_new_dependencies": true,
+    "no_wsl": true
+  },
+  "default_promoted": false,
+  "full_objective_complete": false,
+  "quality_or_clock_reduction": false,
+  "private_media_core_or_individual_pixel_digests_published": false,
+  "tones_or_playback": false,
+  "restoration": {
+    "protected_binaries": true,
+    "stock_plugins": true,
+    "normal_settings": true,
+    "sensors": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "gpu_limits": {
+      "gt_min_freq_mhz": "200",
+      "gt_max_freq_mhz": "600"
+    },
+    "saved_default": "mipad2-bqdiag1",
+    "next_entry_empty": true,
+    "anti_idle": true,
+    "all_hardware_jobs_and_serial_terminal": true
+  },
+  "remaining": [
+    "GCC release rear74ms maximum gap keeps strict cadence gate RED.",
+    "Container audio ends ~0.3s before video; physical AV sync remains unproven.",
+    "Earlier intermittent zero-S0I3, Mesa stop crash, SP/CSS failed-reset DMA ownership, AF/WB and full kernel/default/flash Android/Windows parity remain open."
+  ]
+}

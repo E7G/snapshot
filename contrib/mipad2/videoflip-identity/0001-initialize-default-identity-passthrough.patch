@@ -1,0 +1,11 @@
+--- a/gst/videofilter/gstvideoflip.c
++++ b/gst/videofilter/gstvideoflip.c
+@@ -2122,6 +2122,7 @@
+   /* AUTO is not valid for active method, this is just to ensure we setup the
+    * method in gst_video_flip_set_method() */
+   videoflip->active_method = GST_VIDEO_ORIENTATION_AUTO;
+-  videoflip->proposed_method = GST_VIDEO_ORIENTATION_IDENTITY;
++  /* Force constructed() to synchronize BaseTransform passthrough too. */
++  videoflip->proposed_method = GST_VIDEO_ORIENTATION_AUTO;
+   videoflip->configuring_method = GST_VIDEO_ORIENTATION_IDENTITY;
+ }
