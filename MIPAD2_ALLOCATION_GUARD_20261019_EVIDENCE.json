@@ -1,0 +1,305 @@
+{
+  "base_commit": "1db53f8b6a5a7bb5152f7005442c6119ae0bbc2c",
+  "candidate_only": true,
+  "hardware_tested": false,
+  "default_promoted": false,
+  "full_objective_complete": false,
+  "source_sha256": {
+    "aperture/src/viewfinder.rs": "77a28ecdb19334c3af91851ab9c42c091d8109e59e431ca7ccf53748bce37f5d",
+    "aperture/src/mipad2_capture_copy.rs": "9ce2f0214ad35c773751526c4adb0fef5b23bec1145f5ca6b5b199f52a9b254f"
+  },
+  "workspace_tests": 67,
+  "clips": [
+    {
+      "sensor": "front",
+      "fps": 29.93671614291021,
+      "max_pts_gap_seconds": 0.09333299999999997,
+      "cadence_gate": false,
+      "packets": 914,
+      "decoded_frames": 914,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 15232565,
+      "actual_audio_bitrate": 191966,
+      "audio_rate": 48000,
+      "audio_channels": 2,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "GPU_preview_rotation_present": true,
+      "requested_video_bitrate": 15000000,
+      "requested_audio_bitrate": 192000,
+      "queue_configuration": [
+        "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+      ],
+      "max_thermal_millidegrees": 71000
+    },
+    {
+      "sensor": "rear",
+      "fps": 30.013898718413145,
+      "max_pts_gap_seconds": 0.057666999999999996,
+      "cadence_gate": false,
+      "packets": 908,
+      "decoded_frames": 908,
+      "consecutive_exact_decoded_repeats": 0,
+      "actual_video_bitrate": 15269444,
+      "actual_audio_bitrate": 191916,
+      "audio_rate": 48000,
+      "audio_channels": 2,
+      "recording_size": [
+        1920,
+        1080
+      ],
+      "full_preview_size": [
+        1280,
+        720
+      ],
+      "GPU_preview_rotation_present": true,
+      "requested_video_bitrate": 15000000,
+      "requested_audio_bitrate": 192000,
+      "queue_configuration": [
+        "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+      ],
+      "max_thermal_millidegrees": 72000
+    }
+  ],
+  "conservation": [
+    {
+      "cycle": 0,
+      "encoder_inputs": 914,
+      "encoder_outputs": 914,
+      "mp4_packets": 914,
+      "same_counts": true,
+      "encoder_relative_pts_exact": true,
+      "native_unique": 914,
+      "native_missing": 0,
+      "native_ambiguous": 0,
+      "mp4_tick_ns": 333333.3333333333,
+      "max_mux_relative_pts_residual_ns": 166541.66666666666,
+      "mux_within_one_declared_tick": true,
+      "encoder_eos": true,
+      "encoder_source_events": [
+        "segment",
+        "segment",
+        "segment",
+        "segment",
+        "eos"
+      ],
+      "gate": true
+    },
+    {
+      "cycle": 1,
+      "encoder_inputs": 908,
+      "encoder_outputs": 908,
+      "mp4_packets": 908,
+      "same_counts": true,
+      "encoder_relative_pts_exact": true,
+      "native_unique": 908,
+      "native_missing": 0,
+      "native_ambiguous": 0,
+      "mp4_tick_ns": 333333.3333333333,
+      "max_mux_relative_pts_residual_ns": 166550.0,
+      "mux_within_one_declared_tick": true,
+      "encoder_eos": true,
+      "encoder_source_events": [
+        "eos",
+        "segment",
+        "segment",
+        "segment",
+        "segment",
+        "eos"
+      ],
+      "gate": true
+    }
+  ],
+  "qualified": {
+    "cases": [
+      {
+        "cycle": 0,
+        "driver_gap_ns": 93367000,
+        "zero_owned_ns": 70744000,
+        "calls": [
+          {
+            "path": "GstMultiQueue\t/GstCameraBin:camerabin0/GstWrapperCameraBinSrc:wrappercamerabinsrc0/GstBin:bin3/GstDecodebin3:decodebin3-0/GstMultiQueue:multiqueue0.GstMultiQueuePad:sink_0",
+            "operation": "pad-query",
+            "type": "allocation",
+            "duration_ns": 193956891,
+            "result": 0,
+            "recording_gap_overlap_ns": 68193136,
+            "zero_owned_overlap_ns": 68189136
+          }
+        ],
+        "source_sleep_syscalls": [
+          {
+            "number": 202,
+            "command": 128,
+            "elapsed_ns": 193907000,
+            "result": 0
+          }
+        ],
+        "source_long_offcpu": [
+          {
+            "duration": 193854000,
+            "state": "S",
+            "post_wake_delay_ns": 358000
+          }
+        ]
+      },
+      {
+        "cycle": 0,
+        "driver_gap_ns": 50634000,
+        "zero_owned_ns": 0,
+        "calls": [
+          {
+            "path": "GstMultiQueue\t/GstCameraBin:camerabin0/GstWrapperCameraBinSrc:wrappercamerabinsrc0/GstBin:bin3/GstDecodebin3:decodebin3-0/GstMultiQueue:multiqueue0.GstMultiQueuePad:sink_0",
+            "operation": "pad-query",
+            "type": "allocation",
+            "duration_ns": 193956891,
+            "result": 0,
+            "recording_gap_overlap_ns": 0,
+            "zero_owned_overlap_ns": 0
+          }
+        ],
+        "source_sleep_syscalls": [
+          {
+            "number": 202,
+            "command": 128,
+            "elapsed_ns": 193907000,
+            "result": 0
+          }
+        ],
+        "source_long_offcpu": [
+          {
+            "duration": 193854000,
+            "state": "S",
+            "post_wake_delay_ns": 358000
+          }
+        ]
+      },
+      {
+        "cycle": 1,
+        "driver_gap_ns": 57751000,
+        "zero_owned_ns": 35167000,
+        "calls": [
+          {
+            "path": "GstMultiQueue\t/GstCameraBin:camerabin0/GstWrapperCameraBinSrc:wrappercamerabinsrc0/GstBin:bin3/GstDecodebin3:decodebin3-0/GstMultiQueue:multiqueue0.GstMultiQueuePad:sink_0",
+            "operation": "pad-query",
+            "type": "allocation",
+            "duration_ns": 163527810,
+            "result": 0,
+            "recording_gap_overlap_ns": 32785861,
+            "zero_owned_overlap_ns": 32779861
+          },
+          {
+            "path": "GstV4l2Src\t/GstBin:bin3/GstV4l2Src:v4l2src0.GstPad:src",
+            "operation": "push",
+            "type": null,
+            "duration_ns": 10953131,
+            "result": 0,
+            "recording_gap_overlap_ns": 0,
+            "zero_owned_overlap_ns": 0
+          }
+        ],
+        "source_sleep_syscalls": [
+          {
+            "number": 202,
+            "command": 128,
+            "elapsed_ns": 163510000,
+            "result": 0
+          }
+        ],
+        "source_long_offcpu": [
+          {
+            "duration": 163461000,
+            "state": "S",
+            "post_wake_delay_ns": 37000
+          }
+        ]
+      }
+    ],
+    "control_complete": true,
+    "control_records": 338816,
+    "syscall_left_censored": 1,
+    "syscall_right_censored": 1,
+    "source_task_not_just_irq_traced": true,
+    "allocation_queries_eventually_return_false": true,
+    "qualification": "Exact adjacent encoder/native/driver/VB2 lineage and actual absolute-monotonic API/syscall/scheduling spans. Context-window calls with ZERO actual-gap/zero-owned overlap are not attributed to that gap. The separate 50.634ms front gap has no zero-owned overlap and is not explained by the earlier allocation wait.",
+    "candidate": "Scoped native full-copy allocation boundary, same FALSE allocation answer without serialized roundtrip; only opt-in. CAPS and pixels/events must remain intact. Host/hardware efficacy gates separate.",
+    "full_objective_complete": false
+  },
+  "rtc": {
+    "s0i3_delta_us": 9851136,
+    "wakeup_irq": "9",
+    "functional_resume": true
+  },
+  "scalar_trace_integrity": {
+    "complete": true,
+    "reserved": 269480,
+    "capacity": 524288,
+    "overflow": 0,
+    "incomplete": 0,
+    "unmatched_pre": 34,
+    "unmatched_post": 0
+  },
+  "control_trace": {
+    "complete": true,
+    "records": 338816,
+    "objects": 226,
+    "right_censored_calls": 42,
+    "unmatched_post": {},
+    "syscall_count": 18741,
+    "syscall_left_censored": 1,
+    "syscall_right_censored": 1
+  },
+  "tracer_host_cases": [
+    {
+      "name": "normal",
+      "complete": true,
+      "overflow": 0,
+      "operations": {
+        "pad-query": 16,
+        "send-event": 8,
+        "state": 19,
+        "element-query": 3,
+        "push-event": 17,
+        "push": 24,
+        "chain": 12
+      }
+    },
+    {
+      "name": "event-query-delay",
+      "complete": true,
+      "overflow": 0,
+      "operations": {
+        "pad-query": 16,
+        "send-event": 8,
+        "state": 19,
+        "element-query": 3,
+        "push-event": 17,
+        "push": 24,
+        "chain": 12
+      }
+    },
+    {
+      "name": "overflow",
+      "complete": false,
+      "overflow": 182,
+      "operations": {
+        "pad-query": 6,
+        "send-event": 1
+      }
+    }
+  ],
+  "limitations": [
+    "50.634ms front driver gap has no buffer depletion and is NOT explained by allocation wait.",
+    "Copy allocation failure retains original buffer/logs: an isolation test then fails; no silent drop or forced OK.",
+    "Host query/pixel conservation tests cannot prove real-device cadence, pool compatibility, quality, AV sync or lifecycle.",
+    "42 thumbnail/preview calls and first/last syscall boundaries are explicitly censored, not balanced completions.",
+    "Kernel failed-reset DMA ownership, Mesa stop crash and broader full kernel/flash Android/Windows parity remain open."
+  ],
+  "media_pointer_arguments_owner_tokens_and_pixel_hashes_published": false
+}

@@ -1737,6 +1737,24 @@ impl Viewfinder {
         } else {
             None
         };
+        let allocation_guard = if crate::mipad2_capture_copy::allocation_guard_enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_COPY").as_deref() == Ok("1"),
+            std::env::var("MIPAD2_CAPTURE_ALLOCATION_GUARD").as_deref() == Ok("1"),
+            device_src
+                .factory()
+                .as_ref()
+                .map(|f| f.name().to_string())
+                .unwrap_or_default()
+                .as_str(),
+        ) {
+            log::info!(
+                "Mi Pad 2 copied native allocation boundary enabled: allocation-query=false frames=unchanged"
+            );
+            Some(crate::mipad2_capture_copy::source_allocation_guard()?)
+        } else {
+            None
+        };
         let bin = gst::Bin::new();
 
         let capsfilter = gst::ElementFactory::make("capsfilter").build()?;
@@ -1751,12 +1769,17 @@ impl Viewfinder {
             &decodebin3,
             &capsfilter_post_decode,
         ])?;
+        let mut source_chain = vec![device_src];
+        if let Some(guard) = allocation_guard.as_ref() {
+            bin.add(guard)?;
+            source_chain.push(guard);
+        }
         if let Some(queue) = capture_queue.as_ref() {
             bin.add(queue)?;
-            gst::Element::link_many([device_src, queue, &capsfilter, &decodebin3])?;
-        } else {
-            gst::Element::link_many([device_src, &capsfilter, &decodebin3])?;
+            source_chain.push(queue);
         }
+        source_chain.extend([&capsfilter, &decodebin3]);
+        gst::Element::link_many(source_chain)?;
 
         self.imp().capsfilter.set(capsfilter).unwrap();
 
