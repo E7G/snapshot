@@ -1,0 +1,52 @@
+--- a/gst/encoding/gststreamcombiner.c
++++ b/gst/encoding/gststreamcombiner.c
+@@ -46,6 +46,8 @@
+ #define STREAMS_UNLOCK(obj) (g_mutex_unlock(&obj->lock))
+ 
+ static void gst_stream_combiner_finalize (GObject * object);
++static GstStateChangeReturn gst_stream_combiner_change_state (GstElement * element,
++    GstStateChange transition);
+ 
+ static GstPad *gst_stream_combiner_request_new_pad (GstElement * element,
+     GstPadTemplate * templ, const gchar * name, const GstCaps * caps);
+@@ -81,6 +83,9 @@
+   gst_element_class_add_static_pad_template (gstelement_klass, &src_template);
+   gst_element_class_add_static_pad_template (gstelement_klass, &sink_template);
+ 
++  gstelement_klass->change_state =
++      GST_DEBUG_FUNCPTR (gst_stream_combiner_change_state);
++
+   gstelement_klass->request_new_pad =
+       GST_DEBUG_FUNCPTR (gst_stream_combiner_request_new_pad);
+   gstelement_klass->release_pad =
+@@ -90,6 +95,30 @@
+       "streamcombiner", "Generic",
+       "Recombines streams split by the streamsplitter element",
+       "Edward Hervey <edward.hervey@collabora.co.uk>");
++}
++
++static GstStateChangeReturn
++gst_stream_combiner_change_state (GstElement * element, GstStateChange transition)
++{
++  GstStreamCombiner *combiner = (GstStreamCombiner *) element;
++  GstStateChangeReturn ret;
++  GList *item;
++
++  ret = GST_ELEMENT_CLASS (gst_stream_combiner_parent_class)->change_state
++      (element, transition);
++  if (ret == GST_STATE_CHANGE_FAILURE)
++    return ret;
++
++  if (transition == GST_STATE_CHANGE_PAUSED_TO_READY) {
++    /* EOS belongs to one recording. Camerabin reuses encodebin via READY;
++     * stale inactive-branch EOS must not close the next encoder's tail. */
++    STREAMS_LOCK (combiner);
++    for (item = combiner->sinkpads; item; item = item->next)
++      GST_STREAM_COMBINER_PAD (item->data)->is_eos = FALSE;
++    combiner->draining_encoder = FALSE;
++    STREAMS_UNLOCK (combiner);
++  }
++  return ret;
+ }
+ 
+ static void

@@ -29,3 +29,10 @@ Do not run a system-wide install. Target dependency closure/factory/hash checks
 and fresh per-process plugin path/registry are required before any private run.
 Next investigate downstream EOS flow and per-stream recording boundaries;
 never mask errors or substitute a cadence/decode-only test for conservation.
+
+## Subsequent encoding companion fix
+
+The old-encoding rear failure above is preserved. A later matched-source
+streamcombiner READY/EOS reset patch fixes the observed frame-conservation
+failure in a private candidate. See [follow-up](../../../MIPAD2_ENCODING_EOS_RESET_20261019.md).
+Post-resume front cadence and final S0I3 are still RED; no default promotion.

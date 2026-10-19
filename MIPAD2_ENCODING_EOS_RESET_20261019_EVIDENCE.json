@@ -1,0 +1,1185 @@
+{
+  "date": "2026-10-19",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "kernel_source": "8c57f2be2c2df6ffb811742478b0a0761bb80563",
+  "app_binary_unchanged": "994d8357c1e42d6cf7c753a2a5cfc68420a82f1e4d082723c82e9df984232517",
+  "VA_plugin_unchanged": "30297a3daf6115c4c0e8d1fa67c8d5a64552d144db58144354bf6a9c7dad1754",
+  "encoding_source": {
+    "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.28.7.tar.xz",
+    "started_at": 1792362547.1183283,
+    "complete": true,
+    "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+    "official_checksum": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7  gst-plugins-base-1.28.7.tar.xz\n",
+    "source": "/tmp/mipad2-encoding-source-20261019/gst-plugins-base-1.28.7",
+    "archive_bytes": 2558440,
+    "finished_at": 1792362551.74162
+  },
+  "encoding_build": {
+    "started_at": 1792362583.5681126,
+    "source": {
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.28.7.tar.xz",
+      "started_at": 1792362547.1183283,
+      "complete": true,
+      "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+      "official_checksum": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7  gst-plugins-base-1.28.7.tar.xz\n",
+      "source": "/tmp/mipad2-encoding-source-20261019/gst-plugins-base-1.28.7",
+      "archive_bytes": 2558440,
+      "finished_at": 1792362551.74162
+    },
+    "variants": {
+      "original": {
+        "sha256": "68cb7ffe72d3a7cc071c57f088341020466e9a57ede521819e3666ba37d5155c",
+        "bytes": 127728,
+        "source_sha256": "cfd4bfadd32849d41c034f88e7c3efbdd8d0f2bf49ee828fe51ad32dd8c2ea6b"
+      },
+      "fixed": {
+        "sha256": "fd259158a5c71228bf7ed8a5a42ad7bc69ada2c95532f2ec92dbcbb59efb71ec",
+        "bytes": 127784,
+        "source_sha256": "913fe07df005b41b7ebe0caa8f6451b060a94b3b6ce7ac737a3ab237b643b915"
+      }
+    },
+    "device_installed": false,
+    "configure": {
+      "code": 0
+    },
+    "compile-original": {
+      "code": 0
+    },
+    "patch-check": {
+      "code": 0
+    },
+    "patch-apply": {
+      "code": 0
+    },
+    "patch_sha256": "b7ae185ba088bfbed3c8052afcc4a9f7afeaa19c02e9f4762e62e4049f66a13e",
+    "compile-fixed": {
+      "code": 0
+    },
+    "complete": true,
+    "finished_at": 1792362636.6133134
+  },
+  "actual_plugin_hashes": {
+    "original": "68cb7ffe72d3a7cc071c57f088341020466e9a57ede521819e3666ba37d5155c",
+    "fixed": "fd259158a5c71228bf7ed8a5a42ad7bc69ada2c95532f2ec92dbcbb59efb71ec"
+  },
+  "host_regression": {
+    "original_source_sha256": "cfd4bfadd32849d41c034f88e7c3efbdd8d0f2bf49ee828fe51ad32dd8c2ea6b",
+    "patched_source_sha256": "913fe07df005b41b7ebe0caa8f6451b060a94b3b6ce7ac737a3ab237b643b915",
+    "patch_sha256": "b7ae185ba088bfbed3c8052afcc4a9f7afeaa19c02e9f4762e62e4049f66a13e",
+    "cases": [
+      {
+        "tag": "original",
+        "code": 1,
+        "stdout": "round=0 before=0 after-inactive=0 before-active=0 after-active=1 flow=ok buffers=1\nround=1 before=1 after-inactive=2 before-active=2 after-active=2 flow=eos buffers=1\n",
+        "stderr": ""
+      },
+      {
+        "tag": "fixed",
+        "code": 0,
+        "stdout": "round=0 before=0 after-inactive=0 before-active=0 after-active=1 flow=ok buffers=1\nround=1 before=1 after-inactive=1 before-active=1 after-active=2 flow=ok buffers=2\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "host_64_epochs": {
+    "epochs_per_case": 64,
+    "source_sha256": "316060ab4f144c9e87040c21ce1b10d3ab2c3cad59868232b699a625c898dcc4",
+    "cases": [
+      {
+        "name": "original",
+        "code": 1,
+        "stdout": "round=0 before=0 after-inactive=0 before-active=0 after-active=1 flow=ok buffers=1\nround=1 before=1 after-inactive=2 before-active=2 after-active=2 flow=eos buffers=1\nround=2 before=2 after-inactive=3 before-active=3 after-active=3 flow=eos buffers=1\nround=3 before=3 after-inactive=4 before-active=4 after-active=4 flow=eos buffers=1\nround=4 before=4 after-inactive=5 before-active=5 after-active=5 flow=eos buffers=1\nround=5 before=5 after-inactive=6 before-active=6 after-active=6 flow=eos buffers=1\nround=6 before=6 after-inactive=7 before-active=7 after-active=7 flow=eos buffers=1\nround=7 before=7 after-inactive=8 before-active=8 after-active=8 flow=eos buffers=1\nround=8 before=8 after-inactive=9 before-active=9 after-active=9 flow=eos buffers=1\nround=9 before=9 after-inactive=10 before-active=10 after-active=10 flow=eos buffers=1\nround=10 before=10 after-inactive=11 before-active=11 after-active=11 flow=eos buffers=1\nround=11 before=11 after-inactive=12 before-active=12 after-active=12 flow=eos buffers=1\nround=12 before=12 after-inactive=13 before-active=13 after-active=13 flow=eos buffers=1\nround=13 before=13 after-inactive=14 before-active=14 after-active=14 flow=eos buffers=1\nround=14 before=14 after-inactive=15 before-active=15 after-active=15 flow=eos buffers=1\nround=15 before=15 after-inactive=16 before-active=16 after-active=16 flow=eos buffers=1\nround=16 before=16 after-inactive=17 before-active=17 after-active=17 flow=eos buffers=1\nround=17 before=17 after-inactive=18 before-active=18 after-active=18 flow=eos buffers=1\nround=18 before=18 after-inactive=19 before-active=19 after-active=19 flow=eos buffers=1\nround=19 before=19 after-inactive=20 before-active=20 after-active=20 flow=eos buffers=1\nround=20 before=20 after-inactive=21 before-active=21 after-active=21 flow=eos buffers=1\nround=21 before=21 after-inactive=22 before-active=22 after-active=22 flow=eos buffers=1\nround=22 before=22 after-inactive=23 before-active=23 after-active=23 flow=eos buffers=1\nround=23 before=23 after-inactive=24 before-active=24 after-active=24 flow=eos buffers=1\nround=24 before=24 after-inactive=25 before-active=25 after-active=25 flow=eos buffers=1\nround=25 before=25 after-inactive=26 before-active=26 after-active=26 flow=eos buffers=1\nround=26 before=26 after-inactive=27 before-active=27 after-active=27 flow=eos buffers=1\nround=27 before=27 after-inactive=28 before-active=28 after-active=28 flow=eos buffers=1\nround=28 before=28 after-inactive=29 before-active=29 after-active=29 flow=eos buffers=1\nround=29 before=29 after-inactive=30 before-active=30 after-active=30 flow=eos buffers=1\nround=30 before=30 after-inactive=31 before-active=31 after-active=31 flow=eos buffers=1\nround=31 before=31 after-inactive=32 before-active=32 after-active=32 flow=eos buffers=1\nround=32 before=32 after-inactive=33 before-active=33 after-active=33 flow=eos buffers=1\nround=33 before=33 after-inactive=34 before-active=34 after-active=34 flow=eos buffers=1\nround=34 before=34 after-inactive=35 before-active=35 after-active=35 flow=eos buffers=1\nround=35 before=35 after-inactive=36 before-active=36 after-active=36 flow=eos buffers=1\nround=36 before=36 after-inactive=37 before-active=37 after-active=37 flow=eos buffers=1\nround=37 before=37 after-inactive=38 before-active=38 after-active=38 flow=eos buffers=1\nround=38 before=38 after-inactive=39 before-active=39 after-active=39 flow=eos buffers=1\nround=39 before=39 after-inactive=40 before-active=40 after-active=40 flow=eos buffers=1\nround=40 before=40 after-inactive=41 before-active=41 after-active=41 flow=eos buffers=1\nround=41 before=41 after-inactive=42 before-active=42 after-active=42 flow=eos buffers=1\nround=42 before=42 after-inactive=43 before-active=43 after-active=43 flow=eos buffers=1\nround=43 before=43 after-inactive=44 before-active=44 after-active=44 flow=eos buffers=1\nround=44 before=44 after-inactive=45 before-active=45 after-active=45 flow=eos buffers=1\nround=45 before=45 after-inactive=46 before-active=46 after-active=46 flow=eos buffers=1\nround=46 before=46 after-inactive=47 before-active=47 after-active=47 flow=eos buffers=1\nround=47 before=47 after-inactive=48 before-active=48 after-active=48 flow=eos buffers=1\nround=48 before=48 after-inactive=49 before-active=49 after-active=49 flow=eos buffers=1\nround=49 before=49 after-inactive=50 before-active=50 after-active=50 flow=eos buffers=1\nround=50 before=50 after-inactive=51 before-active=51 after-active=51 flow=eos buffers=1\nround=51 before=51 after-inactive=52 before-active=52 after-active=52 flow=eos buffers=1\nround=52 before=52 after-inactive=53 before-active=53 after-active=53 flow=eos buffers=1\nround=53 before=53 after-inactive=54 before-active=54 after-active=54 flow=eos buffers=1\nround=54 before=54 after-inactive=55 before-active=55 after-active=55 flow=eos buffers=1\nround=55 before=55 after-inactive=56 before-active=56 after-active=56 flow=eos buffers=1\nround=56 before=56 after-inactive=57 before-active=57 after-active=57 flow=eos buffers=1\nround=57 before=57 after-inactive=58 before-active=58 after-active=58 flow=eos buffers=1\nround=58 before=58 after-inactive=59 before-active=59 after-active=59 flow=eos buffers=1\nround=59 before=59 after-inactive=60 before-active=60 after-active=60 flow=eos buffers=1\nround=60 before=60 after-inactive=61 before-active=61 after-active=61 flow=eos buffers=1\nround=61 before=61 after-inactive=62 before-active=62 after-active=62 flow=eos buffers=1\nround=62 before=62 after-inactive=63 before-active=63 after-active=63 flow=eos buffers=1\nround=63 before=63 after-inactive=64 before-active=64 after-active=64 flow=eos buffers=1\n",
+        "stderr": ""
+      },
+      {
+        "name": "fixed",
+        "code": 0,
+        "stdout": "round=0 before=0 after-inactive=0 before-active=0 after-active=1 flow=ok buffers=1\nround=1 before=1 after-inactive=1 before-active=1 after-active=2 flow=ok buffers=2\nround=2 before=2 after-inactive=2 before-active=2 after-active=3 flow=ok buffers=3\nround=3 before=3 after-inactive=3 before-active=3 after-active=4 flow=ok buffers=4\nround=4 before=4 after-inactive=4 before-active=4 after-active=5 flow=ok buffers=5\nround=5 before=5 after-inactive=5 before-active=5 after-active=6 flow=ok buffers=6\nround=6 before=6 after-inactive=6 before-active=6 after-active=7 flow=ok buffers=7\nround=7 before=7 after-inactive=7 before-active=7 after-active=8 flow=ok buffers=8\nround=8 before=8 after-inactive=8 before-active=8 after-active=9 flow=ok buffers=9\nround=9 before=9 after-inactive=9 before-active=9 after-active=10 flow=ok buffers=10\nround=10 before=10 after-inactive=10 before-active=10 after-active=11 flow=ok buffers=11\nround=11 before=11 after-inactive=11 before-active=11 after-active=12 flow=ok buffers=12\nround=12 before=12 after-inactive=12 before-active=12 after-active=13 flow=ok buffers=13\nround=13 before=13 after-inactive=13 before-active=13 after-active=14 flow=ok buffers=14\nround=14 before=14 after-inactive=14 before-active=14 after-active=15 flow=ok buffers=15\nround=15 before=15 after-inactive=15 before-active=15 after-active=16 flow=ok buffers=16\nround=16 before=16 after-inactive=16 before-active=16 after-active=17 flow=ok buffers=17\nround=17 before=17 after-inactive=17 before-active=17 after-active=18 flow=ok buffers=18\nround=18 before=18 after-inactive=18 before-active=18 after-active=19 flow=ok buffers=19\nround=19 before=19 after-inactive=19 before-active=19 after-active=20 flow=ok buffers=20\nround=20 before=20 after-inactive=20 before-active=20 after-active=21 flow=ok buffers=21\nround=21 before=21 after-inactive=21 before-active=21 after-active=22 flow=ok buffers=22\nround=22 before=22 after-inactive=22 before-active=22 after-active=23 flow=ok buffers=23\nround=23 before=23 after-inactive=23 before-active=23 after-active=24 flow=ok buffers=24\nround=24 before=24 after-inactive=24 before-active=24 after-active=25 flow=ok buffers=25\nround=25 before=25 after-inactive=25 before-active=25 after-active=26 flow=ok buffers=26\nround=26 before=26 after-inactive=26 before-active=26 after-active=27 flow=ok buffers=27\nround=27 before=27 after-inactive=27 before-active=27 after-active=28 flow=ok buffers=28\nround=28 before=28 after-inactive=28 before-active=28 after-active=29 flow=ok buffers=29\nround=29 before=29 after-inactive=29 before-active=29 after-active=30 flow=ok buffers=30\nround=30 before=30 after-inactive=30 before-active=30 after-active=31 flow=ok buffers=31\nround=31 before=31 after-inactive=31 before-active=31 after-active=32 flow=ok buffers=32\nround=32 before=32 after-inactive=32 before-active=32 after-active=33 flow=ok buffers=33\nround=33 before=33 after-inactive=33 before-active=33 after-active=34 flow=ok buffers=34\nround=34 before=34 after-inactive=34 before-active=34 after-active=35 flow=ok buffers=35\nround=35 before=35 after-inactive=35 before-active=35 after-active=36 flow=ok buffers=36\nround=36 before=36 after-inactive=36 before-active=36 after-active=37 flow=ok buffers=37\nround=37 before=37 after-inactive=37 before-active=37 after-active=38 flow=ok buffers=38\nround=38 before=38 after-inactive=38 before-active=38 after-active=39 flow=ok buffers=39\nround=39 before=39 after-inactive=39 before-active=39 after-active=40 flow=ok buffers=40\nround=40 before=40 after-inactive=40 before-active=40 after-active=41 flow=ok buffers=41\nround=41 before=41 after-inactive=41 before-active=41 after-active=42 flow=ok buffers=42\nround=42 before=42 after-inactive=42 before-active=42 after-active=43 flow=ok buffers=43\nround=43 before=43 after-inactive=43 before-active=43 after-active=44 flow=ok buffers=44\nround=44 before=44 after-inactive=44 before-active=44 after-active=45 flow=ok buffers=45\nround=45 before=45 after-inactive=45 before-active=45 after-active=46 flow=ok buffers=46\nround=46 before=46 after-inactive=46 before-active=46 after-active=47 flow=ok buffers=47\nround=47 before=47 after-inactive=47 before-active=47 after-active=48 flow=ok buffers=48\nround=48 before=48 after-inactive=48 before-active=48 after-active=49 flow=ok buffers=49\nround=49 before=49 after-inactive=49 before-active=49 after-active=50 flow=ok buffers=50\nround=50 before=50 after-inactive=50 before-active=50 after-active=51 flow=ok buffers=51\nround=51 before=51 after-inactive=51 before-active=51 after-active=52 flow=ok buffers=52\nround=52 before=52 after-inactive=52 before-active=52 after-active=53 flow=ok buffers=53\nround=53 before=53 after-inactive=53 before-active=53 after-active=54 flow=ok buffers=54\nround=54 before=54 after-inactive=54 before-active=54 after-active=55 flow=ok buffers=55\nround=55 before=55 after-inactive=55 before-active=55 after-active=56 flow=ok buffers=56\nround=56 before=56 after-inactive=56 before-active=56 after-active=57 flow=ok buffers=57\nround=57 before=57 after-inactive=57 before-active=57 after-active=58 flow=ok buffers=58\nround=58 before=58 after-inactive=58 before-active=58 after-active=59 flow=ok buffers=59\nround=59 before=59 after-inactive=59 before-active=59 after-active=60 flow=ok buffers=60\nround=60 before=60 after-inactive=60 before-active=60 after-active=61 flow=ok buffers=61\nround=61 before=61 after-inactive=61 before-active=61 after-active=62 flow=ok buffers=62\nround=62 before=62 after-inactive=62 before-active=62 after-active=63 flow=ok buffers=63\nround=63 before=63 after-inactive=63 before-active=63 after-active=64 flow=ok buffers=64\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "tracer_analysis": {
+    "cases": [
+      {
+        "sensor": "front",
+        "fps": 29.611166500498506,
+        "packets": 298,
+        "decoded": 298,
+        "max_sequence": 1083,
+        "drain_warnings": [],
+        "log_cap_reached": false,
+        "first_eos_return": null,
+        "video_eos_timeline": [
+          {
+            "seq": "697",
+            "ts": "21281816034",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstQueue:queue2.GstPad:src",
+            "epoch": "2",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "698",
+            "ts": "21281855987",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "699",
+            "ts": "21281895639",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "700",
+            "ts": "21281930018",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "701",
+            "ts": "21281970857",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:encodingsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVideoConvert:videoconvert2.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "8922297428",
+            "last": "18952190864"
+          },
+          {
+            "seq": "702",
+            "ts": "21282009385",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:encodingsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVideoConvert:videoconvert2.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "8922297428",
+            "last": "18952190864"
+          },
+          {
+            "seq": "715",
+            "ts": "21282461944",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstCapsFilter:capsfilter7.GstPad:src",
+            "epoch": "2",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "716",
+            "ts": "21310870785",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          },
+          {
+            "seq": "717",
+            "ts": "21310983669",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          },
+          {
+            "seq": "718",
+            "ts": "21311026708",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "epoch": "2",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "719",
+            "ts": "21311064723",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          },
+          {
+            "seq": "720",
+            "ts": "21311102813",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          },
+          {
+            "seq": "721",
+            "ts": "21311135480",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "epoch": "2",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "722",
+            "ts": "21311173270",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Timestamper:h264timestamper0.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          },
+          {
+            "seq": "723",
+            "ts": "21311211498",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "897",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Timestamper:h264timestamper0.GstPad:sink",
+            "epoch": "4",
+            "seen": "298",
+            "ok": "298",
+            "first": "3600000000000000",
+            "last": "3600010029893436"
+          }
+        ]
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.013255065328536,
+        "packets": 318,
+        "decoded": 318,
+        "max_sequence": 1999,
+        "drain_warnings": [
+          "Still 1 frame in the output list after drain"
+        ],
+        "log_cap_reached": true,
+        "first_eos_return": {
+          "seq": "1829",
+          "ts": "65130967539",
+          "op": "push-return",
+          "detail": "eos",
+          "event-seq": "0",
+          "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner2.GstPad:src",
+          "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstAacParse:aacparse0.GstPad:sink",
+          "epoch": "8",
+          "seen": "484",
+          "ok": "483",
+          "first": "8900000000",
+          "last": "19204000000"
+        },
+        "video_eos_timeline": [
+          {
+            "seq": "1805",
+            "ts": "65130035467",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstQueue:queue2.GstPad:src",
+            "epoch": "4",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1806",
+            "ts": "65130078866",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1807",
+            "ts": "65130118427",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1808",
+            "ts": "65130151801",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:passthroughsink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:passthroughsrc",
+            "epoch": "0",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1809",
+            "ts": "65130187725",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "8",
+            "seen": "318",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010561943825"
+          },
+          {
+            "seq": "1810",
+            "ts": "65130226849",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "8",
+            "seen": "318",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010561943825"
+          },
+          {
+            "seq": "1811",
+            "ts": "65130260673",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "epoch": "4",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1812",
+            "ts": "65130299047",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Timestamper:h264timestamper0.GstPad:sink",
+            "epoch": "8",
+            "seen": "318",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010561943825"
+          },
+          {
+            "seq": "1813",
+            "ts": "65130340533",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Timestamper:h264timestamper0.GstPad:sink",
+            "epoch": "8",
+            "seen": "318",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010561943825"
+          },
+          {
+            "seq": "1824",
+            "ts": "65130795595",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:encodingsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVideoConvert:videoconvert2.GstPad:sink",
+            "epoch": "8",
+            "seen": "320",
+            "ok": "320",
+            "first": "8580003078",
+            "last": "19208300003"
+          },
+          {
+            "seq": "1825",
+            "ts": "65130836993",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamSplitter:streamsplitter0.GstPad:encodingsrc",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVideoConvert:videoconvert2.GstPad:sink",
+            "epoch": "8",
+            "seen": "320",
+            "ok": "320",
+            "first": "8580003078",
+            "last": "19208300003"
+          },
+          {
+            "seq": "1843",
+            "ts": "65131408589",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:sink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstCapsFilter:capsfilter7.GstPad:src",
+            "epoch": "4",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1845",
+            "ts": "65132379585",
+            "op": "push-return",
+            "detail": "eos",
+            "event-seq": "0",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "8",
+            "seen": "319",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010595250200"
+          },
+          {
+            "seq": "1846",
+            "ts": "65132453520",
+            "op": "chain-return",
+            "detail": "eos",
+            "event-seq": "0",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "epoch": "4",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1847",
+            "ts": "65132490169",
+            "op": "push-return",
+            "detail": "eos",
+            "event-seq": "0",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "epoch": "8",
+            "seen": "319",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010595250200"
+          },
+          {
+            "seq": "1848",
+            "ts": "65132684826",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "epoch": "8",
+            "seen": "319",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010595250200"
+          },
+          {
+            "seq": "1849",
+            "ts": "65132730124",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "epoch": "8",
+            "seen": "319",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010595250200"
+          },
+          {
+            "seq": "1850",
+            "ts": "65132767773",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstStreamCombinerPad:encodingsink",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstVaH264Enc:vah264enc0.GstPad:src",
+            "epoch": "4",
+            "seen": "0",
+            "ok": "0",
+            "first": "18446744073709551615",
+            "last": "18446744073709551615"
+          },
+          {
+            "seq": "1851",
+            "ts": "65132802722",
+            "op": "event",
+            "detail": "eos",
+            "event-seq": "2433",
+            "pad": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstStreamCombiner:streamcombiner0.GstPad:src",
+            "peer": "/GstCameraBin:camerabin0/GstEncodeBin:video-encodebin/GstH264Parse:h264parse1.GstPad:sink",
+            "epoch": "8",
+            "seen": "319",
+            "ok": "318",
+            "first": "3600000000000000",
+            "last": "3600010595250200"
+          }
+        ]
+      }
+    ],
+    "tracer_version": 1,
+    "hook_event_ops_merged": true,
+    "log_limit": 2000,
+    "full_capture_not_claimed": true,
+    "media_or_pixel_digests_exported": false,
+    "premature_combiner_eos_before_encoder_drain": true,
+    "causal_window_before_log_cap": true
+  },
+  "cohorts": {
+    "cohorts": {
+      "original": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 29.99903540079097,
+            "max_pts_gap_seconds": 0.03433300000000017,
+            "cadence_gate": true,
+            "packets": 312,
+            "decoded_frames": 312,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15633145,
+            "actual_audio_bitrate": 191718,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 65000,
+            "drain_warnings": [],
+            "input_aggregate": {
+              "epoch": 2,
+              "native-epoch": 2,
+              "seen": 312,
+              "valid": 312,
+              "repeated": 0,
+              "map-failed": 0,
+              "native-match": 312,
+              "ambiguous": 0,
+              "missing": 0,
+              "reused": 0,
+              "backwards": 0,
+              "skipped": 0,
+              "pts-mismatch": 0,
+              "stale-owner": 0,
+              "cost-us": 780196,
+              "max-cost-us": 5650
+            },
+            "unique_native_input_match": true,
+            "input_minus_packets": 0,
+            "frame_conservation_passed": true
+          },
+          {
+            "sensor": "rear",
+            "fps": 30.00784616918953,
+            "max_pts_gap_seconds": 0.034000000000000696,
+            "cadence_gate": true,
+            "packets": 307,
+            "decoded_frames": 307,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15198516,
+            "actual_audio_bitrate": 191782,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 67000,
+            "drain_warnings": [
+              "Still 1 frame in the output list after drain"
+            ],
+            "input_aggregate": {
+              "epoch": 4,
+              "native-epoch": 3,
+              "seen": 309,
+              "valid": 309,
+              "repeated": 0,
+              "map-failed": 0,
+              "native-match": 309,
+              "ambiguous": 0,
+              "missing": 0,
+              "reused": 0,
+              "backwards": 0,
+              "skipped": 0,
+              "pts-mismatch": 0,
+              "stale-owner": 0,
+              "cost-us": 644544,
+              "max-cost-us": 5975
+            },
+            "unique_native_input_match": true,
+            "input_minus_packets": 2,
+            "frame_conservation_passed": false
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-19T06:32:14+08:00 mipad2 snapshot[512926]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-19T06:32:14+08:00 mipad2 snapshot[512926]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-19T06:32:14+08:00 mipad2 snapshot[512926]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      },
+      "fixed": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 29.99707723283196,
+            "max_pts_gap_seconds": 0.03433300000000017,
+            "cadence_gate": true,
+            "packets": 309,
+            "decoded_frames": 309,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15643667,
+            "actual_audio_bitrate": 191688,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 69000,
+            "drain_warnings": [],
+            "input_aggregate": {
+              "epoch": 2,
+              "native-epoch": 2,
+              "seen": 309,
+              "valid": 309,
+              "repeated": 0,
+              "map-failed": 0,
+              "native-match": 309,
+              "ambiguous": 0,
+              "missing": 0,
+              "reused": 0,
+              "backwards": 0,
+              "skipped": 0,
+              "pts-mismatch": 0,
+              "stale-owner": 0,
+              "cost-us": 794577,
+              "max-cost-us": 4849
+            },
+            "unique_native_input_match": true,
+            "input_minus_packets": 0,
+            "frame_conservation_passed": true
+          },
+          {
+            "sensor": "rear",
+            "fps": 30.008573878250928,
+            "max_pts_gap_seconds": 0.034000000000000696,
+            "cadence_gate": true,
+            "packets": 316,
+            "decoded_frames": 316,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15646149,
+            "actual_audio_bitrate": 191594,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 69000,
+            "drain_warnings": [],
+            "input_aggregate": {
+              "epoch": 4,
+              "native-epoch": 3,
+              "seen": 316,
+              "valid": 316,
+              "repeated": 0,
+              "map-failed": 0,
+              "native-match": 316,
+              "ambiguous": 0,
+              "missing": 0,
+              "reused": 0,
+              "backwards": 0,
+              "skipped": 0,
+              "pts-mismatch": 0,
+              "stale-owner": 0,
+              "cost-us": 705073,
+              "max-cost-us": 5165
+            },
+            "unique_native_input_match": true,
+            "input_minus_packets": 0,
+            "frame_conservation_passed": true
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-19T06:34:06+08:00 mipad2 snapshot[515735]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-19T06:34:06+08:00 mipad2 snapshot[515735]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-19T06:34:06+08:00 mipad2 snapshot[515735]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      },
+      "performance": {
+        "clips": [
+          {
+            "sensor": "front",
+            "fps": 29.997676839208502,
+            "max_pts_gap_seconds": 0.0343340000000012,
+            "cadence_gate": true,
+            "packets": 905,
+            "decoded_frames": 905,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15263024,
+            "actual_audio_bitrate": 192115,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 71000,
+            "drain_warnings": []
+          },
+          {
+            "sensor": "rear",
+            "fps": 30.019112387899128,
+            "max_pts_gap_seconds": 0.03400000000000247,
+            "cadence_gate": true,
+            "packets": 912,
+            "decoded_frames": 912,
+            "consecutive_exact_decoded_repeats": 0,
+            "actual_video_bitrate": 15275960,
+            "actual_audio_bitrate": 192078,
+            "audio_rate": 48000,
+            "audio_channels": 2,
+            "recording_size": [
+              1920,
+              1080
+            ],
+            "full_preview_size": [
+              1280,
+              720
+            ],
+            "GPU_preview_rotation_present": true,
+            "requested_video_bitrate": 15000000,
+            "requested_audio_bitrate": 192000,
+            "queue_configuration": [
+              "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+            ],
+            "max_thermal_millidegrees": 71000,
+            "drain_warnings": []
+          }
+        ],
+        "renderer_lines": [
+          "2026-10-19T06:35:57+08:00 mipad2 snapshot[518480]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+          "2026-10-19T06:35:57+08:00 mipad2 snapshot[518480]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+          "2026-10-19T06:35:57+08:00 mipad2 snapshot[518480]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+        ],
+        "all_decode_passed": true,
+        "controls_restored": {
+          "t4ka3 6-0037": {
+            "values": {
+              "exposure": 2486,
+              "analogue_gain": 128
+            },
+            "matched": true
+          },
+          "ov5693 6-0036": {
+            "values": {
+              "exposure": 1976,
+              "analogue_gain": 8
+            },
+            "matched": true
+          }
+        },
+        "PM": {
+          "t4ka3 6-0037": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          },
+          "ov5693 6-0036": {
+            "runtime_status": "suspended",
+            "runtime_usage": "0"
+          }
+        }
+      }
+    },
+    "default_promotion": false,
+    "full_objective_complete": false,
+    "matched_original_failure_reproduced": true,
+    "fixed_conservation_and_drain_passed": true,
+    "fixed_full_clip_performance_passed": true
+  },
+  "post_rtc_cohort": {
+    "clips": [
+      {
+        "sensor": "front",
+        "fps": 28.799364427819523,
+        "max_pts_gap_seconds": 0.05066699999999891,
+        "cadence_gate": false,
+        "packets": 871,
+        "decoded_frames": 871,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 14697288,
+        "actual_audio_bitrate": 192065,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 73000,
+        "drain_warning_count": 0,
+        "video_duration": 30.242333,
+        "audio_duration": 30.231333,
+        "audio_minus_video_end_seconds": -0.010999999999999233
+      },
+      {
+        "sensor": "rear",
+        "fps": 30.01669449081803,
+        "max_pts_gap_seconds": 0.03433300000000017,
+        "cadence_gate": true,
+        "packets": 900,
+        "decoded_frames": 900,
+        "consecutive_exact_decoded_repeats": 0,
+        "actual_video_bitrate": 15293830,
+        "actual_audio_bitrate": 191918,
+        "audio_rate": 48000,
+        "audio_channels": 2,
+        "recording_size": [
+          1920,
+          1080
+        ],
+        "full_preview_size": [
+          1280,
+          720
+        ],
+        "GPU_preview_rotation_present": true,
+        "requested_video_bitrate": 15000000,
+        "requested_audio_bitrate": 192000,
+        "queue_configuration": [
+          "live=1 delay=2 min-buffers=3 latency=0:00:00.066666666"
+        ],
+        "max_thermal_millidegrees": 75000,
+        "drain_warning_count": 0,
+        "video_duration": 29.983333,
+        "audio_duration": 29.761333,
+        "audio_minus_video_end_seconds": -0.22199999999999775
+      }
+    ],
+    "renderer_lines": [
+      "2026-10-19T06:40:30+08:00 mipad2 snapshot[524666]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:792: FINISHME: support more multi-planar formats with DRM modifiers",
+      "2026-10-19T06:40:30+08:00 mipad2 snapshot[524666]: MESA-INTEL: warning: ../mesa-26.2.2/src/intel/vulkan_hasvk/anv_formats.c:761: FINISHME: support YUV colorspace with DRM format modifiers",
+      "2026-10-19T06:40:30+08:00 mipad2 snapshot[524666]: Using renderer 'GskVulkanRenderer' for surface 'GdkWaylandToplevel'"
+    ],
+    "all_decode_passed": true,
+    "controls_restored": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "matched": true
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 8
+        },
+        "matched": true
+      }
+    },
+    "PM": {
+      "t4ka3 6-0037": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693 6-0036": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "full_clip_cadence_and_drain_passed": false,
+    "physical_av_sync_proven": false
+  },
+  "power": {
+    "encoding_postflight": {
+      "functional_resume": true,
+      "s0i3_delta_us": 9185152,
+      "new_kernel_errors": []
+    },
+    "encoding_final_postflight": {
+      "functional_resume": true,
+      "s0i3_delta_us": 0,
+      "new_kernel_errors": []
+    }
+  },
+  "specific_stale_EOS_fix_passed": true,
+  "post_resume_performance_passed": false,
+  "final_deep_residency_passed": false,
+  "default_promoted": false,
+  "full_objective_complete": false,
+  "quality_downgraded": false,
+  "tablet_system_packages_changed": false,
+  "media_core_or_individual_pixel_digests_published": false,
+  "tones_or_playback": false,
+  "restoration": {
+    "protected_binaries": true,
+    "original_VA_plugin": true,
+    "stock_encoding_plugin": true,
+    "normal_settings": true,
+    "sensors": {
+      "t4ka3 6-0037": {
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 8
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "gpu_limits": {
+      "gt_min_freq_mhz": "200",
+      "gt_max_freq_mhz": "600"
+    },
+    "stable_saved_default": "mipad2-bqdiag1",
+    "next_entry_empty": true,
+    "anti_idle_active": true,
+    "all_jobs_and_capture_terminal": true,
+    "serial": {
+      "seconds": 1311.2566606999899,
+      "opens": 3,
+      "error_count": 22,
+      "tail_errors": [
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)",
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)",
+        "could not open port 'COM17': FileNotFoundError(2, '\u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002', None, 2)"
+      ],
+      "bytes": 2098,
+      "requested_stop": true
+    },
+    "serial_panic_count": 0,
+    "serial_oops_count": 0
+  },
+  "remaining": [
+    "Post-RTC front full-clip28.799fps and50.667ms max gap remain RED; do not discard startup samples",
+    "Final10-second RTC wakes functionally but S0I3 delta0; ISP/sensors report PM0/suspended, cause remains open",
+    "Specific stale-EOS fix is private; integration, foreground/optical/physical AV sync and broader lifecycle validation remain",
+    "Earlier Mesa stop crash and kernel SP/CSS/failed-reset DMA ownership are not resolved",
+    "Full Android/Windows parity and flash/default branch integration remain incomplete"
+  ]
+}
