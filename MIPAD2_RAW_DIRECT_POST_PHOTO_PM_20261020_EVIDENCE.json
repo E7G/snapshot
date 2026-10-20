@@ -1,0 +1,486 @@
+{
+  "source_commit": "bc31426214b39e973e3a4f4b70887188bd91928b",
+  "binary_sha256": "c84c24315f40ef625ba962e1919bc87a9ee478fbd4ca4c70477b53dc268d3c48",
+  "deployed_kernel": "6.14.0-mipad2-integrated-r19",
+  "default_changed": false,
+  "no_reboot": true,
+  "delayed_post_photo_test": true,
+  "photo_to_rtc_test_delay_seconds": 1821.5680050849915,
+  "rtc": {
+    "functional_resume": true,
+    "s0i3_delta_us": 9374976,
+    "deep_residency_gate": true,
+    "wakeup_irq": "9",
+    "boot_unchanged": true,
+    "sensors_before": {
+      "t4ka3 6-0037": {
+        "controls": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "controls": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "sensors_after": {
+      "t4ka3 6-0037": {
+        "controls": {
+          "exposure": 2486,
+          "analogue_gain": 128
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "ov5693 6-0036": {
+        "controls": {
+          "exposure": 1976,
+          "analogue_gain": 127
+        },
+        "pm": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      }
+    },
+    "usb_after": "configured",
+    "new_kernel_error_count": 0,
+    "kernel": "6.14.0-mipad2-integrated-r19",
+    "no_kernel_change": true
+  },
+  "preview_phases": [
+    {
+      "sensor": "front",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "format": "NV12",
+      "trace_samples": {
+        "native-source": [
+          {
+            "frames": 30,
+            "total": 122,
+            "sampled_wall_fps": 29.963,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 152,
+            "sampled_wall_fps": 29.867,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 182,
+            "sampled_wall_fps": 29.87,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 212,
+            "sampled_wall_fps": 29.877,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 242,
+            "sampled_wall_fps": 29.9,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 272,
+            "sampled_wall_fps": 29.901,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 302,
+            "sampled_wall_fps": 29.928,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 332,
+            "sampled_wall_fps": 29.948,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 362,
+            "sampled_wall_fps": 29.938,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 392,
+            "sampled_wall_fps": 29.923,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 422,
+            "sampled_wall_fps": 29.954,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          }
+        ],
+        "shared-source": [
+          {
+            "frames": 30,
+            "total": 122,
+            "sampled_wall_fps": 29.957,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 152,
+            "sampled_wall_fps": 29.894,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 182,
+            "sampled_wall_fps": 29.862,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 212,
+            "sampled_wall_fps": 29.895,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 242,
+            "sampled_wall_fps": 29.896,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 272,
+            "sampled_wall_fps": 29.882,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 302,
+            "sampled_wall_fps": 29.933,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 332,
+            "sampled_wall_fps": 29.947,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 362,
+            "sampled_wall_fps": 29.954,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 392,
+            "sampled_wall_fps": 29.893,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 422,
+            "sampled_wall_fps": 29.946,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          }
+        ]
+      }
+    },
+    {
+      "sensor": "rear",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "format": "NV12",
+      "trace_samples": {
+        "native-source": [
+          {
+            "frames": 30,
+            "total": 512,
+            "sampled_wall_fps": 29.978,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 542,
+            "sampled_wall_fps": 29.981,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 572,
+            "sampled_wall_fps": 29.987,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 602,
+            "sampled_wall_fps": 29.995,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 632,
+            "sampled_wall_fps": 29.969,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 663,
+            "sampled_wall_fps": 29.993,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 694,
+            "sampled_wall_fps": 30.002,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 724,
+            "sampled_wall_fps": 29.998,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 754,
+            "sampled_wall_fps": 29.983,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 784,
+            "sampled_wall_fps": 29.996,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 814,
+            "sampled_wall_fps": 29.993,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          }
+        ],
+        "shared-source": [
+          {
+            "frames": 30,
+            "total": 512,
+            "sampled_wall_fps": 29.634,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 543,
+            "sampled_wall_fps": 30.371,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 573,
+            "sampled_wall_fps": 29.968,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 604,
+            "sampled_wall_fps": 29.987,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 635,
+            "sampled_wall_fps": 29.995,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 665,
+            "sampled_wall_fps": 29.958,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 696,
+            "sampled_wall_fps": 30.002,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 727,
+            "sampled_wall_fps": 30.03,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 757,
+            "sampled_wall_fps": 29.954,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 31,
+            "total": 788,
+            "sampled_wall_fps": 30.033,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          },
+          {
+            "frames": 30,
+            "total": 818,
+            "sampled_wall_fps": 29.964,
+            "lifetime_max_pts_gap_ns": 103614451,
+            "lifetime_max_offset_gap": 2,
+            "lifetime_qos": 0
+          }
+        ]
+      }
+    }
+  ],
+  "close_state": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0"
+  },
+  "copy_failures": 0,
+  "critical_log_count": 0,
+  "original_controls_restored": true,
+  "sensor_pm": {
+    "t4ka3 6-0037": {
+      "runtime_status": "suspended",
+      "runtime_usage": "0"
+    },
+    "ov5693 6-0036": {
+      "runtime_status": "suspended",
+      "runtime_usage": "0"
+    }
+  },
+  "isp_pm": {
+    "runtime_usage": "0",
+    "runtime_status": "suspended"
+  },
+  "protected_default_and_system_hashes_unchanged": true,
+  "new_filtered_kernel_error_counts": {
+    "BUG:": 0,
+    "WARNING:": 0,
+    "Oops:": 0,
+    "GPU HANG": 0,
+    "IUNIT power-.*timeout": 0,
+    "general protection fault": 0,
+    "SP is not idle": 0,
+    "ISP is not idle": 0,
+    "stop stream timeout": 0
+  },
+  "new_media_created": false,
+  "real_media_or_raw_traces_or_pixel_digests_exported": false,
+  "new_recording_tested": false,
+  "r24_kernel_tested": false,
+  "full_objective_complete": false,
+  "scope": "Delayed RTC after prior full-resolution photos, then actual dual native/shared-source output/switch/close. Not immediate shutter->suspend stress, all PM conditions, optical quality, encoded cadence, foreground smoothness, physical DMA fence or Android parity. Lifetime gaps/offsets retained without trimming."
+}
