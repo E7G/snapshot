@@ -1,0 +1,42 @@
+{
+  "prior_commit": "bcbea944f95504409004e93ddc67d14058e661f1",
+  "source_sha256": {
+    "aperture/src/mipad2_capture_copy.rs": "0e543a457d27e0ff1f6688cd28b96e8ab3aa2dcd9a90130a35a58071198411cf",
+    "aperture/src/mipad2_raw_capture.rs": "f4b22a8994da3a741c9b8d2299c5e48653c539f307bd4ad6271f775e626c068d",
+    "aperture/src/viewfinder.rs": "a738de3c9dd89fd66a789202f80f68f1a84295af8188020773a3a098843a140f"
+  },
+  "focused_tests": 17,
+  "workspace_tests": 87,
+  "repeated_cancellation_cases": 200,
+  "repeated_cancellation_test_binary_sha256": "a99b2a2da28ad3f854ae928f66a39cfab7c4d37aa5f7cdba4519a6ce4027d979",
+  "explicit_opt_in": "MIPAD2_CAPTURE_RAW_ASYNC=1 requires validated MIPAD2_CAPTURE_RAW_DIRECT=1",
+  "queue": {
+    "name": "mipad2-native-raw-queue",
+    "max_size_buffers": 4,
+    "max_size_bytes": 0,
+    "max_size_time": 0,
+    "leaky": false,
+    "flush_on_eos": false,
+    "silent": true
+  },
+  "host_gates": [
+    "same-task native copy before asynchronous boundary releases synthetic native leases",
+    "bounded queue backpressure without content loss or EOS truncation",
+    "new worker task rather than source-thread execution",
+    "padded NV12 pixel bytes/meta/offset/PTS/DTS/duration/flags unchanged",
+    "source allocation guard and latency query propagation retained",
+    "full video/front-photo/rear-photo geometry across NULL reopen",
+    "serialized CAPS cannot overtake queued full-resolution frames",
+    "full-queue FLUSH_START wakes producer under unchanged one-second deadline, no stale epoch frames, all twelve new frames required",
+    "downstream Error not converted to OK/EOS",
+    "original direct/default compressed JPEG paths retained"
+  ],
+  "compiler_test_type_failure_retained": true,
+  "preexisting_flush_test_race_failure_retained": true,
+  "flush_race_fix": "Permit only the two bounded interleavings when GstQueue forwards FLUSH_START before setting srcresult. Require Flushing, exact interrupted-index+1 native lease release, unchanged deadline/old-epoch exclusion/new-epoch completeness. No production capture-copy code change.",
+  "hardware_tested": false,
+  "recording_latency_or_android_parity_proven": false,
+  "default_launcher_changed": false,
+  "full_objective_complete": false,
+  "limitations": "A finite four-copy task boundary addresses downstream chain stalls, not sustained overload or all synchronous CAPS/event/query waits. Four QUEUED frames is not four total in-flight buffers. No real sensor/ISP DMA-safety, optical, all-PM or encoded-cadence claim from these host tests."
+}

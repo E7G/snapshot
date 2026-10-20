@@ -880,9 +880,19 @@ mod tests {
         assert!(flush_started.elapsed() < Duration::from_secs(1));
         assert!(flush_observed.load(Ordering::SeqCst));
         assert_eq!(full, 2);
-        assert_eq!(interrupted.unwrap(), (3, Err(gst::FlowError::Flushing)));
+        let (interrupted_index, flow) = interrupted.unwrap();
+        // GstQueue forwards FLUSH_START before setting srcresult=FLUSHING.
+        // The cancelled consumer may free one slot in that interval, letting
+        // the already-blocked push return OK before the next push observes
+        // upstream flushing. Both bounded interleavings are valid; neither
+        // may deliver a queued old-epoch frame or suppress Flushing.
+        assert!(matches!(interrupted_index, 3 | 4));
+        assert_eq!(flow, Err(gst::FlowError::Flushing));
         assert!(consumer_returned.load(Ordering::SeqCst));
-        assert_eq!(native_released.load(Ordering::SeqCst), 4);
+        assert_eq!(
+            native_released.load(Ordering::SeqCst),
+            interrupted_index as usize + 1
+        );
         assert!(pad.push_event(gst::event::FlushStop::new(true)));
         assert!(pad.push_event(gst::event::StreamStart::new("small-queue-flush-after")));
         assert!(pad.push_event(gst::event::Caps::new(&caps)));

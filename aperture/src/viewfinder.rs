@@ -1790,11 +1790,26 @@ impl Viewfinder {
         }
         source_chain.push(&capsfilter);
         gst::Element::link_many(source_chain)?;
-        let tail = crate::mipad2_raw_capture::CameraTail::new(&bin, &capsfilter, direct)?;
+        let asynchronous = crate::mipad2_raw_capture::asynchronous_enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_RAW_ASYNC").as_deref() == Ok("1"),
+            direct,
+        )?;
+        let tail = if asynchronous {
+            crate::mipad2_raw_capture::CameraTail::new_async(&bin, &capsfilter)?
+        } else {
+            crate::mipad2_raw_capture::CameraTail::new(&bin, &capsfilter, direct)?
+        };
         let capsfilter_post_decode = tail.output;
         if direct {
             log::info!(
                 "Mi Pad 2 native raw direct enabled: NV12 system-memory, decodebin3/multiqueue bypassed, copy+allocation guard retained, caps/rate unchanged"
+            );
+        }
+
+        if asynchronous {
+            log::info!(
+                "Mi Pad 2 native raw asynchronous tail enabled: copied system-memory queue=4 leaky=no flush-on-eos=false, native caps/rate/quality unchanged"
             );
         }
 

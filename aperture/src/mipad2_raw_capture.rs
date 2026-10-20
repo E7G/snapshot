@@ -33,6 +33,22 @@ pub(crate) fn direct_enabled(
     Ok(true)
 }
 
+pub(crate) fn asynchronous_enabled(
+    device: bool,
+    requested: bool,
+    direct: bool,
+) -> Result<bool, gst::glib::BoolError> {
+    if !device || !requested {
+        return Ok(false);
+    }
+    if !direct {
+        return Err(gst::glib::bool_error!(
+            "Mi Pad 2 raw asynchronous tail requires validated RAW_DIRECT1 (physical AtomISP NV12, COPY1/GUARD1 and producer queues OFF)"
+        ));
+    }
+    Ok(true)
+}
+
 pub(crate) struct CameraTail {
     pub(crate) output: gst::Element,
     pub(crate) decoder: Option<gst::Element>,
@@ -43,6 +59,22 @@ impl CameraTail {
         bin: &gst::Bin,
         source_caps: &gst::Element,
         direct: bool,
+    ) -> Result<Self, gst::glib::BoolError> {
+        Self::build(bin, source_caps, direct, false)
+    }
+
+    pub(crate) fn new_async(
+        bin: &gst::Bin,
+        source_caps: &gst::Element,
+    ) -> Result<Self, gst::glib::BoolError> {
+        Self::build(bin, source_caps, true, true)
+    }
+
+    fn build(
+        bin: &gst::Bin,
+        source_caps: &gst::Element,
+        direct: bool,
+        asynchronous: bool,
     ) -> Result<Self, gst::glib::BoolError> {
         let mut builder = gst::ElementFactory::make("capsfilter");
         if direct {
@@ -61,7 +93,25 @@ impl CameraTail {
         output.set_property("caps", &caps);
         bin.add(&output)?;
         let decoder = if direct {
-            source_caps.link(&output)?;
+            if asynchronous {
+                // COPY1/GUARD1 precede this tail. Retain only copied system-memory
+                // frames, not scarce AtomISP MMAP leases. Keep an explicit task
+                // boundary: direct downstream processing starved capture in R17f.
+                // Four frames bound queued memory; no leaking or EOS truncation.
+                let queue = gst::ElementFactory::make("queue")
+                    .name("mipad2-native-raw-queue")
+                    .property("max-size-buffers", 4u32)
+                    .property("max-size-bytes", 0u32)
+                    .property("max-size-time", 0u64)
+                    .property_from_str("leaky", "no")
+                    .property("flush-on-eos", false)
+                    .property("silent", true)
+                    .build()?;
+                bin.add(&queue)?;
+                gst::Element::link_many([source_caps, &queue, &output])?;
+            } else {
+                source_caps.link(&output)?;
+            }
             None
         } else {
             let decoder = gst::ElementFactory::make("decodebin3").build()?;
@@ -186,6 +236,9 @@ mod tests {
         }
     }
     fn graph(copy: bool) -> Graph {
+        graph_mode(copy, false)
+    }
+    fn graph_mode(copy: bool, asynchronous: bool) -> Graph {
         gst::init().unwrap();
         let pipe = gst::Pipeline::new();
         let source = gst::ElementFactory::make("identity").build().unwrap();
@@ -196,7 +249,11 @@ mod tests {
         let input = gst::ElementFactory::make("capsfilter").build().unwrap();
         pipe.add_many([&source, &guard, &input]).unwrap();
         gst::Element::link_many([&source, &guard, &input]).unwrap();
-        let tail = CameraTail::new(pipe.upcast_ref(), &input, true).unwrap();
+        let tail = if asynchronous {
+            CameraTail::new_async(pipe.upcast_ref(), &input).unwrap()
+        } else {
+            CameraTail::new(pipe.upcast_ref(), &input, true).unwrap()
+        };
         let sink = gst::ElementFactory::make("fakesink")
             .property("sync", false)
             .property("async", false)
@@ -282,7 +339,14 @@ mod tests {
 
     #[test]
     fn direct_preserves_padded_nv12_metadata_timing_events_and_releases_native_copy() {
-        let g = graph(true);
+        check_padded_nv12_capture(false);
+    }
+    #[test]
+    fn asynchronous_preserves_padded_nv12_metadata_timing_events_and_releases_native_copy() {
+        check_padded_nv12_capture(true);
+    }
+    fn check_padded_nv12_capture(asynchronous: bool) {
+        let g = graph_mode(true, asynchronous);
         let received = Arc::new(Mutex::new(Vec::new()));
         let got = received.clone();
         let released = Arc::new(AtomicUsize::new(0));
@@ -291,7 +355,7 @@ mod tests {
         g.sink.connect("handoff", false, move |values| {
             let buffer = values[1].get::<gst::Buffer>().unwrap();
             let meta = buffer.meta::<gst_video::VideoMeta>().unwrap();
-            assert_eq!(std::thread::current().id(), caller);
+            assert_eq!(std::thread::current().id() == caller, !asynchronous);
             assert!(release_check.load(Ordering::SeqCst) > buffer.offset() as usize);
             got.lock().unwrap().push((
                 buffer.map_readable().unwrap().as_slice().to_vec(),
@@ -388,7 +452,14 @@ mod tests {
 
     #[test]
     fn direct_video_and_both_full_photo_caps_survive_null_reopen() {
-        let g = graph(false);
+        check_video_and_full_photo_reopen(false);
+    }
+    #[test]
+    fn asynchronous_video_and_both_full_photo_caps_survive_null_reopen() {
+        check_video_and_full_photo_reopen(true);
+    }
+    fn check_video_and_full_photo_reopen(asynchronous: bool) {
+        let g = graph_mode(false, asynchronous);
         let (tx, rx) = std::sync::mpsc::channel();
         g.sink.connect("handoff", false, move |v| {
             tx.send(v[1].get::<gst::Buffer>().unwrap().size()).unwrap();
@@ -428,7 +499,14 @@ mod tests {
 
     #[test]
     fn direct_keeps_allocation_guard_and_latency_query_passthrough() {
-        let g = graph(false);
+        check_guard_and_latency_query(false);
+    }
+    #[test]
+    fn asynchronous_keeps_allocation_guard_and_latency_query_passthrough() {
+        check_guard_and_latency_query(true);
+    }
+    fn check_guard_and_latency_query(asynchronous: bool) {
+        let g = graph_mode(false, asynchronous);
         let downstream = Arc::new(AtomicUsize::new(0));
         let seen = downstream.clone();
         g.sink.static_pad("sink").unwrap().add_probe(
@@ -647,5 +725,354 @@ mod tests {
             .unwrap();
         let info = gst_video::VideoInfo::from_caps(&caps).unwrap();
         assert_eq!((info.width(), info.height()), (32, 24));
+    }
+    #[test]
+    fn asynchronous_scope_is_opt_in_and_requires_validated_direct_route() {
+        assert!(!asynchronous_enabled(false, true, false).unwrap());
+        assert!(!asynchronous_enabled(true, false, false).unwrap());
+        assert!(!asynchronous_enabled(true, false, true).unwrap());
+        assert!(asynchronous_enabled(true, true, false).is_err());
+        assert!(asynchronous_enabled(true, true, true).unwrap());
+    }
+
+    #[test]
+    fn asynchronous_tail_has_one_bounded_nonleaky_queue_without_decoder() {
+        let g = graph_mode(false, true);
+        assert!(g.tail.decoder.is_none());
+        let queue = g.pipe.by_name("mipad2-native-raw-queue").unwrap();
+        assert_eq!(queue.property::<u32>("max-size-buffers"), 4);
+        assert_eq!(queue.property::<u32>("max-size-bytes"), 0);
+        assert_eq!(queue.property::<u64>("max-size-time"), 0);
+        assert!(!queue.property::<bool>("flush-on-eos"));
+        assert!(queue.property::<bool>("silent"));
+        assert_eq!(
+            queue
+                .property_value("leaky")
+                .get::<&gst::glib::EnumValue>()
+                .unwrap()
+                .value(),
+            0
+        );
+        assert_eq!(
+            g.pipe
+                .children()
+                .iter()
+                .filter(|e| e.factory().unwrap().name() == "queue")
+                .count(),
+            1
+        );
+        assert!(!g.pipe.children().iter().any(|e| matches!(
+            e.factory().unwrap().name().as_str(),
+            "multiqueue" | "decodebin3"
+        )));
+        assert_eq!(g.tail.output.name(), "mipad2-native-raw-output");
+        let pad = g.tail.output.static_pad("sink").unwrap();
+        for text in [
+            "image/jpeg",
+            "video/x-raw,format=I420",
+            "video/x-raw(memory:DMABuf),format=NV12",
+        ] {
+            assert!(!pad.query_accept_caps(&text.parse::<gst::Caps>().unwrap()));
+        }
+    }
+
+    fn async_test_buffer(n: u64) -> gst::Buffer {
+        let mut b = gst::Buffer::from_mut_slice(vec![n as u8; 72]);
+        let m = b.get_mut().unwrap();
+        m.set_offset(n);
+        m.set_pts(gst::ClockTime::from_nseconds(n * 33_333_333));
+        m.set_duration(gst::ClockTime::from_nseconds(33_333_333));
+        b
+    }
+
+    #[test]
+    fn asynchronous_copy_releases_native_leases_and_bounded_queue_preserves_all_frames() {
+        use std::sync::{Condvar, mpsc};
+        use std::time::{Duration, Instant};
+        let g = graph_mode(true, true);
+        let gate = Arc::new((Mutex::new(false), Condvar::new()));
+        struct Unblock(Arc<(Mutex<bool>, Condvar)>);
+        impl Drop for Unblock {
+            fn drop(&mut self) {
+                *self.0.0.lock().unwrap() = true;
+                self.0.1.notify_all();
+            }
+        }
+        let _unblock = Unblock(gate.clone());
+        let worker_gate = gate.clone();
+        let frames = Arc::new(Mutex::new(Vec::new()));
+        let received = frames.clone();
+        let (entered_tx, entered_rx) = mpsc::channel();
+        let first = Arc::new(std::sync::atomic::AtomicBool::new(true));
+        g.sink.connect("handoff", false, move |v| {
+            let b = v[1].get::<gst::Buffer>().unwrap();
+            received.lock().unwrap().push((
+                b.offset(),
+                b.pts(),
+                b.map_readable().unwrap().as_slice().to_vec(),
+            ));
+            if first.swap(false, Ordering::SeqCst) {
+                entered_tx.send(()).unwrap();
+                let lock = worker_gate.0.lock().unwrap();
+                let _ = worker_gate
+                    .1
+                    .wait_timeout_while(lock, Duration::from_secs(5), |ready| !*ready);
+            }
+            None
+        });
+        g.pipe.set_state(gst::State::Playing).unwrap();
+        let pad = g.source.static_pad("src").unwrap();
+        let caps: gst::Caps = "video/x-raw,format=NV12,width=8,height=6,framerate=30/1"
+            .parse()
+            .unwrap();
+        begin(&pad, &caps, "async-bounded");
+        let released = Arc::new(AtomicUsize::new(0));
+        let returned = Arc::new(AtomicUsize::new(0));
+        let release_counter = released.clone();
+        let return_counter = returned.clone();
+        let producer_pad = pad.clone();
+        let producer = std::thread::spawn(move || {
+            struct Lease(Vec<u8>, Arc<AtomicUsize>);
+            impl AsMut<[u8]> for Lease {
+                fn as_mut(&mut self) -> &mut [u8] {
+                    &mut self.0
+                }
+            }
+            impl Drop for Lease {
+                fn drop(&mut self) {
+                    self.1.fetch_add(1, Ordering::SeqCst);
+                }
+            }
+            for n in 0..12u64 {
+                let mut b =
+                    gst::Buffer::from_mut_slice(Lease(vec![n as u8; 72], release_counter.clone()));
+                let m = b.get_mut().unwrap();
+                m.set_offset(n);
+                m.set_pts(gst::ClockTime::from_nseconds(n * 33_333_333));
+                assert_eq!(producer_pad.push(b), Ok(gst::FlowSuccess::Ok));
+                return_counter.fetch_add(1, Ordering::SeqCst);
+            }
+        });
+        entered_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        let deadline = Instant::now() + Duration::from_secs(1);
+        while released.load(Ordering::SeqCst) < 6 && Instant::now() < deadline {
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        let queued = g
+            .pipe
+            .by_name("mipad2-native-raw-queue")
+            .unwrap()
+            .property::<u32>("current-level-buffers");
+        let releases_while_blocked = released.load(Ordering::SeqCst);
+        let returns_while_blocked = returned.load(Ordering::SeqCst);
+        *gate.0.lock().unwrap() = true;
+        gate.1.notify_all();
+        producer.join().unwrap();
+        eos(&g);
+        assert_eq!(queued, 4);
+        assert_eq!(releases_while_blocked, 6); // consumer + four queued + blocked producer; all are copies
+        assert_eq!(returns_while_blocked, 5); // native task did advance without waiting for consumer
+        assert_eq!(released.load(Ordering::SeqCst), 12);
+        let frames = frames.lock().unwrap();
+        assert_eq!(frames.len(), 12);
+        for (i, (offset, pts, bytes)) in frames.iter().enumerate() {
+            assert_eq!(*offset, i as u64);
+            assert_eq!(
+                *pts,
+                Some(gst::ClockTime::from_nseconds(i as u64 * 33_333_333))
+            );
+            assert_eq!(bytes, &vec![i as u8; 72]);
+        }
+    }
+
+    #[test]
+    fn asynchronous_full_queue_flush_interrupts_producer_and_discards_only_flushed_epoch() {
+        use std::sync::{Condvar, atomic::AtomicBool, mpsc};
+        use std::time::{Duration, Instant};
+        let g = graph_mode(true, true);
+        let pad = g.source.static_pad("src").unwrap();
+        let gate = Arc::new((Mutex::new(false), Condvar::new()));
+        struct Unblock(Arc<(Mutex<bool>, Condvar)>);
+        impl Drop for Unblock {
+            fn drop(&mut self) {
+                *self.0.0.lock().unwrap() = true;
+                self.0.1.notify_all();
+            }
+        }
+        let _unblock = Unblock(gate.clone());
+        let flush_seen = Arc::new(AtomicBool::new(false));
+        let observed = flush_seen.clone();
+        let flush_gate = gate.clone();
+        g.sink.static_pad("sink").unwrap().add_probe(
+            gst::PadProbeType::EVENT_DOWNSTREAM | gst::PadProbeType::EVENT_FLUSH,
+            move |_, info| {
+                if info
+                    .event()
+                    .is_some_and(|e| matches!(e.view(), gst::EventView::FlushStart(_)))
+                {
+                    observed.store(true, Ordering::SeqCst);
+                    *flush_gate.0.lock().unwrap() = true;
+                    flush_gate.1.notify_all();
+                }
+                gst::PadProbeReturn::Ok
+            },
+        );
+        let (entered_tx, entered_rx) = mpsc::channel();
+        let (frames_tx, frames_rx) = mpsc::channel();
+        let worker_gate = gate.clone();
+        let first = Arc::new(AtomicBool::new(true));
+        g.sink.connect("handoff", false, move |v| {
+            let b = v[1].get::<gst::Buffer>().unwrap();
+            frames_tx
+                .send((b.offset(), b.map_readable().unwrap().as_slice().to_vec()))
+                .unwrap();
+            if first.swap(false, Ordering::SeqCst) {
+                entered_tx.send(()).unwrap();
+                let lock = worker_gate.0.lock().unwrap();
+                let _ = worker_gate
+                    .1
+                    .wait_timeout_while(lock, Duration::from_secs(5), |ready| !*ready);
+            }
+            None
+        });
+        g.pipe.set_state(gst::State::Playing).unwrap();
+        let caps: gst::Caps = "video/x-raw,format=NV12,width=8,height=6,framerate=30/1"
+            .parse()
+            .unwrap();
+        begin(&pad, &caps, "async-flush-before");
+        let (done_tx, done_rx) = mpsc::channel();
+        let producer_pad = pad.clone();
+        let producer = std::thread::spawn(move || {
+            for n in 0..12u64 {
+                let flow = producer_pad.push(async_test_buffer(n));
+                if flow.is_err() {
+                    done_tx.send((n, flow)).unwrap();
+                    return;
+                }
+            }
+            done_tx.send((12, Ok(gst::FlowSuccess::Ok))).unwrap();
+        });
+        entered_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        let queue = g.pipe.by_name("mipad2-native-raw-queue").unwrap();
+        let deadline = Instant::now() + Duration::from_secs(1);
+        while queue.property::<u32>("current-level-buffers") < 4 && Instant::now() < deadline {
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        let full = queue.property::<u32>("current-level-buffers");
+        let started = Instant::now();
+        assert!(pad.push_event(gst::event::FlushStart::new()));
+        let interrupted = done_rx.recv_timeout(Duration::from_secs(1));
+        *gate.0.lock().unwrap() = true;
+        gate.1.notify_all();
+        producer.join().unwrap();
+        assert_eq!(full, 4);
+        assert!(started.elapsed() < Duration::from_secs(1));
+        assert!(flush_seen.load(Ordering::SeqCst));
+        assert!(matches!(
+            interrupted.unwrap(),
+            (5 | 6, Err(gst::FlowError::Flushing))
+        ));
+        assert!(pad.push_event(gst::event::FlushStop::new(true)));
+        begin(&pad, &caps, "async-flush-after");
+        for n in 20..32u64 {
+            assert_eq!(pad.push(async_test_buffer(n)), Ok(gst::FlowSuccess::Ok));
+        }
+        eos(&g);
+        let frames: Vec<_> = frames_rx.try_iter().collect();
+        assert_eq!(frames.len(), 13);
+        assert_eq!(frames[0].0, 0);
+        for (i, (offset, bytes)) in frames.iter().skip(1).enumerate() {
+            assert_eq!(*offset, i as u64 + 20);
+            assert_eq!(bytes, &vec![*offset as u8; 72]);
+        }
+    }
+
+    #[test]
+    fn asynchronous_downstream_error_is_not_converted_to_ok_or_eos() {
+        let g = graph_mode(true, true);
+        g.tail.output.unlink(&g.sink);
+        let fail = gst::ElementFactory::make("identity")
+            .property("error-after", 1i32)
+            .build()
+            .unwrap();
+        g.pipe.add(&fail).unwrap();
+        gst::Element::link_many([&g.tail.output, &fail, &g.sink]).unwrap();
+        g.pipe.set_state(gst::State::Playing).unwrap();
+        let pad = g.source.static_pad("src").unwrap();
+        let caps: gst::Caps = "video/x-raw,format=NV12,width=8,height=6,framerate=30/1"
+            .parse()
+            .unwrap();
+        begin(&pad, &caps, "async-flow-error");
+        let _ = pad.push(async_test_buffer(0));
+        let msg = g
+            .pipe
+            .bus()
+            .unwrap()
+            .timed_pop_filtered(
+                gst::ClockTime::from_seconds(3),
+                &[gst::MessageType::Error, gst::MessageType::Eos],
+            )
+            .unwrap();
+        assert!(matches!(msg.view(), gst::MessageView::Error(_)), "{msg:?}");
+        // The worker must expose its failed flow to subsequent producers.
+        let mut flow = Ok(gst::FlowSuccess::Ok);
+        for n in 1..12 {
+            flow = pad.push(async_test_buffer(n));
+            if flow.is_err() {
+                break;
+            }
+        }
+        assert_eq!(flow, Err(gst::FlowError::Error));
+    }
+
+    #[test]
+    fn asynchronous_serialized_caps_do_not_overtake_queued_full_resolution_frames() {
+        let g = graph_mode(false, true);
+        let (tx, rx) = std::sync::mpsc::channel();
+        g.sink.connect("handoff", false, move |v| {
+            let b = v[1].get::<gst::Buffer>().unwrap();
+            let pad = v[2].get::<gst::Pad>().unwrap();
+            let info = gst_video::VideoInfo::from_caps(&pad.current_caps().unwrap()).unwrap();
+            tx.send((b.offset(), info.width(), info.height(), b.size()))
+                .unwrap();
+            None
+        });
+        g.pipe.set_state(gst::State::Playing).unwrap();
+        let pad = g.source.static_pad("src").unwrap();
+        let mut expected = Vec::new();
+        for (epoch, (width, height, fps)) in [
+            (1920, 1080, 30),
+            (2560, 1920, 15),
+            (3264, 2448, 15),
+            (1920, 1080, 30),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let caps = gst::Caps::builder("video/x-raw")
+                .field("format", "NV12")
+                .field("width", width)
+                .field("height", height)
+                .field("framerate", gst::Fraction::new(fps, 1))
+                .build();
+            let size = gst_video::VideoInfo::from_caps(&caps).unwrap().size();
+            if epoch == 0 {
+                begin(&pad, &caps, "async-serialized-modes");
+            } else {
+                assert!(pad.push_event(gst::event::Caps::new(&caps)));
+            }
+            for _ in 0..3 {
+                let n = expected.len() as u64;
+                let mut b = gst::Buffer::with_size(size).unwrap();
+                b.get_mut().unwrap().set_offset(n);
+                b.get_mut()
+                    .unwrap()
+                    .set_pts(gst::ClockTime::from_nseconds(n * 33_333_333));
+                assert_eq!(pad.push(b), Ok(gst::FlowSuccess::Ok));
+                expected.push((n, width as u32, height as u32, size));
+            }
+        }
+        eos(&g);
+        assert_eq!(rx.try_iter().collect::<Vec<_>>(), expected);
     }
 }
