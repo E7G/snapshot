@@ -1,0 +1,211 @@
+{
+  "source_commit": "bc31426214b39e973e3a4f4b70887188bd91928b",
+  "binary_sha256": "c84c24315f40ef625ba962e1919bc87a9ee478fbd4ca4c70477b53dc268d3c48",
+  "archive_sha256": "2da28f0dc68a820e3a49e1480430689209d18d1272cca4c2294112b53e1a4573",
+  "private_prefix": "/usr/local/lib/mipad2-snapshot-recording-r17f-raw",
+  "photos": [
+    {
+      "sensor": "front",
+      "jpeg_dimensions": [
+        2560,
+        1920
+      ],
+      "jpeg_bytes": 1366602,
+      "codec": "mjpeg",
+      "ffmpeg_single_frame_decode_exit_code": 0,
+      "physical_sensor_selected": true,
+      "actual_native_photo_format_seen": true,
+      "sensor_pad_dimensions": [
+        2576,
+        1936
+      ],
+      "sensor_crop": [
+        24,
+        10,
+        2576,
+        1936
+      ],
+      "native_source_ready_logged": true,
+      "preview_restore_logged": true,
+      "preview_after": {
+        "size": [
+          1920,
+          1080
+        ],
+        "format": "NV12"
+      },
+      "optical_quality_tested": false
+    },
+    {
+      "sensor": "rear",
+      "jpeg_dimensions": [
+        3264,
+        2448
+      ],
+      "jpeg_bytes": 1134041,
+      "codec": "mjpeg",
+      "ffmpeg_single_frame_decode_exit_code": 0,
+      "physical_sensor_selected": true,
+      "actual_native_photo_format_seen": true,
+      "sensor_pad_dimensions": [
+        3280,
+        2464
+      ],
+      "sensor_crop": [
+        0,
+        0,
+        3280,
+        2464
+      ],
+      "native_source_ready_logged": true,
+      "preview_restore_logged": true,
+      "preview_after": {
+        "size": [
+          1920,
+          1080
+        ],
+        "format": "NV12"
+      },
+      "optical_quality_tested": false
+    }
+  ],
+  "preview_phases": [
+    {
+      "label": "initial-camera",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "native_format": "NV12",
+      "trace_counters": {
+        "native-source": {
+          "sample_count": 11,
+          "lifetime_max_pts_gap_ns": 109812688,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        },
+        "shared-source": {
+          "sample_count": 11,
+          "lifetime_max_pts_gap_ns": 109812688,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        }
+      }
+    },
+    {
+      "label": "after-front-photo",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "native_format": "NV12",
+      "trace_counters": {
+        "native-source": {
+          "sample_count": 10,
+          "lifetime_max_pts_gap_ns": 109812688,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        },
+        "shared-source": {
+          "sample_count": 10,
+          "lifetime_max_pts_gap_ns": 109812688,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        }
+      }
+    },
+    {
+      "label": "other-camera",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "native_format": "NV12",
+      "trace_counters": {
+        "native-source": {
+          "sample_count": 11,
+          "lifetime_max_pts_gap_ns": 111262950,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        },
+        "shared-source": {
+          "sample_count": 11,
+          "lifetime_max_pts_gap_ns": 111262950,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        }
+      }
+    },
+    {
+      "label": "after-rear-photo",
+      "native_size": [
+        1920,
+        1080
+      ],
+      "native_format": "NV12",
+      "trace_counters": {
+        "native-source": {
+          "sample_count": 10,
+          "lifetime_max_pts_gap_ns": 124133663,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        },
+        "shared-source": {
+          "sample_count": 10,
+          "lifetime_max_pts_gap_ns": 124133663,
+          "lifetime_max_offset_gap": 2,
+          "lifetime_max_qos": 0
+        }
+      }
+    }
+  ],
+  "raw_direct_activation_count": 1,
+  "copy_failures": 0,
+  "critical_log_count": 0,
+  "close_state": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStatus": "0"
+  },
+  "exact_original_controls_restored": true,
+  "sensor_pm": {
+    "t4ka3 6-0037": {
+      "runtime_status": "suspended",
+      "runtime_usage": "0"
+    },
+    "ov5693 6-0036": {
+      "runtime_status": "suspended",
+      "runtime_usage": "0"
+    }
+  },
+  "isp_pm": {
+    "runtime_usage": "0",
+    "runtime_status": "suspended"
+  },
+  "protected_default_and_system_hashes_unchanged": true,
+  "no_reboot": true,
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "new_filtered_kernel_error_counts": {
+    "BUG:": 0,
+    "WARNING:": 0,
+    "Oops:": 0,
+    "GPU HANG": 0,
+    "IUNIT power-.*timeout": 0,
+    "general protection fault": 0,
+    "SP is not idle": 0,
+    "ISP is not idle": 0
+  },
+  "full_photo_hardware_tested": true,
+  "new_recording_tested": false,
+  "playback_tested": false,
+  "optical_quality_tested": false,
+  "shutter_latency_tested": false,
+  "post_photo_rtc_tested": false,
+  "default_changed": false,
+  "new_media_created": true,
+  "real_media_exported": false,
+  "pixel_digests_exported": false,
+  "recording_reserve_pass": false,
+  "full_objective_complete": false,
+  "qualifies": "Full-resolution JPEG creation/decoding and return to 1080p NV12 output only. No optical color/exposure/focus, foreground motion, startup/capture latency or full recording/Android-parity proof. Lifetime gap/offset counters include launches, switches and native mode transitions and are retained without resetting; phase attribution is not proven. No new post-photo RTC test."
+}
