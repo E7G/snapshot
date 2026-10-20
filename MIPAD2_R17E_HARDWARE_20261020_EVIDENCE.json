@@ -1,0 +1,1018 @@
+{
+  "schema": "mipad2-r17e-qualified-hardware-v1",
+  "at": 1792461217.0865214,
+  "source_commit": "b0c767c6a4ecfae7dc82b8213ba2a35ad6e89778",
+  "binary_sha256": "9c2ed1e6a4b7f5251ddc8d876e52326d5182d7f3069a6575045236b0bb687c65",
+  "kernel": "6.14.0-mipad2-integrated-r19",
+  "same_kernel_boot": true,
+  "defaults_changed": false,
+  "quality_lowered": false,
+  "warmup_excluded": false,
+  "old_eight_buffer_queue_enabled": false,
+  "controlled_order": [
+    "off",
+    "on"
+  ],
+  "randomized": false,
+  "controlled_thermal_thresholds_sensors_hysteresis_unchanged": true,
+  "original_thermal_service_restored": true,
+  "off_automatic_stop_pass": false,
+  "off_manual_restoration_verified": true,
+  "on_automatic_stop_pass": true,
+  "cohorts": [
+    {
+      "name": "small-queue",
+      "small_queue_enabled": true,
+      "cpu_max_policy_khz": null,
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 30.000325383138644,
+          "max_pts_gap_seconds": 0.03433300000000017,
+          "cadence_gate": true,
+          "packets": 923,
+          "decoded_frames": 923,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14856246,
+          "actual_audio_bitrate": 192254,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 67000,
+          "cpu_max_policy_khz": null,
+          "cpu_limit_all_45_samples_valid": null,
+          "conservation": {
+            "encoder_inputs": 923,
+            "encoder_outputs": 923,
+            "mp4_packets": 923,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 923,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166583.33333333334,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 923,
+            "native_pushes_between_recorded_endpoints": 923,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.000341977867883,
+            "driver_stamp_interval_ns": {
+              "count": 922,
+              "minimum": 32590000,
+              "median": 33325000,
+              "p95": 33754000,
+              "p99": 33872000,
+              "maximum": 34018000,
+              "mean": 33332953.362255964,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 922
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 923,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30732982000,
+            "zero_driver_owned_overlap_ns": 0,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 923,
+            "full_native_push": {
+              "count": 923,
+              "median_ns": 1995354,
+              "p95_ns": 2723346,
+              "p99_ns": 4384347,
+              "max_ns": 10593741,
+              "mean_ns": 2093169.1300108342,
+              "above30ms": 0
+            },
+            "pre_guard_prefix": {
+              "count": 923,
+              "median_ns": 1890975,
+              "p95_ns": 2552952,
+              "p99_ns": 3575703,
+              "max_ns": 4942194,
+              "mean_ns": 1964955.667388949,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 923,
+              "median_ns": 66378,
+              "p95_ns": 274811,
+              "p99_ns": 713741,
+              "max_ns": 8488221,
+              "mean_ns": 123832.74214517877,
+              "above30ms": 0
+            },
+            "multiqueue_worker_chain": {
+              "count": 923,
+              "median_ns": 40777,
+              "p95_ns": 95616,
+              "p99_ns": 384478,
+              "max_ns": 2164585,
+              "mean_ns": 57244.394366197186,
+              "above30ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 923,
+              "median_ns": 3003745,
+              "p95_ns": 31411647,
+              "p99_ns": 151414199,
+              "max_ns": 184423484,
+              "mean_ns": 8357372.975081257,
+              "above30ms": 47
+            },
+            "different_source_and_multiqueue_tasks": 923,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 2240000.0,
+              "cpu_khz_min": 480000,
+              "cpu_khz_max": 2244594,
+              "app_cpu_percent_mean": 95.1622829397862,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.010741697253266,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "cadence_gate": true,
+          "packets": 923,
+          "decoded_frames": 923,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14880853,
+          "actual_audio_bitrate": 192323,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 71000,
+          "cpu_max_policy_khz": null,
+          "cpu_limit_all_45_samples_valid": null,
+          "conservation": {
+            "encoder_inputs": 923,
+            "encoder_outputs": 923,
+            "mp4_packets": 923,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 923,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166449.0,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 923,
+            "native_pushes_between_recorded_endpoints": 923,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.01067038825019,
+            "driver_stamp_interval_ns": {
+              "count": 922,
+              "minimum": 32638000,
+              "median": 33316000,
+              "p95": 33681000,
+              "p99": 33876000,
+              "maximum": 34059000,
+              "mean": 33321481.561822128,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 922
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 923,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30722407000,
+            "zero_driver_owned_overlap_ns": 0,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 923,
+            "full_native_push": {
+              "count": 923,
+              "median_ns": 2032920,
+              "p95_ns": 2661472,
+              "p99_ns": 3503694,
+              "max_ns": 18487455,
+              "mean_ns": 2141847.513542795,
+              "above30ms": 0
+            },
+            "pre_guard_prefix": {
+              "count": 923,
+              "median_ns": 1925230,
+              "p95_ns": 2495065,
+              "p99_ns": 3310223,
+              "max_ns": 18297585,
+              "mean_ns": 2033906.22751896,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 923,
+              "median_ns": 70728,
+              "p95_ns": 241235,
+              "p99_ns": 447594,
+              "max_ns": 1679208,
+              "mean_ns": 103516.89057421451,
+              "above30ms": 0
+            },
+            "multiqueue_worker_chain": {
+              "count": 923,
+              "median_ns": 38564,
+              "p95_ns": 95067,
+              "p99_ns": 432106,
+              "max_ns": 784458,
+              "mean_ns": 54111.75297941495,
+              "above30ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 923,
+              "median_ns": 2978010,
+              "p95_ns": 4352428,
+              "p99_ns": 115841394,
+              "max_ns": 173927628,
+              "mean_ns": 5729576.318526544,
+              "above30ms": 24
+            },
+            "different_source_and_multiqueue_tasks": 923,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 1840000.0,
+              "cpu_khz_min": 480000,
+              "cpu_khz_max": 2240641,
+              "app_cpu_percent_mean": 100.65079128210455,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        }
+      ],
+      "all_clip_cadence_gate": true,
+      "all_recorded_windows_no_zero_owned": true,
+      "all_conservation_gate": true,
+      "unique_native_dequeue_fences": {
+        "unique": 3526
+      },
+      "trace_integrity": {
+        "complete": true,
+        "reserved": 298524,
+        "capacity": 524288,
+        "overflow": 0,
+        "incomplete": 0,
+        "unmatched_pre": 34,
+        "unmatched_post": 0
+      },
+      "source_filter_committed_epochs": 2,
+      "source_allocation_queries": {
+        "GstIdentity\t/GstBin:bin3/GstIdentity:mipad2-capture-allocation-guard.GstPad:sink": {
+          "count": 14,
+          "max_ns": 9887,
+          "results": {
+            "0": 14
+          }
+        }
+      },
+      "syscall_pair_count": 18584,
+      "syscall_left_censored_exits": 64,
+      "syscall_right_censored": 2,
+      "rtc": {
+        "s0i3_delta_us": 9641248,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      }
+    },
+    {
+      "name": "caplease2-off",
+      "small_queue_enabled": false,
+      "cpu_max_policy_khz": 1600000,
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 30.001626660864183,
+          "max_pts_gap_seconds": 0.0343340000000012,
+          "cadence_gate": true,
+          "packets": 923,
+          "decoded_frames": 923,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15114050,
+          "actual_audio_bitrate": 192050,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 67000,
+          "cpu_max_policy_khz": 1600000,
+          "cpu_limit_all_45_samples_valid": true,
+          "conservation": {
+            "encoder_inputs": 923,
+            "encoder_outputs": 923,
+            "mp4_packets": 923,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 923,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166650.0,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 923,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 923,
+            "native_pushes_between_recorded_endpoints": 923,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.0017555257165,
+            "driver_stamp_interval_ns": {
+              "count": 922,
+              "minimum": 32686000,
+              "median": 33330000,
+              "p95": 33713000,
+              "p99": 33873000,
+              "maximum": 34069000,
+              "mean": 33331382.863340564,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 922
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 923,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30731535000,
+            "zero_driver_owned_overlap_ns": 0,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 923,
+            "full_native_push": {
+              "count": 923,
+              "median_ns": 2418747,
+              "p95_ns": 8279668,
+              "p99_ns": 28454655,
+              "max_ns": 111677624,
+              "mean_ns": 3699521.9501625136,
+              "above30ms": 6
+            },
+            "pre_guard_prefix": {
+              "count": 923,
+              "median_ns": 2210009,
+              "p95_ns": 5631821,
+              "p99_ns": 13757776,
+              "max_ns": 29443333,
+              "mean_ns": 2885021.837486457,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 923,
+              "median_ns": 181864,
+              "p95_ns": 620340,
+              "p99_ns": 20554151,
+              "max_ns": 94408273,
+              "mean_ns": 810815.6153846154,
+              "above30ms": 2
+            },
+            "multiqueue_worker_chain": {
+              "count": 923,
+              "median_ns": 56476,
+              "p95_ns": 370339,
+              "p99_ns": 20407250,
+              "max_ns": 94270222,
+              "mean_ns": 672676.9837486458,
+              "above30ms": 2
+            },
+            "native_push_to_encoder_chain": {
+              "count": 923,
+              "median_ns": 3497314,
+              "p95_ns": 290303386,
+              "p99_ns": 344348169,
+              "max_ns": 409132620,
+              "mean_ns": 60350786.931744315,
+              "above30ms": 321
+            },
+            "different_source_and_multiqueue_tasks": 0,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 1599993.0,
+              "cpu_khz_min": 479998,
+              "cpu_khz_max": 1600257,
+              "app_cpu_percent_mean": 115.95171263238271,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.0122431421859,
+          "max_pts_gap_seconds": 0.035999999999999976,
+          "cadence_gate": true,
+          "packets": 908,
+          "decoded_frames": 908,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15311786,
+          "actual_audio_bitrate": 192031,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 67000,
+          "cpu_max_policy_khz": 1600000,
+          "cpu_limit_all_45_samples_valid": true,
+          "conservation": {
+            "encoder_inputs": 908,
+            "encoder_outputs": 908,
+            "mp4_packets": 908,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 908,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166658.33333333334,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 908,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 908,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 908,
+            "native_pushes_between_recorded_endpoints": 908,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.012213349445734,
+            "driver_stamp_interval_ns": {
+              "count": 907,
+              "minimum": 30907000,
+              "median": 33317000,
+              "p95": 33698000,
+              "p99": 33842000,
+              "maximum": 35940000,
+              "mean": 33319768.467475194,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 907
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 908,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30221030000,
+            "zero_driver_owned_overlap_ns": 0,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 908,
+            "full_native_push": {
+              "count": 908,
+              "median_ns": 2507185,
+              "p95_ns": 5359584,
+              "p99_ns": 13251917,
+              "max_ns": 38369494,
+              "mean_ns": 3181924.986784141,
+              "above30ms": 1
+            },
+            "pre_guard_prefix": {
+              "count": 908,
+              "median_ns": 2262784,
+              "p95_ns": 4798744,
+              "p99_ns": 11758236,
+              "max_ns": 19703317,
+              "mean_ns": 2817769.6971365637,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 908,
+              "median_ns": 187588,
+              "p95_ns": 478952,
+              "p99_ns": 2368647,
+              "max_ns": 26144606,
+              "mean_ns": 360095.84030837007,
+              "above30ms": 0
+            },
+            "multiqueue_worker_chain": {
+              "count": 908,
+              "median_ns": 62163,
+              "p95_ns": 211876,
+              "p99_ns": 2162959,
+              "max_ns": 26030655,
+              "mean_ns": 220879.9460352423,
+              "above30ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 908,
+              "median_ns": 3834191,
+              "p95_ns": 192259032,
+              "p99_ns": 299156965,
+              "max_ns": 339408028,
+              "mean_ns": 55335555.28964758,
+              "above30ms": 387
+            },
+            "different_source_and_multiqueue_tasks": 0,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 1600000.0,
+              "cpu_khz_min": 480000,
+              "cpu_khz_max": 1600435,
+              "app_cpu_percent_mean": 114.93880434944116,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        }
+      ],
+      "all_clip_cadence_gate": true,
+      "all_recorded_windows_no_zero_owned": true,
+      "all_conservation_gate": true,
+      "unique_native_dequeue_fences": {
+        "unique": 3627
+      },
+      "trace_integrity": {
+        "complete": true,
+        "reserved": 287884,
+        "capacity": 524288,
+        "overflow": 0,
+        "incomplete": 0,
+        "unmatched_pre": 34,
+        "unmatched_post": 0
+      },
+      "source_filter_committed_epochs": 1,
+      "source_allocation_queries": {
+        "GstIdentity\t/GstBin:bin3/GstIdentity:mipad2-capture-allocation-guard.GstPad:sink": {
+          "count": 15,
+          "max_ns": 10300,
+          "results": {
+            "0": 15
+          }
+        }
+      },
+      "syscall_pair_count": 19079,
+      "syscall_left_censored_exits": 53,
+      "syscall_right_censored": 1,
+      "rtc": {
+        "s0i3_delta_us": 8915072,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      }
+    },
+    {
+      "name": "caplease2-on",
+      "small_queue_enabled": true,
+      "cpu_max_policy_khz": 1600000,
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.837221051405983,
+          "max_pts_gap_seconds": 0.0453329999999994,
+          "cadence_gate": true,
+          "packets": 901,
+          "decoded_frames": 901,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15166517,
+          "actual_audio_bitrate": 191901,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 73000,
+          "cpu_max_policy_khz": 1600000,
+          "cpu_limit_all_45_samples_valid": true,
+          "conservation": {
+            "encoder_inputs": 901,
+            "encoder_outputs": 901,
+            "mp4_packets": 901,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 901,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166633.33333333334,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 901,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 901,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 901,
+            "native_pushes_between_recorded_endpoints": 901,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 29.837284358901023,
+            "driver_stamp_interval_ns": {
+              "count": 900,
+              "minimum": 21917000,
+              "median": 33328000,
+              "p95": 38324000,
+              "p99": 42582000,
+              "maximum": 45234000,
+              "mean": 33515114.444444444,
+              "above40ms": 28,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 900
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 901,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30163605000,
+            "zero_driver_owned_overlap_ns": 6679523000,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 901,
+            "full_native_push": {
+              "count": 901,
+              "median_ns": 32985564,
+              "p95_ns": 37991259,
+              "p99_ns": 41562618,
+              "max_ns": 50046755,
+              "mean_ns": 28917732.29300777,
+              "above30ms": 717
+            },
+            "pre_guard_prefix": {
+              "count": 901,
+              "median_ns": 3731473,
+              "p95_ns": 6502207,
+              "p99_ns": 11260664,
+              "max_ns": 19135152,
+              "mean_ns": 4051798.562708102,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 901,
+              "median_ns": 28970686,
+              "p95_ns": 34007149,
+              "p99_ns": 36691855,
+              "max_ns": 45117207,
+              "mean_ns": 24857140.731409546,
+              "above30ms": 295
+            },
+            "multiqueue_worker_chain": {
+              "count": 901,
+              "median_ns": 33369401,
+              "p95_ns": 38602113,
+              "p99_ns": 41995858,
+              "max_ns": 78083091,
+              "mean_ns": 32989622.398446172,
+              "above30ms": 833
+            },
+            "native_push_to_encoder_chain": {
+              "count": 901,
+              "median_ns": 433096609,
+              "p95_ns": 454428875,
+              "p99_ns": 464963716,
+              "max_ns": 477992923,
+              "mean_ns": 428663958.32297444,
+              "above30ms": 901
+            },
+            "different_source_and_multiqueue_tasks": 901,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 1600000.0,
+              "cpu_khz_min": 480000,
+              "cpu_khz_max": 1603501,
+              "app_cpu_percent_mean": 125.77422918367675,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.01148012913661,
+          "max_pts_gap_seconds": 0.0343340000000012,
+          "cadence_gate": true,
+          "packets": 916,
+          "decoded_frames": 916,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14847474,
+          "actual_audio_bitrate": 191973,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 75000,
+          "cpu_max_policy_khz": 1600000,
+          "cpu_limit_all_45_samples_valid": true,
+          "conservation": {
+            "encoder_inputs": 916,
+            "encoder_outputs": 916,
+            "mp4_packets": 916,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 916,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166650.0,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "parser_counts": [
+            {
+              "frames": 916,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            },
+            {
+              "frames": 916,
+              "pts_equal_to_encoder": true,
+              "eos": true
+            }
+          ],
+          "source_coverage": {
+            "encoder_inputs": 916,
+            "native_pushes_between_recorded_endpoints": 916,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.011479144777148,
+            "driver_stamp_interval_ns": {
+              "count": 915,
+              "minimum": 32525000,
+              "median": 33323000,
+              "p95": 33758000,
+              "p99": 33954000,
+              "maximum": 34379000,
+              "mean": 33320583.606557377,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 915
+            }
+          },
+          "availability": {
+            "unique_recorded_completion_joins": 916,
+            "missing": 0,
+            "ambiguous": 0,
+            "recorded_completion_window_ns": 30488335000,
+            "zero_driver_owned_overlap_ns": 0,
+            "all_packets_joined": true
+          },
+          "scheduling": {
+            "encoder_frames": 916,
+            "full_native_push": {
+              "count": 916,
+              "median_ns": 2416017,
+              "p95_ns": 5142434,
+              "p99_ns": 6487005,
+              "max_ns": 13966378,
+              "mean_ns": 2820976.728165939,
+              "above30ms": 0
+            },
+            "pre_guard_prefix": {
+              "count": 916,
+              "median_ns": 2301979,
+              "p95_ns": 4913405,
+              "p99_ns": 6404904,
+              "max_ns": 13795391,
+              "mean_ns": 2699754.9934497816,
+              "above30ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 916,
+              "median_ns": 55437,
+              "p95_ns": 293455,
+              "p99_ns": 930905,
+              "max_ns": 3907846,
+              "mean_ns": 111789.36572052402,
+              "above30ms": 0
+            },
+            "multiqueue_worker_chain": {
+              "count": 916,
+              "median_ns": 33035774,
+              "p95_ns": 38089251,
+              "p99_ns": 41368884,
+              "max_ns": 63945247,
+              "mean_ns": 32739502.816593885,
+              "above30ms": 861
+            },
+            "native_push_to_encoder_chain": {
+              "count": 916,
+              "median_ns": 370343327,
+              "p95_ns": 376207110,
+              "p99_ns": 380783463,
+              "max_ns": 383563985,
+              "mean_ns": 370266174.8995633,
+              "above30ms": 916
+            },
+            "different_source_and_multiqueue_tasks": 916,
+            "whole_45s_sample_scope": {
+              "cpu_khz_median": 1600000.0,
+              "cpu_khz_min": 480000,
+              "cpu_khz_max": 1600540,
+              "app_cpu_percent_mean": 126.04266850089378,
+              "not_hardware_throttling_proof": true
+            }
+          }
+        }
+      ],
+      "all_clip_cadence_gate": true,
+      "all_recorded_windows_no_zero_owned": false,
+      "all_conservation_gate": true,
+      "unique_native_dequeue_fences": {
+        "unique": 3683
+      },
+      "trace_integrity": {
+        "complete": true,
+        "reserved": 304190,
+        "capacity": 524288,
+        "overflow": 0,
+        "incomplete": 0,
+        "unmatched_pre": 34,
+        "unmatched_post": 0
+      },
+      "source_filter_committed_epochs": 1,
+      "source_allocation_queries": {
+        "GstIdentity\t/GstBin:bin3/GstIdentity:mipad2-capture-allocation-guard.GstPad:sink": {
+          "count": 15,
+          "max_ns": 8375,
+          "results": {
+            "0": 15
+          }
+        }
+      },
+      "syscall_pair_count": 18342,
+      "syscall_left_censored_exits": 17,
+      "syscall_right_censored": 1,
+      "rtc": {
+        "s0i3_delta_us": 9673824,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      }
+    }
+  ],
+  "failed_or_aborted_protocols": [
+    {
+      "name": "cap1600-v1",
+      "reason": "Remote runtime-expanded trial syntax error before recording; original policies/controls restored",
+      "qualified_cadence": false
+    },
+    {
+      "name": "cap1600-v2",
+      "reason": "Immediate sysfs readback raced asynchronous QoS update; aborted before camera",
+      "qualified_cadence": false
+    },
+    {
+      "name": "cap1600-v3",
+      "reason": "Thermal guard raised temporary limit to1840000; first partial recording aborted, not fixed-cap evidence; no external decision overwritten",
+      "qualified_cadence": false
+    },
+    {
+      "name": "caplease-initial",
+      "reason": "SHM reserve preflight failed before deployment; all completed scalar trace bytes losslessly relocated locally",
+      "qualified_cadence": false
+    },
+    {
+      "name": "caplease-retry",
+      "reason": "Previously existing stop-timeout drop-in rejected before override; original untouched",
+      "qualified_cadence": false
+    }
+  ],
+  "qualifiers": [
+    "OFF capture and RTC completed before an automated cleanup failure: systemd control-group SIGTERM killed a restore subprocess after unlink but before reload. Manual reload/restart restored exact original guard/policies before offline analysis. Failed journal and original controller retained; not an automated rollback PASS. ON uses tested missing-file/cached-ExecStart recovery, KillMode=mixed and stop-flag terminal wait.",
+    "Sequential single-device arms, not randomized; order/temperature/load confounds remain.",
+    "Both active private tracers add overhead; not uninstrumented throughput proof.",
+    "Counts and zero-owned windows apply to exact actual recorded native endpoints; not optical SOF or whole button intent.",
+    "Source-to-encoder arrival tails are retained, not glass-to-glass or physical audio/video synchronization.",
+    "Queue bounds two queued buffers, not total in-flight memory or end-to-end latency.",
+    "Natural full-frequency first pair is distinct from cap-controlled arms; never pool conditions.",
+    "No Android visual quality/autofocus/whitebalance/exposure/physical AV parity proven."
+  ],
+  "raw_media_or_traces_exported": false,
+  "per_frame_pixel_digests_exported": false,
+  "raw_owner_tokens_or_syscall_pointer_args_exported": false,
+  "default_promotion": false,
+  "full_objective_complete": false,
+  "candidate_accepted": false,
+  "candidate_rejected_for_default": true,
+  "all_hardware_gates_pass": false,
+  "decision": "Reject guarded two-buffer scheduling for deployment: controlled front zero-driver-owned overlap6.679523s and sustained source-to-encoder arrival regression. Keep SMALL0, legacyDECOUPLE0; no larger queues or reduced quality as workaround."
+}
