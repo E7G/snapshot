@@ -113,3 +113,32 @@ not complete.
 All real media, raw traces, kernel owner tokens, raw syscall pointer arguments and
 per-frame pixel digests remain on the tablet. Public JSON is an explicit scalar
 allowlist, not an export of those raw private inputs.
+
+
+## Additional offline exact-frame consumer arrival attribution
+
+No new recording or quality change. Exact native PTS/offset keys uniquely join
+every recorded frame to MQ sink arrival, MQ src push and encoder sink arrival.
+The three consecutive arrival differences sum exactly per frame; their aggregate
+medians/percentiles need not sum. Units below are milliseconds.
+
+| Capped arm | Sensor | Source->MQ sink median | MQ sink->MQ src median | MQ src->encoder median | MQ src/encoder different tasks |
+|---|---|---:|---:|---:|---:|
+| off | front | 2.303 | 0.254 | 0.898 | 923/923 |
+| off | rear | 2.362 | 0.240 | 1.106 | 908/908 |
+| on | front | 99.816 | 167.490 | 167.597 | 901/901 |
+| on | rear | 38.204 | 166.095 | 165.885 | 916/916 |
+
+The middle interval includes enqueue wait and internal multiqueue residence; the
+last includes downstream task changes and record-path queueing. It is NOT a
+synchronous nested chain into the encoder: ALL actual recorded frames switch
+tasks after MQ egress. An initial V1 analyzer incorrectly asserted same-thread
+nesting and FAILED; its logs are retained. V2 explicitly counts those task changes,
+retains exact frame identity/order and does not invent nested call durations.
+
+The ON delay accumulates across both MQ residence and downstream arrival, with
+an additional producer-side backlog at the front camera. Do not mistake the
+full blocked source push for memcpy CPU cost or infer one unique mutex/CPU cause.
+Next inspect actual downstream queue/sink clock/pacing behavior from these
+existing traces and pipeline source; another bigger producer queue is not a fix.
+The hardware rejection and unchanged-default decision above remain in effect.

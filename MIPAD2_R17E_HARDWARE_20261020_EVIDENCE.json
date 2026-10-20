@@ -1014,5 +1014,159 @@
   "candidate_accepted": false,
   "candidate_rejected_for_default": true,
   "all_hardware_gates_pass": false,
-  "decision": "Reject guarded two-buffer scheduling for deployment: controlled front zero-driver-owned overlap6.679523s and sustained source-to-encoder arrival regression. Keep SMALL0, legacyDECOUPLE0; no larger queues or reduced quality as workaround."
+  "decision": "Reject guarded two-buffer scheduling for deployment: controlled front zero-driver-owned overlap6.679523s and sustained source-to-encoder arrival regression. Keep SMALL0, legacyDECOUPLE0; no larger queues or reduced quality as workaround.",
+  "consumer_arrival_attribution_v2": {
+    "cohorts": [
+      {
+        "arm": "off",
+        "clips": [
+          {
+            "cycle": 0,
+            "encoder_frames": 923,
+            "source_to_multiqueue_sink_arrival": {
+              "count": 923,
+              "median_ns": 2302546,
+              "p95_ns": 5732496,
+              "p99_ns": 14082740,
+              "max_ns": 29529621,
+              "mean_ns": 2989699.5157096423,
+              "above30ms": 0
+            },
+            "multiqueue_sink_arrival_to_src_push_begin": {
+              "count": 923,
+              "median_ns": 254413,
+              "p95_ns": 121633812,
+              "p99_ns": 147272731,
+              "max_ns": 212067381,
+              "mean_ns": 12518789.157096425,
+              "above30ms": 101
+            },
+            "multiqueue_src_push_to_encoder_arrival": {
+              "count": 923,
+              "median_ns": 898441,
+              "p95_ns": 162968280,
+              "p99_ns": 167106129,
+              "max_ns": 379470061,
+              "mean_ns": 44842298.258938245,
+              "above30ms": 310
+            },
+            "multiqueue_src_encoder_different_tasks": 923,
+            "multiqueue_src_encoder_exact_nested_same_task": 0
+          },
+          {
+            "cycle": 1,
+            "encoder_frames": 908,
+            "source_to_multiqueue_sink_arrival": {
+              "count": 908,
+              "median_ns": 2361685,
+              "p95_ns": 4897532,
+              "p99_ns": 11832924,
+              "max_ns": 19772880,
+              "mean_ns": 2918578.6519823787,
+              "above30ms": 0
+            },
+            "multiqueue_sink_arrival_to_src_push_begin": {
+              "count": 908,
+              "median_ns": 240401,
+              "p95_ns": 23830159,
+              "p99_ns": 131421433,
+              "max_ns": 161959645,
+              "mean_ns": 4771625.971365639,
+              "above30ms": 41
+            },
+            "multiqueue_src_push_to_encoder_arrival": {
+              "count": 908,
+              "median_ns": 1106179,
+              "p95_ns": 147866901,
+              "p99_ns": 158702371,
+              "max_ns": 320810890,
+              "mean_ns": 47645350.66629956,
+              "above30ms": 369
+            },
+            "multiqueue_src_encoder_different_tasks": 908,
+            "multiqueue_src_encoder_exact_nested_same_task": 0
+          }
+        ]
+      },
+      {
+        "arm": "on",
+        "clips": [
+          {
+            "cycle": 0,
+            "encoder_frames": 901,
+            "source_to_multiqueue_sink_arrival": {
+              "count": 901,
+              "median_ns": 99816104,
+              "p95_ns": 107509705,
+              "p99_ns": 113167846,
+              "max_ns": 127357028,
+              "mean_ns": 92623347.22308546,
+              "above30ms": 853
+            },
+            "multiqueue_sink_arrival_to_src_push_begin": {
+              "count": 901,
+              "median_ns": 167489788,
+              "p95_ns": 178760674,
+              "p99_ns": 187577518,
+              "max_ns": 234813606,
+              "mean_ns": 167111078.1265261,
+              "above30ms": 897
+            },
+            "multiqueue_src_push_to_encoder_arrival": {
+              "count": 901,
+              "median_ns": 167597111,
+              "p95_ns": 179980698,
+              "p99_ns": 222200367,
+              "max_ns": 354689624,
+              "mean_ns": 168929532.97336292,
+              "above30ms": 901
+            },
+            "multiqueue_src_encoder_different_tasks": 901,
+            "multiqueue_src_encoder_exact_nested_same_task": 0
+          },
+          {
+            "cycle": 1,
+            "encoder_frames": 916,
+            "source_to_multiqueue_sink_arrival": {
+              "count": 916,
+              "median_ns": 38203646,
+              "p95_ns": 44193888,
+              "p99_ns": 48613941,
+              "max_ns": 54482494,
+              "mean_ns": 38068416.75,
+              "above30ms": 883
+            },
+            "multiqueue_sink_arrival_to_src_push_begin": {
+              "count": 916,
+              "median_ns": 166094906,
+              "p95_ns": 173883305,
+              "p99_ns": 178052312,
+              "max_ns": 196587259,
+              "mean_ns": 165333099.8504367,
+              "above30ms": 912
+            },
+            "multiqueue_src_push_to_encoder_arrival": {
+              "count": 916,
+              "median_ns": 165884574,
+              "p95_ns": 173827904,
+              "p99_ns": 179900692,
+              "max_ns": 351660820,
+              "mean_ns": 166864658.29912663,
+              "above30ms": 916
+            },
+            "multiqueue_src_encoder_different_tasks": 916,
+            "multiqueue_src_encoder_exact_nested_same_task": 0
+          }
+        ]
+      }
+    ],
+    "exact_frame_identity": true,
+    "per_frame_consecutive_intervals_sum_exactly": true,
+    "aggregate_percentiles_not_additive": true,
+    "all_downstream_task_changes_retained": true,
+    "scope": "Native source push -> multiqueue sink arrival -> exact same-frame multiqueue src push -> encoder sink arrival. Middle interval includes enqueue wait/internal residence, final interval includes downstream task switching and queueing. Wall-clock arrival differences, not isolated memcpy/queue CPU or unique mutex. No optical time proof.",
+    "retained_failed_v1": "V1 incorrectly required MQ src push and encoder chain to be same-thread nested; actual every recorded frame uses different tasks. Failed logs retained; V2 reports switches rather than assuming synchronous flow.",
+    "no_new_recording": true,
+    "no_raw_media_or_tokens_exported": true
+  }
 }
