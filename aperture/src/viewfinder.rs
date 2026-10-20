@@ -1703,6 +1703,7 @@ impl Viewfinder {
     fn create_camera_element(
         &self,
         device_src: &gst::Element,
+        native_atomisp: bool,
     ) -> Result<gst::Element, glib::BoolError> {
         use gst::prelude::*;
 
@@ -1759,20 +1760,25 @@ impl Viewfinder {
         } else {
             None
         };
+        let native_path =
+            (native_factory == "v4l2src").then(|| device_src.property::<String>("device"));
+        let direct = crate::mipad2_raw_capture::direct_enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_RAW_DIRECT").as_deref() == Ok("1"),
+            &native_factory,
+            native_path.as_deref(),
+            crate::mipad2_preview::android_profile_requested(
+                self.video_format() == VideoFormat::H264Mp4,
+                self.enable_hw_encoding(),
+            ),
+            copy,
+            guarded,
+            capture_queue.is_none(),
+            native_atomisp,
+        )?;
         let bin = gst::Bin::new();
-
         let capsfilter = gst::ElementFactory::make("capsfilter").build()?;
-        let decodebin3 = gst::ElementFactory::make("decodebin3").build()?;
-        let capsfilter_post_decode = gst::ElementFactory::make("capsfilter").build()?;
-        let caps_post_decode = gst::Caps::builder("video/x-raw").build();
-        capsfilter_post_decode.set_property("caps", &caps_post_decode);
-
-        bin.add_many([
-            device_src,
-            &capsfilter,
-            &decodebin3,
-            &capsfilter_post_decode,
-        ])?;
+        bin.add_many([device_src, &capsfilter])?;
         let mut source_chain = vec![device_src];
         if let Some(guard) = allocation_guard.as_ref() {
             bin.add(guard)?;
@@ -1782,37 +1788,46 @@ impl Viewfinder {
             bin.add(queue)?;
             source_chain.push(queue);
         }
-        source_chain.extend([&capsfilter, &decodebin3]);
+        source_chain.push(&capsfilter);
         gst::Element::link_many(source_chain)?;
+        let tail = crate::mipad2_raw_capture::CameraTail::new(&bin, &capsfilter, direct)?;
+        let capsfilter_post_decode = tail.output;
+        if direct {
+            log::info!(
+                "Mi Pad 2 native raw direct enabled: NV12 system-memory, decodebin3/multiqueue bypassed, copy+allocation guard retained, caps/rate unchanged"
+            );
+        }
 
         self.imp().capsfilter.set(capsfilter).unwrap();
 
-        let (sender, receiver) = futures_channel::oneshot::channel::<bool>();
-        let sender = std::sync::Arc::new(std::sync::Mutex::new(Some(sender)));
-        decodebin3.connect_pad_added(glib::clone!(#[weak] capsfilter_post_decode, move |_, pad| {
-            if pad.stream().is_some_and(|stream| matches!(stream.stream_type(), gst::StreamType::VIDEO)) {
-                let has_succeeded = pad.link(&capsfilter_post_decode.static_pad("sink").unwrap())
-                                       .inspect_err(|err| {
-                                           log::error!("Failed to link decodebin3:video_%u pad with capsfilter_post_decode:sink pad: {err}");
-                                       })
-                                       .is_ok();
-                let mut guard = sender.lock().unwrap();
-                if let Some(sender) = guard.take() {
-                    let _ = sender.send(has_succeeded);
+        if let Some(decodebin3) = tail.decoder {
+            let (sender, receiver) = futures_channel::oneshot::channel::<bool>();
+            let sender = std::sync::Arc::new(std::sync::Mutex::new(Some(sender)));
+            decodebin3.connect_pad_added(glib::clone!(#[weak] capsfilter_post_decode, move |_, pad| {
+                if pad.stream().is_some_and(|stream| matches!(stream.stream_type(), gst::StreamType::VIDEO)) {
+                    let has_succeeded = pad.link(&capsfilter_post_decode.static_pad("sink").unwrap())
+                                           .inspect_err(|err| {
+                                               log::error!("Failed to link decodebin3:video_%u pad with capsfilter_post_decode:sink pad: {err}");
+                                           })
+                                           .is_ok();
+                    let mut guard = sender.lock().unwrap();
+                    if let Some(sender) = guard.take() {
+                        let _ = sender.send(has_succeeded);
+                    }
                 }
-            }
-        }));
+            }));
 
-        glib::spawn_future_local(glib::clone!(
-            #[weak(rename_to = viewfinder)]
-            self,
-            async move {
-                let has_succeeded = receiver.await.unwrap_or_default();
-                if !has_succeeded {
-                    viewfinder.imp().set_state(ViewfinderState::Error);
+            glib::spawn_future_local(glib::clone!(
+                #[weak(rename_to = viewfinder)]
+                self,
+                async move {
+                    let has_succeeded = receiver.await.unwrap_or_default();
+                    if !has_succeeded {
+                        viewfinder.imp().set_state(ViewfinderState::Error);
+                    }
                 }
-            }
-        ));
+            ));
+        }
 
         let pad = capsfilter_post_decode.static_pad("src").unwrap();
         crate::mipad2_trace::pad(&pad, "shared-source");
@@ -1857,7 +1872,8 @@ impl Viewfinder {
         } else {
             let element = camera.create_element()?;
 
-            let wrapper = self.create_camera_element(&element)?;
+            let wrapper =
+                self.create_camera_element(&element, camera.native_capture_path().is_some())?;
             imp.camerabin().set_property("camera-source", &wrapper);
 
             imp.camera_element.set(element).unwrap();

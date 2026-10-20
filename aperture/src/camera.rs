@@ -171,7 +171,7 @@ impl Camera {
         Ok(element)
     }
 
-    fn native_capture_path(&self) -> Option<&'static str> {
+    pub(crate) fn native_capture_path(&self) -> Option<&'static str> {
         let vendor = std::fs::read_to_string("/sys/class/dmi/id/sys_vendor").ok()?;
         let product = std::fs::read_to_string("/sys/class/dmi/id/product_name").ok()?;
         let props = self.device().properties()?;

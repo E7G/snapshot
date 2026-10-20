@@ -1,0 +1,53 @@
+{
+  "prior": "6032ec760410e7d1cc8f896d90939ebbf522b509",
+  "feature": "MIPAD2_CAPTURE_RAW_DIRECT=1",
+  "production_files_sha256": {
+    "aperture/src/lib.rs": "9e18d2ccddb778a59e86d8c8a67b8f2eeaa21fb6ec5ac6b1d4eed4a358c503d6",
+    "aperture/src/camera.rs": "389408718b74e1e3dc74dde738793815648a37bb910518e6011fb601e54382f4",
+    "aperture/src/viewfinder.rs": "ec260906460a904aab4b9c28955e258ae66864cdbbb7764b14b64a0919896638",
+    "aperture/src/mipad2_raw_capture.rs": "ee68ed19d159eaf1d4cb8440288eeb8577ce0022814fb88a3f1aa08ca212e9e0"
+  },
+  "host_focused_tests": 8,
+  "host_workspace_tests": 78,
+  "host_tests_passed": true,
+  "device_installed": false,
+  "hardware_tested": false,
+  "default_changed": false,
+  "default_promotion": false,
+  "full_objective_complete": false,
+  "preserves": [
+    "physical native NV12 video geometry/rate",
+    "full-photo NV12 geometry/rate",
+    "COPY and allocation guard",
+    "bytes/strides/VideoMeta/PTS/DTS/duration/flags/offset/EOS",
+    "native lease release before synthetic downstream consumer",
+    "normal compressed-camera decodebin3 path"
+  ],
+  "gates": [
+    "MiPad2 DMI",
+    "verified existing AtomISP native camera descriptor",
+    "v4l2src /dev/video0",
+    "explicit opt-in",
+    "native NV12 profile",
+    "COPY1",
+    "ALLOCATION_GUARD1",
+    "both source queues OFF"
+  ],
+  "actual_host_tests": [
+    "mipad2_raw_capture::tests::default_decoder_still_decodes_compressed_camera_stream",
+    "mipad2_raw_capture::tests::direct_flush_cancels_consumer_and_new_stream_has_no_stale_tail",
+    "mipad2_raw_capture::tests::direct_has_no_decoder_or_queue_and_default_keeps_decodebin3",
+    "mipad2_raw_capture::tests::direct_keeps_allocation_guard_and_latency_query_passthrough",
+    "mipad2_raw_capture::tests::direct_preserves_padded_nv12_metadata_timing_events_and_releases_native_copy",
+    "mipad2_raw_capture::tests::direct_rejects_compressed_other_raw_and_non_system_memory_caps",
+    "mipad2_raw_capture::tests::direct_scope_is_explicit_and_rejects_invalid_native_requests",
+    "mipad2_raw_capture::tests::direct_video_and_both_full_photo_caps_survive_null_reopen"
+  ],
+  "retained_initial_failure": "Initial latency-probe test counted pre and post query callbacks twice instead of one; V2 counts only QUERY_UPSTREAM|PUSH pre-query and retains the failed initial receipt. AtomISP descriptor gate and flush/legacy JPEG tests were strengthened before the final run.",
+  "qualifiers": [
+    "Host synthetic-source tests are not physical driver/MMAP proof or Android parity.",
+    "Removing source decodebin3 removes only one unnecessary layer; downstream encodebin queue/encoder/mux latency remains subject to hardware tests.",
+    "R17e two/eight-buffer source queues remain rejected and disabled.",
+    "Tablet root below2GiB new-recording reserve; no further media deletion approved."
+  ]
+}
