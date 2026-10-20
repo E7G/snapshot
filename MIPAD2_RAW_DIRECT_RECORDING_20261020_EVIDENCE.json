@@ -1,0 +1,1008 @@
+{
+  "deployed_kernel": "6.14.0-mipad2-integrated-r19",
+  "binary_sha256": "c84c24315f40ef625ba962e1919bc87a9ee478fbd4ca4c70477b53dc268d3c48",
+  "source_commit": "bc31426214b39e973e3a4f4b70887188bd91928b",
+  "sequential_order": [
+    "off",
+    "on"
+  ],
+  "randomized": false,
+  "arm_start_epoch_seconds": {
+    "off": 1792466478.3927083,
+    "on": 1792478609.7676156
+  },
+  "cpu_cap_khz": 1600000,
+  "thermal_thresholds_sensors_hysteresis_unchanged": true,
+  "arms": {
+    "off": {
+      "raw_direct": false,
+      "source_queue_buffers": 0,
+      "copy": true,
+      "allocation_guard": true,
+      "clips": [
+        {
+          "cycle": 0,
+          "sensor": "front",
+          "fps": 30.000335159994364,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "cadence_gate": true,
+          "packets": 897,
+          "decoded_frames": 897,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15210759,
+          "actual_audio_bitrate": 191862,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 67000,
+          "conservation": {
+            "encoder_inputs": 897,
+            "encoder_outputs": 897,
+            "mp4_packets": 897,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 897,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166520.33333333334,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "encoder_inputs": 897,
+            "native_pushes_between_recorded_endpoints": 897,
+            "native_not_forwarded_to_encoder": 0,
+            "driver_stamp_interval_ns": {
+              "count": 896,
+              "minimum": 32629000,
+              "median": 33332000,
+              "p95": 33709000,
+              "p99": 33844000,
+              "maximum": 33931000,
+              "mean": 33333002.23214286,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "native_pts_interval_ns": {
+              "count": 896,
+              "minimum": 32627813,
+              "median": 33331750,
+              "p95": 33707900,
+              "p99": 33844600,
+              "maximum": 33931088,
+              "mean": 33333001.7578125,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 896,
+              "minimum": 32627813,
+              "median": 33331750,
+              "p95": 33707900,
+              "p99": 33844600,
+              "maximum": 33931088,
+              "mean": 33333001.7578125,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 896
+            }
+          },
+          "zero_driver_owned_ns": 0,
+          "zero_overlap_partition": {
+            "cycle": 0,
+            "encoder_inputs": 897,
+            "zero_intervals": 0,
+            "totals": {
+              "zero_ns": 0,
+              "inside_source_guard_chain_ns": 0,
+              "inside_source_push_outside_guard_ns": 0,
+              "outside_source_push_control_call_ns": 0,
+              "outside_source_push_other_ns": 0
+            },
+            "cases": [],
+            "all_zero_time_partitioned_exactly": true
+          },
+          "source_boundary": {
+            "full_native_push": {
+              "count": 897,
+              "median_ns": 2416103,
+              "p95_ns": 5414586,
+              "p99_ns": 30177994,
+              "max_ns": 54230357,
+              "mean_ns": 3474351.342251951,
+              "above30ms": 11,
+              "above40ms": 2,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "pre_guard_prefix": {
+              "count": 897,
+              "median_ns": 2148655,
+              "p95_ns": 4730127,
+              "p99_ns": 12432099,
+              "max_ns": 34234590,
+              "mean_ns": 2760077.800445931,
+              "above30ms": 1,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 897,
+              "median_ns": 186997,
+              "p95_ns": 573729,
+              "p99_ns": 25286937,
+              "max_ns": 30046129,
+              "mean_ns": 709382.0702341137,
+              "above30ms": 1,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "post_guard_suffix": {
+              "count": 897,
+              "median_ns": 3188,
+              "p95_ns": 5925,
+              "p99_ns": 7613,
+              "max_ns": 588253,
+              "mean_ns": 4891.471571906354,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 897,
+              "median_ns": 3540998,
+              "p95_ns": 263658725,
+              "p99_ns": 345433964,
+              "max_ns": 368123081,
+              "mean_ns": 53584886.72240803,
+              "above30ms": 332,
+              "above40ms": 305,
+              "above50ms": 303,
+              "above100ms": 175
+            },
+            "guard_arrival_to_encoder_chain": {
+              "count": 897,
+              "median_ns": 1345945,
+              "p95_ns": 261693295,
+              "p99_ns": 325815863,
+              "max_ns": 357506832,
+              "mean_ns": 50824808.9219621,
+              "above30ms": 308,
+              "above40ms": 304,
+              "above50ms": 302,
+              "above100ms": 160
+            },
+            "source_encoder_different_tasks": 897,
+            "native_push_return_before_encoder_arrival": 895,
+            "encoder_nested_on_native_task": 0,
+            "non_ok_flow_counts": {
+              "native-source": 0,
+              "allocation-guard": 0,
+              "encoder-input": 0
+            }
+          }
+        },
+        {
+          "cycle": 1,
+          "sensor": "rear",
+          "fps": 30.01017883538376,
+          "max_pts_gap_seconds": 0.03400000000000247,
+          "cadence_gate": true,
+          "packets": 915,
+          "decoded_frames": 915,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14998693,
+          "actual_audio_bitrate": 191966,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 69000,
+          "conservation": {
+            "encoder_inputs": 915,
+            "encoder_outputs": 915,
+            "mp4_packets": 915,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 915,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166537.0,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "encoder_inputs": 915,
+            "native_pushes_between_recorded_endpoints": 915,
+            "native_not_forwarded_to_encoder": 0,
+            "driver_stamp_interval_ns": {
+              "count": 914,
+              "minimum": 32611000,
+              "median": 33320000,
+              "p95": 33722000,
+              "p99": 33856000,
+              "maximum": 33993000,
+              "mean": 33322138.94967177,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "native_pts_interval_ns": {
+              "count": 914,
+              "minimum": 32609400,
+              "median": 33319563,
+              "p95": 33722050,
+              "p99": 33854862,
+              "maximum": 33993638,
+              "mean": 33322135.69474836,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 914,
+              "minimum": 32609400,
+              "median": 33319563,
+              "p95": 33722050,
+              "p99": 33854862,
+              "maximum": 33993638,
+              "mean": 33322135.69474836,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_offset_step_histogram": {
+              "1": 914
+            }
+          },
+          "zero_driver_owned_ns": 0,
+          "zero_overlap_partition": {
+            "cycle": 1,
+            "encoder_inputs": 915,
+            "zero_intervals": 0,
+            "totals": {
+              "zero_ns": 0,
+              "inside_source_guard_chain_ns": 0,
+              "inside_source_push_outside_guard_ns": 0,
+              "outside_source_push_control_call_ns": 0,
+              "outside_source_push_other_ns": 0
+            },
+            "cases": [],
+            "all_zero_time_partitioned_exactly": true
+          },
+          "source_boundary": {
+            "full_native_push": {
+              "count": 915,
+              "median_ns": 2343340,
+              "p95_ns": 4798049,
+              "p99_ns": 6398395,
+              "max_ns": 20279996,
+              "mean_ns": 2773679.8491803277,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "pre_guard_prefix": {
+              "count": 915,
+              "median_ns": 2115952,
+              "p95_ns": 4473326,
+              "p99_ns": 6001112,
+              "max_ns": 20156264,
+              "mean_ns": 2529059.2284153006,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 915,
+              "median_ns": 186312,
+              "p95_ns": 525871,
+              "p99_ns": 1028226,
+              "max_ns": 1860603,
+              "mean_ns": 239951.66010928963,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "post_guard_suffix": {
+              "count": 915,
+              "median_ns": 3063,
+              "p95_ns": 6463,
+              "p99_ns": 10276,
+              "max_ns": 402826,
+              "mean_ns": 4668.960655737705,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 915,
+              "median_ns": 3392206,
+              "p95_ns": 130599660,
+              "p99_ns": 207107359,
+              "max_ns": 248846680,
+              "mean_ns": 28179140.747540984,
+              "above30ms": 223,
+              "above40ms": 159,
+              "above50ms": 156,
+              "above100ms": 112
+            },
+            "guard_arrival_to_encoder_chain": {
+              "count": 915,
+              "median_ns": 1240269,
+              "p95_ns": 127679142,
+              "p99_ns": 200889658,
+              "max_ns": 237504547,
+              "mean_ns": 25650081.51912568,
+              "above30ms": 168,
+              "above40ms": 158,
+              "above50ms": 153,
+              "above100ms": 111
+            },
+            "source_encoder_different_tasks": 915,
+            "native_push_return_before_encoder_arrival": 914,
+            "encoder_nested_on_native_task": 0,
+            "non_ok_flow_counts": {
+              "native-source": 0,
+              "allocation-guard": 0,
+              "encoder-input": 0
+            }
+          }
+        }
+      ],
+      "allocation_guard_query_count": 15,
+      "allocation_guard_query_max_ns": 10276,
+      "downstream_source_task_allocation_query_max_ns": 10276,
+      "all_decode_passed": true,
+      "original_controls_restored": true,
+      "sensor_pm": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "cpu_cap_restored": true,
+      "strict_named_direct_output_pad_dictionary_entries": 0
+    },
+    "on": {
+      "raw_direct": true,
+      "source_queue_buffers": 0,
+      "copy": true,
+      "allocation_guard": true,
+      "clips": [
+        {
+          "cycle": 0,
+          "sensor": "front",
+          "fps": 29.633836696512095,
+          "max_pts_gap_seconds": 0.183333,
+          "cadence_gate": false,
+          "packets": 888,
+          "decoded_frames": 888,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14913256,
+          "actual_audio_bitrate": 192019,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 65000,
+          "conservation": {
+            "encoder_inputs": 888,
+            "encoder_outputs": 888,
+            "mp4_packets": 888,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 888,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166437.0,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "encoder_inputs": 888,
+            "native_pushes_between_recorded_endpoints": 888,
+            "native_not_forwarded_to_encoder": 0,
+            "driver_stamp_interval_ns": {
+              "count": 887,
+              "minimum": 22379000,
+              "median": 33324000,
+              "p95": 33747000,
+              "p99": 34005000,
+              "maximum": 183434000,
+              "mean": 33745193.91206314,
+              "above40ms": 5,
+              "above50ms": 5
+            },
+            "native_pts_interval_ns": {
+              "count": 887,
+              "minimum": 22378975,
+              "median": 33324437,
+              "p95": 33746625,
+              "p99": 34006225,
+              "maximum": 183434038,
+              "mean": 33745195.33483653,
+              "above40ms": 5,
+              "above50ms": 5
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 887,
+              "minimum": 22378975,
+              "median": 33324437,
+              "p95": 33746625,
+              "p99": 34006225,
+              "maximum": 183434038,
+              "mean": 33745195.33483653,
+              "above40ms": 5,
+              "above50ms": 5
+            },
+            "encoder_offset_step_histogram": {
+              "1": 887
+            }
+          },
+          "zero_driver_owned_ns": 450859000,
+          "zero_overlap_partition": {
+            "cycle": 0,
+            "encoder_inputs": 888,
+            "zero_intervals": 6,
+            "totals": {
+              "zero_ns": 450859000,
+              "inside_source_guard_chain_ns": 263678091,
+              "inside_source_push_outside_guard_ns": 16855922,
+              "outside_source_push_control_call_ns": 169020740,
+              "outside_source_push_other_ns": 1304247
+            },
+            "cases": [
+              {
+                "zero_ns": 107360000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 1745806,
+                "outside_source_push_control_call_ns": 105214115,
+                "outside_source_push_other_ns": 400079
+              },
+              {
+                "zero_ns": 160848000,
+                "inside_source_guard_chain_ns": 88706153,
+                "inside_source_push_outside_guard_ns": 7787631,
+                "outside_source_push_control_call_ns": 63806625,
+                "outside_source_push_other_ns": 547591
+              },
+              {
+                "zero_ns": 51493000,
+                "inside_source_guard_chain_ns": 49392983,
+                "inside_source_push_outside_guard_ns": 1994217,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 105800
+              },
+              {
+                "zero_ns": 41303000,
+                "inside_source_guard_chain_ns": 38666432,
+                "inside_source_push_outside_guard_ns": 2526467,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 110101
+              },
+              {
+                "zero_ns": 89583000,
+                "inside_source_guard_chain_ns": 86912523,
+                "inside_source_push_outside_guard_ns": 2529801,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 140676
+              },
+              {
+                "zero_ns": 272000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 272000,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 0
+              }
+            ],
+            "all_zero_time_partitioned_exactly": true
+          },
+          "source_boundary": {
+            "full_native_push": {
+              "count": 888,
+              "median_ns": 2801047,
+              "p95_ns": 10758909,
+              "p99_ns": 31316482,
+              "max_ns": 137379826,
+              "mean_ns": 4611966.941441442,
+              "above30ms": 16,
+              "above40ms": 4,
+              "above50ms": 4,
+              "above100ms": 3
+            },
+            "pre_guard_prefix": {
+              "count": 888,
+              "median_ns": 2114430,
+              "p95_ns": 4680624,
+              "p99_ns": 9978141,
+              "max_ns": 26777248,
+              "mean_ns": 2649137.545045045,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 888,
+              "median_ns": 517554,
+              "p95_ns": 3170125,
+              "p99_ns": 28023882,
+              "max_ns": 127550248,
+              "mean_ns": 1959355.6779279278,
+              "above30ms": 5,
+              "above40ms": 4,
+              "above50ms": 4,
+              "above100ms": 3
+            },
+            "post_guard_suffix": {
+              "count": 888,
+              "median_ns": 2713,
+              "p95_ns": 5075,
+              "p99_ns": 8187,
+              "max_ns": 299890,
+              "mean_ns": 3473.7184684684685,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 888,
+              "median_ns": 2948011,
+              "p95_ns": 134812131,
+              "p99_ns": 162257546,
+              "max_ns": 357207334,
+              "mean_ns": 37120107.51126126,
+              "above30ms": 292,
+              "above40ms": 275,
+              "above50ms": 273,
+              "above100ms": 148
+            },
+            "guard_arrival_to_encoder_chain": {
+              "count": 888,
+              "median_ns": 824206,
+              "p95_ns": 132852415,
+              "p99_ns": 159183434,
+              "max_ns": 347381357,
+              "mean_ns": 34470969.966216214,
+              "above30ms": 281,
+              "above40ms": 274,
+              "above50ms": 271,
+              "above100ms": 131
+            },
+            "source_encoder_different_tasks": 888,
+            "native_push_return_before_encoder_arrival": 816,
+            "encoder_nested_on_native_task": 0,
+            "non_ok_flow_counts": {
+              "native-source": 0,
+              "allocation-guard": 0,
+              "encoder-input": 0
+            }
+          }
+        },
+        {
+          "cycle": 1,
+          "sensor": "rear",
+          "fps": 29.914483920038194,
+          "max_pts_gap_seconds": 0.10599999999999998,
+          "cadence_gate": false,
+          "packets": 921,
+          "decoded_frames": 921,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14927841,
+          "actual_audio_bitrate": 191914,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 69000,
+          "conservation": {
+            "encoder_inputs": 921,
+            "encoder_outputs": 921,
+            "mp4_packets": 921,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 921,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166479.66666666666,
+            "mux_within_one_declared_tick": true,
+            "encoder_eos": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "encoder_inputs": 921,
+            "native_pushes_between_recorded_endpoints": 921,
+            "native_not_forwarded_to_encoder": 0,
+            "driver_stamp_interval_ns": {
+              "count": 920,
+              "minimum": 22317000,
+              "median": 33318000,
+              "p95": 33708000,
+              "p99": 33875000,
+              "maximum": 105990000,
+              "mean": 33428686.95652174,
+              "above40ms": 2,
+              "above50ms": 2
+            },
+            "native_pts_interval_ns": {
+              "count": 920,
+              "minimum": 22317175,
+              "median": 33317425,
+              "p95": 33707650,
+              "p99": 33876613,
+              "maximum": 105986937,
+              "mean": 33428686.208695654,
+              "above40ms": 2,
+              "above50ms": 2
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 920,
+              "minimum": 22317175,
+              "median": 33317425,
+              "p95": 33707650,
+              "p99": 33876613,
+              "maximum": 105986937,
+              "mean": 33428686.208695654,
+              "above40ms": 2,
+              "above50ms": 2
+            },
+            "encoder_offset_step_histogram": {
+              "1": 920
+            }
+          },
+          "zero_driver_owned_ns": 187799000,
+          "zero_overlap_partition": {
+            "cycle": 1,
+            "encoder_inputs": 921,
+            "zero_intervals": 10,
+            "totals": {
+              "zero_ns": 187799000,
+              "inside_source_guard_chain_ns": 68703574,
+              "inside_source_push_outside_guard_ns": 43745952,
+              "outside_source_push_control_call_ns": 74023614,
+              "outside_source_push_other_ns": 1325860
+            },
+            "cases": [
+              {
+                "zero_ns": 83383000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 8991658,
+                "outside_source_push_control_call_ns": 74023614,
+                "outside_source_push_other_ns": 367728
+              },
+              {
+                "zero_ns": 8282000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 8282000,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 0
+              },
+              {
+                "zero_ns": 53409000,
+                "inside_source_guard_chain_ns": 49806462,
+                "inside_source_push_outside_guard_ns": 3453337,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 149201
+              },
+              {
+                "zero_ns": 13711000,
+                "inside_source_guard_chain_ns": 9468277,
+                "inside_source_push_outside_guard_ns": 4086322,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 156401
+              },
+              {
+                "zero_ns": 7610000,
+                "inside_source_guard_chain_ns": 3535577,
+                "inside_source_push_outside_guard_ns": 3915184,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 159239
+              },
+              {
+                "zero_ns": 8519000,
+                "inside_source_guard_chain_ns": 4266492,
+                "inside_source_push_outside_guard_ns": 3912605,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 339903
+              },
+              {
+                "zero_ns": 1979000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 1979000,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 0
+              },
+              {
+                "zero_ns": 6418000,
+                "inside_source_guard_chain_ns": 1626766,
+                "inside_source_push_outside_guard_ns": 4637846,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 153388
+              },
+              {
+                "zero_ns": 3114000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 3114000,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 0
+              },
+              {
+                "zero_ns": 1374000,
+                "inside_source_guard_chain_ns": 0,
+                "inside_source_push_outside_guard_ns": 1374000,
+                "outside_source_push_control_call_ns": 0,
+                "outside_source_push_other_ns": 0
+              }
+            ],
+            "all_zero_time_partitioned_exactly": true
+          },
+          "source_boundary": {
+            "full_native_push": {
+              "count": 921,
+              "median_ns": 2582820,
+              "p95_ns": 29612130,
+              "p99_ns": 32744255,
+              "max_ns": 123254660,
+              "mean_ns": 4933525.259500543,
+              "above30ms": 42,
+              "above40ms": 4,
+              "above50ms": 3,
+              "above100ms": 2
+            },
+            "pre_guard_prefix": {
+              "count": 921,
+              "median_ns": 1995565,
+              "p95_ns": 3750517,
+              "p99_ns": 7224919,
+              "max_ns": 44563422,
+              "mean_ns": 2314842.033659066,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "guard_downstream_chain": {
+              "count": 921,
+              "median_ns": 520629,
+              "p95_ns": 25064258,
+              "p99_ns": 28429271,
+              "max_ns": 120431251,
+              "mean_ns": 2614895.6297502713,
+              "above30ms": 5,
+              "above40ms": 3,
+              "above50ms": 3,
+              "above100ms": 1
+            },
+            "post_guard_suffix": {
+              "count": 921,
+              "median_ns": 2587,
+              "p95_ns": 5062,
+              "p99_ns": 8100,
+              "max_ns": 435291,
+              "mean_ns": 3787.596091205212,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "native_push_to_encoder_chain": {
+              "count": 921,
+              "median_ns": 2707696,
+              "p95_ns": 152482250,
+              "p99_ns": 160625351,
+              "max_ns": 256450110,
+              "mean_ns": 18986940.02062975,
+              "above30ms": 117,
+              "above40ms": 113,
+              "above50ms": 111,
+              "above100ms": 86
+            },
+            "guard_arrival_to_encoder_chain": {
+              "count": 921,
+              "median_ns": 706755,
+              "p95_ns": 148229617,
+              "p99_ns": 157733929,
+              "max_ns": 251923213,
+              "mean_ns": 16672097.986970684,
+              "above30ms": 115,
+              "above40ms": 112,
+              "above50ms": 109,
+              "above100ms": 85
+            },
+            "source_encoder_different_tasks": 921,
+            "native_push_return_before_encoder_arrival": 840,
+            "encoder_nested_on_native_task": 0,
+            "non_ok_flow_counts": {
+              "native-source": 0,
+              "allocation-guard": 0,
+              "encoder-input": 0
+            }
+          }
+        }
+      ],
+      "allocation_guard_query_count": 9,
+      "allocation_guard_query_max_ns": 4237,
+      "downstream_source_task_allocation_query_max_ns": 167951291,
+      "all_decode_passed": true,
+      "original_controls_restored": true,
+      "sensor_pm": {
+        "t4ka3 6-0037": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        },
+        "ov5693 6-0036": {
+          "runtime_status": "suspended",
+          "runtime_usage": "0"
+        }
+      },
+      "cpu_cap_restored": true,
+      "strict_named_direct_output_pad_dictionary_entries": 0
+    }
+  },
+  "strict_direct_named_output_arrival_analysis_passed": false,
+  "strict_direct_failure": "Old tracer factory whitelist excluded GstCapsFilter; strict V3 rejects missing named output witness. Common source-boundary analysis does not claim that witness.",
+  "legacy_v3_four_clip_regression_passed": true,
+  "windows_tests": [
+    {
+      "optimized": false,
+      "tests": 26,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "tests": 26,
+      "exit_code": 0
+    }
+  ],
+  "linux_tests": [
+    {
+      "optimized": false,
+      "tests": 26,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "tests": 26,
+      "exit_code": 0
+    }
+  ],
+  "named_tracer_host_tests": {
+    "state": "passed",
+    "source_sha256": "ebe3fbb865a3b362496951f4df2108dc309bfda8b5d267889b29b19a9cdf5b30",
+    "binary_sha256": "7578c4c6368fbe7b585261e60f340e80a09606f2cc793e3a532413a66cbe3fd2",
+    "cases": [
+      {
+        "case": "old-missing-witness",
+        "runner_exit": 0,
+        "complete": true,
+        "overflow": 0,
+        "named_dictionary_entries": 0,
+        "named_output_pushes": 0,
+        "unmatched_pre_count": 0,
+        "unmatched_post_count": 0
+      },
+      {
+        "case": "named-normal",
+        "runner_exit": 0,
+        "complete": true,
+        "overflow": 0,
+        "named_dictionary_entries": 3,
+        "named_output_pushes": 12,
+        "unmatched_pre_count": 0,
+        "unmatched_post_count": 0
+      },
+      {
+        "case": "named-delays",
+        "runner_exit": 0,
+        "complete": true,
+        "overflow": 0,
+        "named_dictionary_entries": 3,
+        "named_output_pushes": 12,
+        "unmatched_pre_count": 0,
+        "unmatched_post_count": 0
+      },
+      {
+        "case": "named-overflow",
+        "runner_exit": 0,
+        "complete": false,
+        "overflow": 304,
+        "named_dictionary_entries": 3,
+        "named_output_pushes": 0,
+        "unmatched_pre_count": 2,
+        "unmatched_post_count": 0
+      }
+    ],
+    "abi_unchanged": 2,
+    "named_only_filter": true,
+    "no_payload_reads": true,
+    "tablet_installed": false,
+    "hardware_tested": false
+  },
+  "source_sha256": {
+    "mipad2_frame_arrivals_v3.py": "cbe1393c74e6d00f7beecf255cedebd5757d08f5c600bfd52bb254b49904724b",
+    "test_mipad2_frame_arrivals_v3.py": "788a64cdb29007655202e4954d42dbf3ef513e5393ef37e7d48051f9a9da4a15",
+    "mipad2_source_boundary.py": "bf5a4fc190490bac64cbe88fd8ffd905af6409b0af3820b285e8164de09c0884",
+    "test_mipad2_source_boundary.py": "f5db40fb2cfe34fdfc5ccddd59383eb1b7f56a540259fd839d799ed6140f667f",
+    "gstmp2control_named.c": "ebe3fbb865a3b362496951f4df2108dc309bfda8b5d267889b29b19a9cdf5b30",
+    "gst_control_named_test.c": "2b107f3949aee2a1f0f5ec26904d9fb27deda49518bccd89353130bfd2f99e45",
+    "test_named_control_host.py": "acfb00f4cda958a78ec804ab076aa8f5feff0480eedcc6a04b09b0d79bd4a743"
+  },
+  "protected_default_system_hashes_unchanged": true,
+  "original_cpu_policies_restored": true,
+  "sensor_isp_pm_usage_zero": true,
+  "selected_new_kernel_error_counts": {
+    "BUG:": 0,
+    "WARNING:": 0,
+    "Oops:": 0,
+    "GPU HANG": 0,
+    "IUNIT power-.*timeout": 0,
+    "general protection fault": 0,
+    "SP is not idle": 0,
+    "ISP is not idle": 0,
+    "stop stream timeout": 0
+  },
+  "new_kernel_booted": false,
+  "default_changed": false,
+  "direct_candidate_accepted": false,
+  "unique_causal_effect_proven": false,
+  "optical_android_parity_proven": false,
+  "full_objective_complete": false,
+  "real_media_raw_traces_owner_tokens_pixel_digests_exported": false,
+  "limitations": "Two sequential profiled full-quality clips per route, about three hours apart. Wall times/arrival, not CPU time, unique mutex or isolated route intervention. No pacing repair/PTS rewriting/quality reduction/warmup trimming. Complete encoded-frame counts do not prove physical exposure continuity or A/V sync. R19 hardware, not R24 reset/DMA-fence validation."
+}
