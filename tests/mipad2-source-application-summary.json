@@ -1,0 +1,277 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "scope": "source application build, four-source-plugin candidate packaging and lifecycle; NOT preview or full device parity",
+  "build": {
+    "state": "source-application-built-staged-host-only",
+    "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+    "source_tree": "24819f08dde3084915a1ad5426cc5a661220e4a6",
+    "recipe_sha256": "445d24c6cd4778e6ef5adfa399517ec6b4a9700aed12c10c8693a23ac7b19092",
+    "cargo_lock_sha256": "0434976be9557a2a14f5358fefbf7d6b910917b6330c695d83918ca3c78dd62e",
+    "gstreamer_build_abi": {
+      "gstreamer-1.0": "1.28.7",
+      "gstreamer-base-1.0": "1.28.7",
+      "gstreamer-video-1.0": "1.28.7",
+      "gstreamer-plugins-bad-1.0": "1.28.7"
+    },
+    "cargo_locked": true,
+    "cargo_offline": true,
+    "cargo_profile": "release",
+    "source_manifest_release_lto": true,
+    "application_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+    "rpath_absent": true,
+    "build_binary_unchanged": true
+  },
+  "app_files": 65,
+  "builder_and_stager_tests": [
+    {
+      "label": "builder",
+      "optimized": false,
+      "code": 0,
+      "cases": 37
+    },
+    {
+      "label": "builder",
+      "optimized": true,
+      "code": 0,
+      "cases": 37
+    },
+    {
+      "label": "flash",
+      "optimized": false,
+      "code": 0,
+      "cases": 35
+    },
+    {
+      "label": "flash",
+      "optimized": true,
+      "code": 0,
+      "cases": 35
+    }
+  ],
+  "candidate": {
+    "schema": 1,
+    "state": "camera-candidate-staged-host-only",
+    "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+    "app_receipt_sha256": "10c8f6bb850570674d592f6afed7ecfe0e15af1ab4aec7e195488d0a2c240c9d",
+    "application_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+    "plugin_build_receipt_sha256": "fcd17ec7505804f81c764976dc335094633cb7265d47684550f2acb7ec03b1b2",
+    "aac_build_receipt_sha256": "910ee6fd79a00acdf7aa5ce168793ba1a4f0ac318064c7d520b6819c25984335",
+    "prefix": "/usr/local/lib/mipad2-camera-source-0a7ce87affa9",
+    "launcher_recipe_sha256": "19afa2d3b3549b0ef85bd109d82d573f113ddc4fcc35ad3a76a8c876c359716d",
+    "composer_sha256": "7a008f57acfef9b4d89005564e3492ce32a77cc4415d99938f593d739b9bff05",
+    "app_needed_libraries": [
+      "libglycin-gtk4-2.so.0",
+      "libgtk-4.so.1",
+      "libpango-1.0.so.0",
+      "libgraphene-1.0.so.0",
+      "libglycin-2.so.0",
+      "libgio-2.0.so.0",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libm.so.6",
+      "libgstpbutils-1.0.so.0",
+      "libgstvideo-1.0.so.0",
+      "libgstbase-1.0.so.0",
+      "libgstreamer-1.0.so.0",
+      "libadwaita-1.so.0",
+      "libgcc_s.so.1",
+      "libc.so.6"
+    ],
+    "app_included": true,
+    "source_plugin_count": 4,
+    "launcher_included": true,
+    "private_settings": true,
+    "shutter_sound_default": false,
+    "dbus_activatable": false,
+    "stable_desktop_changed": false,
+    "system_library_replacement": false,
+    "sdk_libraries_deployed": false,
+    "device_tested": false,
+    "image_qualified": false,
+    "desktop_file": "usr/share/applications/org.gnome.Snapshot.MiPad2Source0a7ce87affa9.desktop"
+  },
+  "native_probes": {
+    "state": "candidate-native-loader-schema-resource-pass",
+    "default_changed": false,
+    "system_packages_changed": false,
+    "application_started": false,
+    "media_captured": false,
+    "audible_output": false,
+    "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+    "application_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+    "installed_files": 75,
+    "loader_checks": 5,
+    "protected_files_verified": 292,
+    "root_free": 2415030272,
+    "resource_child_count": 6,
+    "resource_checked_with_runtime_libgio": true,
+    "missing_development_cli_not_installed": true,
+    "desktop_host_validation_and_target_hash_verified": true,
+    "foreground_tested": false,
+    "image_qualified": false,
+    "stable_default_unchanged": true
+  },
+  "normal_lifecycle": {
+    "state": "normal-launcher-three-open-close-pass",
+    "terminal": true,
+    "cycles": [
+      {
+        "index": 0,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      },
+      {
+        "index": 1,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      },
+      {
+        "index": 2,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      }
+    ],
+    "default_changed": false,
+    "audible_output": false,
+    "diagnostic_actions_enabled": false,
+    "background_capture_enabled": false,
+    "media_captured": false,
+    "controls_restored_to_actual_pretest": true,
+    "normal_settings_preserved": true,
+    "root_free": 2412679168,
+    "screen_saver_active_before": false,
+    "screen_saver_query_succeeded": false,
+    "foreground_optically_verified": false,
+    "preview_frames_independently_counted": false,
+    "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+    "application_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+    "image_qualified": false,
+    "new_reboots": 0
+  },
+  "scoped_unlock_lifecycle": {
+    "state": "normal-launcher-three-open-close-pass",
+    "terminal": true,
+    "cycles": [
+      {
+        "index": 0,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      },
+      {
+        "index": 1,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      },
+      {
+        "index": 2,
+        "exact_new_executable": true,
+        "normal_actions_available": true,
+        "diagnostic_actions_absent": true,
+        "private_settings": true,
+        "camera_device_open": false,
+        "source_videofilter_mapped": true,
+        "normal_exit_code": 0
+      }
+    ],
+    "default_changed": false,
+    "audible_output": false,
+    "diagnostic_actions_enabled": false,
+    "background_capture_enabled": false,
+    "media_captured": false,
+    "controls_restored_to_actual_pretest": true,
+    "normal_settings_preserved": true,
+    "root_free": 2412621824,
+    "screen_saver_active_before": false,
+    "screen_saver_query_succeeded": false,
+    "foreground_optically_verified": false,
+    "preview_frames_independently_counted": false,
+    "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+    "application_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+    "image_qualified": false,
+    "new_reboots": 0,
+    "unlock_requested_for_test": true,
+    "original_lock_request_restored": true
+  },
+  "postflight": {
+    "state": "source-app-postflight-pass",
+    "protected_files_verified": 292,
+    "package_files_verified": 75,
+    "controls": [
+      {
+        "input": 0,
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 4
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      },
+      {
+        "input": 1,
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 250
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      }
+    ],
+    "controls_reference": "actual production-smoke pretest",
+    "no_control_values_written_by_checkpoint": true,
+    "isp_pm": {
+      "runtime_usage": "0",
+      "runtime_status": "suspended"
+    },
+    "selected_whole_boot_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "original_guards_and_boot_defaults_preserved": true,
+    "tracing_and_profilers_absent": true,
+    "free_root": 2412490752,
+    "new_reboots": 0,
+    "new_rtc_tests": 0,
+    "audible_tones": false,
+    "default_changed": false,
+    "full_objective_complete": false
+  },
+  "source_application_preview_qualified": false,
+  "source_application_recording_qualified": false,
+  "image_qualified": false,
+  "full_objective_complete": false,
+  "media_exported": false
+}

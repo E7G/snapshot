@@ -1,3 +1,5 @@
+> Source Snapshot app build and separate four-source-plugin launcher package now exist: [scope, tests and remaining foreground gate](../../../MIPAD2_SOURCE_APPLICATION.md). Not a promoted default or complete image.
+
 > Optional source-built AAC now available: [build/ABI requirements](AAC.md) and [scoped device evidence](../../../MIPAD2_SOURCE_AAC_DEVICE.md). The three-plugin default below remains unchanged; complete app/launcher/image integration is still pending.
 
 # Functional plugin source bundle (candidate, not an image package)
