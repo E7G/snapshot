@@ -28,6 +28,8 @@ mod mipad2_ae_algorithm;
 mod mipad2_capture_copy;
 mod mipad2_capture_mode;
 mod mipad2_current_caps;
+// Rejected R17i hardware candidate retained only as a test bench.
+#[cfg(test)]
 mod mipad2_encode_input_queue;
 mod mipad2_preview;
 mod mipad2_raw_capture;

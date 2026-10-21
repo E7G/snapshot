@@ -1,3 +1,5 @@
+> HISTORICAL candidate below. Actual device rejected it; production binding is now removed, module test-only. See [R17i rejection](MIPAD2_R17I_DEVICE_REJECTION.md). Reproduce the original hook at commit2512e41e699ceb866ff6393bac42e26d089c3602.
+
 # R17i: opt-in bound on the real VIDEO encodebin input queue
 
 Hardware performance/compatibility NOT YET VALIDATED. Default OFF, stable

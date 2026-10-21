@@ -1,0 +1,1140 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "candidate_source": "2512e41e699ceb866ff6393bac42e26d089c3602",
+  "candidate_binary_sha256": "b4cb184be549cdae4f4e731fc6cb832d1321d9672acc20a0f66d86b3ba36ea4c",
+  "kernel": "6.14.0-mipad2-integrated-r26",
+  "kernel_built_source": "6074419168fbb70aa5685e976874da6cf86d1fae",
+  "qualification": "R17i one-buffer encode-input candidate rejected for production: binding/depth work but cadence fails and same-run median delay regresses. Historical R17h166ms is not this run control median.",
+  "protocol": {
+    "same_binary_and_boot": true,
+    "order": [
+      "off",
+      "on"
+    ],
+    "randomized": false,
+    "sole_flag_difference": "MIPAD2_ENCODE_INPUT_ONE=0/1",
+    "current_caps": 1,
+    "raw_direct": 1,
+    "raw_async": 0,
+    "copy": true,
+    "allocation_guard": true,
+    "source_producer_queues": 0,
+    "clips_per_arm": 2,
+    "seconds_per_clip": 30,
+    "native": [
+      1920,
+      1080,
+      30
+    ],
+    "preview": [
+      1280,
+      720,
+      30
+    ],
+    "h264_bps": 15000000,
+    "aac_bps": 192000,
+    "audio_hz": 48000,
+    "audio_channels": 2,
+    "cpu_max_khz": 1600000,
+    "original_thermal_protection_retained": true,
+    "exact_cpu_policy_restoration": true,
+    "quality_changed": false,
+    "frame_dropping_used": false,
+    "pts_rewritten": false,
+    "warmup_trimmed": false
+  },
+  "arms": {
+    "off": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.901770021624177,
+          "max_pts_gap_seconds": 0.09200000000000003,
+          "cadence_gate": false,
+          "packets": 899,
+          "decoded_frames": 899,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15235263,
+          "actual_audio_bitrate": 191849,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 68000,
+          "conservation": {
+            "cycle": 0,
+            "encoder_inputs": 899,
+            "encoder_outputs": 899,
+            "mp4_packets": 899,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 899,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166637.0,
+            "mux_within_one_declared_tick": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "cycle": 0,
+            "encoder_inputs": 899,
+            "native_pushes_between_recorded_endpoints": 899,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 29.901680411172745,
+            "native_pts_fps": 29.90167990139038,
+            "encoder_pts_fps": 29.90167990139038,
+            "encoder_offset_step_histogram": {
+              "1": 898
+            },
+            "native_pts_interval_ns": {
+              "count": 898,
+              "minimum": 21815125,
+              "median": 33326851,
+              "p95": 33732974,
+              "p99": 33976363,
+              "maximum": 91950450,
+              "mean": 33442937.095768373,
+              "above40ms": 5,
+              "above50ms": 3
+            },
+            "driver_stamp_interval_ns": {
+              "count": 898,
+              "minimum": 21815000,
+              "median": 33327000,
+              "p95": 33735000,
+              "p99": 33976000,
+              "maximum": 91950000,
+              "mean": 33442936.525612473,
+              "above40ms": 5,
+              "above50ms": 3
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 898,
+              "minimum": 21815125,
+              "median": 33326851,
+              "p95": 33732974,
+              "p99": 33976363,
+              "maximum": 91950450,
+              "mean": 33442937.095768373,
+              "above40ms": 5,
+              "above50ms": 3
+            }
+          },
+          "source_to_encoder_arrival": {
+            "count": 899,
+            "median_ns": 2765803,
+            "p95_ns": 154494941,
+            "p99_ns": 164779317,
+            "max_ns": 324924326,
+            "mean_ns": 25119574.04894327,
+            "above30ms": 179,
+            "above40ms": 174,
+            "above50ms": 172,
+            "above100ms": 94
+          },
+          "encode_input_queue": {
+            "source_to_raw_output": {
+              "count": 899,
+              "median_ns": 2044633,
+              "p95_ns": 4396894,
+              "p99_ns": 8881725,
+              "max_ns": 24120749,
+              "mean_ns": 2447284.573971079,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above100ms": 0
+            },
+            "raw_output_to_encode_queue_sink": {
+              "count": 899,
+              "median_ns": 317741,
+              "p95_ns": 991747,
+              "p99_ns": 2404536,
+              "max_ns": 152231531,
+              "mean_ns": 599953.6462736374,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 1
+            },
+            "encode_queue_sink_to_worker_begin": {
+              "count": 899,
+              "median_ns": 230740,
+              "p95_ns": 148264281,
+              "p99_ns": 160077959,
+              "max_ns": 300476311,
+              "mean_ns": 21976178.941045605,
+              "above30ms": 177,
+              "above40ms": 172,
+              "above100ms": 91
+            },
+            "encode_queue_worker_to_encoder": {
+              "count": 899,
+              "median_ns": 41675,
+              "p95_ns": 94051,
+              "p99_ns": 204314,
+              "max_ns": 39864592,
+              "mean_ns": 96156.88765294771,
+              "above30ms": 1,
+              "above40ms": 0,
+              "above100ms": 0
+            },
+            "encode_queue_sink_chain_wall": {
+              "count": 899,
+              "median_ns": 23512,
+              "p95_ns": 25084609,
+              "p99_ns": 28461579,
+              "max_ns": 89375814,
+              "mean_ns": 2084817.1078976642,
+              "above30ms": 4,
+              "above40ms": 3,
+              "above100ms": 0
+            },
+            "encode_queue_worker_push_wall": {
+              "count": 899,
+              "median_ns": 11198710,
+              "p95_ns": 33796945,
+              "p99_ns": 37431355,
+              "max_ns": 137783453,
+              "mean_ns": 15677316.020022247,
+              "above30ms": 144,
+              "above40ms": 3,
+              "above100ms": 1
+            },
+            "frames": 899,
+            "exact_partition": true,
+            "all_named_queue_witnesses": true,
+            "queue_worker_begins_before_sink_return": 15,
+            "non_ok_flow_counts": {
+              "encode-queue-sink": 0,
+              "encode-queue-worker": 0
+            },
+            "source_to_encoder_arrival": {
+              "count": 899,
+              "median_ns": 2765803,
+              "p95_ns": 154494941,
+              "p99_ns": 164779317,
+              "max_ns": 324924326,
+              "mean_ns": 25119574.04894327,
+              "above30ms": 179,
+              "above40ms": 174,
+              "above50ms": 172,
+              "above100ms": 94
+            },
+            "queue_capacity_proven": false,
+            "isolated_queue_residence_proven": false,
+            "no_payload_read": true,
+            "scope": "Actual named video-encodebin queue2 sink-arrival to worker-push interval includes blocking enqueue; not isolated residence/CPU, capacity, optical latency or Android parity. Every selected frame retained."
+          },
+          "consumer_wall": {
+            "encoder_sink_chain_inclusive": {
+              "count": 899,
+              "median_ns": 11101497,
+              "p95_ns": 33733356,
+              "p99_ns": 37355429,
+              "max_ns": 97884285,
+              "mean_ns": 15538576.110122358,
+              "above30ms": 141,
+              "above50ms": 3,
+              "above100ms": 0
+            },
+            "nested_encoded_output_push_total": {
+              "count": 899,
+              "median_ns": 433179,
+              "p95_ns": 1051124,
+              "p99_ns": 1878531,
+              "max_ns": 7485549,
+              "mean_ns": 527220.7163515016,
+              "above30ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "encoder_chain_minus_nested_output_wall": {
+              "count": 899,
+              "median_ns": 10537942,
+              "p95_ns": 33229288,
+              "p99_ns": 36872387,
+              "max_ns": 97884285,
+              "mean_ns": 15011355.393770857,
+              "above30ms": 124,
+              "above50ms": 3,
+              "above100ms": 0
+            },
+            "first_second_encoder_chain": {
+              "count": 27,
+              "median_ns": 31400758,
+              "p95_ns": 91288108,
+              "p99_ns": 97884285,
+              "max_ns": 97884285,
+              "mean_ns": 37001262.40740741,
+              "above30ms": 24,
+              "above50ms": 3,
+              "above100ms": 0
+            },
+            "later_encoder_chain": {
+              "count": 872,
+              "median_ns": 11038584,
+              "p95_ns": 33622505,
+              "p99_ns": 36696585,
+              "max_ns": 39883279,
+              "mean_ns": 14874020.456422018,
+              "above30ms": 117,
+              "above50ms": 0,
+              "above100ms": 0
+            }
+          },
+          "nested_encoded_push_histogram": {
+            "0": 31,
+            "1": 839,
+            "2": 29
+          },
+          "zero_driver_owned_ns": 172616000
+        },
+        {
+          "sensor": "rear",
+          "fps": 30.01188589540412,
+          "max_pts_gap_seconds": 0.03433300000000017,
+          "cadence_gate": true,
+          "packets": 910,
+          "decoded_frames": 910,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14759930,
+          "actual_audio_bitrate": 192193,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 69000,
+          "conservation": {
+            "cycle": 1,
+            "encoder_inputs": 910,
+            "encoder_outputs": 910,
+            "mp4_packets": 910,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 910,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166462.0,
+            "mux_within_one_declared_tick": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "cycle": 1,
+            "encoder_inputs": 910,
+            "native_pushes_between_recorded_endpoints": 910,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 30.01189580424452,
+            "native_pts_fps": 30.011895841898127,
+            "encoder_pts_fps": 30.011895841898127,
+            "encoder_offset_step_histogram": {
+              "1": 909
+            },
+            "native_pts_interval_ns": {
+              "count": 909,
+              "minimum": 32546737,
+              "median": 33314649,
+              "p95": 33710263,
+              "p99": 33881937,
+              "maximum": 34106476,
+              "mean": 33320120.97029703,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "driver_stamp_interval_ns": {
+              "count": 909,
+              "minimum": 32548000,
+              "median": 33313000,
+              "p95": 33710000,
+              "p99": 33882000,
+              "maximum": 34106000,
+              "mean": 33320121.01210121,
+              "above40ms": 0,
+              "above50ms": 0
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 909,
+              "minimum": 32546737,
+              "median": 33314649,
+              "p95": 33710263,
+              "p99": 33881937,
+              "maximum": 34106476,
+              "mean": 33320120.97029703,
+              "above40ms": 0,
+              "above50ms": 0
+            }
+          },
+          "source_to_encoder_arrival": {
+            "count": 910,
+            "median_ns": 2670239,
+            "p95_ns": 4100665,
+            "p99_ns": 129007702,
+            "max_ns": 180820015,
+            "mean_ns": 6264468.805494506,
+            "above30ms": 30,
+            "above40ms": 28,
+            "above50ms": 27,
+            "above100ms": 19
+          },
+          "encode_input_queue": {
+            "source_to_raw_output": {
+              "count": 910,
+              "median_ns": 2034758,
+              "p95_ns": 2661226,
+              "p99_ns": 4893861,
+              "max_ns": 41248908,
+              "mean_ns": 2205731.6384615386,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 0
+            },
+            "raw_output_to_encode_queue_sink": {
+              "count": 910,
+              "median_ns": 294590,
+              "p95_ns": 843459,
+              "p99_ns": 1347789,
+              "max_ns": 108492961,
+              "mean_ns": 502199.1054945055,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 1
+            },
+            "encode_queue_sink_to_worker_begin": {
+              "count": 910,
+              "median_ns": 200964,
+              "p95_ns": 842446,
+              "p99_ns": 124403032,
+              "max_ns": 152496085,
+              "mean_ns": 3464872.9516483517,
+              "above30ms": 28,
+              "above40ms": 26,
+              "above100ms": 16
+            },
+            "encode_queue_worker_to_encoder": {
+              "count": 910,
+              "median_ns": 42401,
+              "p95_ns": 87701,
+              "p99_ns": 209152,
+              "max_ns": 35839368,
+              "mean_ns": 91665.10989010989,
+              "above30ms": 1,
+              "above40ms": 0,
+              "above100ms": 0
+            },
+            "encode_queue_sink_chain_wall": {
+              "count": 910,
+              "median_ns": 27162,
+              "p95_ns": 173701,
+              "p99_ns": 6501727,
+              "max_ns": 45813916,
+              "mean_ns": 296045.2,
+              "above30ms": 2,
+              "above40ms": 1,
+              "above100ms": 0
+            },
+            "encode_queue_worker_push_wall": {
+              "count": 910,
+              "median_ns": 10218439,
+              "p95_ns": 14393418,
+              "p99_ns": 28868623,
+              "max_ns": 87872608,
+              "mean_ns": 11251710.06043956,
+              "above30ms": 8,
+              "above40ms": 3,
+              "above100ms": 0
+            },
+            "frames": 910,
+            "exact_partition": true,
+            "all_named_queue_witnesses": true,
+            "queue_worker_begins_before_sink_return": 13,
+            "non_ok_flow_counts": {
+              "encode-queue-sink": 0,
+              "encode-queue-worker": 0
+            },
+            "source_to_encoder_arrival": {
+              "count": 910,
+              "median_ns": 2670239,
+              "p95_ns": 4100665,
+              "p99_ns": 129007702,
+              "max_ns": 180820015,
+              "mean_ns": 6264468.805494506,
+              "above30ms": 30,
+              "above40ms": 28,
+              "above50ms": 27,
+              "above100ms": 19
+            },
+            "queue_capacity_proven": false,
+            "isolated_queue_residence_proven": false,
+            "no_payload_read": true,
+            "scope": "Actual named video-encodebin queue2 sink-arrival to worker-push interval includes blocking enqueue; not isolated residence/CPU, capacity, optical latency or Android parity. Every selected frame retained."
+          },
+          "consumer_wall": {
+            "encoder_sink_chain_inclusive": {
+              "count": 910,
+              "median_ns": 10137239,
+              "p95_ns": 14294754,
+              "p99_ns": 28810247,
+              "max_ns": 51997414,
+              "mean_ns": 11121487.52967033,
+              "above30ms": 8,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "nested_encoded_output_push_total": {
+              "count": 910,
+              "median_ns": 385028,
+              "p95_ns": 1327213,
+              "p99_ns": 2406299,
+              "max_ns": 3700499,
+              "mean_ns": 508648.93846153846,
+              "above30ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "encoder_chain_minus_nested_output_wall": {
+              "count": 910,
+              "median_ns": 9631345,
+              "p95_ns": 13669361,
+              "p99_ns": 28315543,
+              "max_ns": 51997414,
+              "mean_ns": 10612838.591208791,
+              "above30ms": 6,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "first_second_encoder_chain": {
+              "count": 35,
+              "median_ns": 26707352,
+              "p95_ns": 48269516,
+              "p99_ns": 51997414,
+              "max_ns": 51997414,
+              "mean_ns": 28657741.85714286,
+              "above30ms": 8,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "later_encoder_chain": {
+              "count": 875,
+              "median_ns": 10088325,
+              "p95_ns": 13100580,
+              "p99_ns": 14503731,
+              "max_ns": 24909734,
+              "mean_ns": 10420037.356571428,
+              "above30ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            }
+          },
+          "nested_encoded_push_histogram": {
+            "0": 32,
+            "1": 848,
+            "2": 30
+          },
+          "zero_driver_owned_ns": 0
+        }
+      ],
+      "full_clip_cadence_gate": false,
+      "right_censored_controls": 42,
+      "left_censored_controls": 0,
+      "unconfirmed_gap_cases": 0,
+      "rtc": {
+        "s0i3_delta_us": 9196448,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      },
+      "serial_controller_expected_running": true,
+      "host_handle_inside_suspend_proven": false
+    },
+    "on": {
+      "clips": [
+        {
+          "sensor": "front",
+          "fps": 29.85372340425532,
+          "max_pts_gap_seconds": 0.11733300000000002,
+          "cadence_gate": false,
+          "packets": 899,
+          "decoded_frames": 899,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 15208677,
+          "actual_audio_bitrate": 192212,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 74000,
+          "conservation": {
+            "cycle": 0,
+            "encoder_inputs": 899,
+            "encoder_outputs": 899,
+            "mp4_packets": 899,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 899,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166639.0,
+            "mux_within_one_declared_tick": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "cycle": 0,
+            "encoder_inputs": 899,
+            "native_pushes_between_recorded_endpoints": 899,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 29.853783945506006,
+            "native_pts_fps": 29.853787095642723,
+            "encoder_pts_fps": 29.853787095642723,
+            "encoder_offset_step_histogram": {
+              "1": 898
+            },
+            "native_pts_interval_ns": {
+              "count": 898,
+              "minimum": 22348149,
+              "median": 33312587,
+              "p95": 33671925,
+              "p99": 34266599,
+              "maximum": 117435613,
+              "mean": 33496587.77951002,
+              "above40ms": 5,
+              "above50ms": 4
+            },
+            "driver_stamp_interval_ns": {
+              "count": 898,
+              "minimum": 22348000,
+              "median": 33312000,
+              "p95": 33672000,
+              "p99": 34265000,
+              "maximum": 117436000,
+              "mean": 33496591.31403118,
+              "above40ms": 5,
+              "above50ms": 4
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 898,
+              "minimum": 22348149,
+              "median": 33312587,
+              "p95": 33671925,
+              "p99": 34266599,
+              "maximum": 117435613,
+              "mean": 33496587.77951002,
+              "above40ms": 5,
+              "above50ms": 4
+            }
+          },
+          "source_to_encoder_arrival": {
+            "count": 899,
+            "median_ns": 65675367,
+            "p95_ns": 73875307,
+            "p99_ns": 82524775,
+            "max_ns": 182340187,
+            "mean_ns": 66358649.066740826,
+            "above30ms": 899,
+            "above40ms": 899,
+            "above50ms": 898,
+            "above100ms": 5
+          },
+          "encode_input_queue": {
+            "source_to_raw_output": {
+              "count": 899,
+              "median_ns": 3819930,
+              "p95_ns": 5865692,
+              "p99_ns": 7105774,
+              "max_ns": 8668688,
+              "mean_ns": 4098100.1345939934,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above100ms": 0
+            },
+            "raw_output_to_encode_queue_sink": {
+              "count": 899,
+              "median_ns": 377196,
+              "p95_ns": 1368336,
+              "p99_ns": 2827856,
+              "max_ns": 123560663,
+              "mean_ns": 697070.8031145717,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 1
+            },
+            "encode_queue_sink_to_worker_begin": {
+              "count": 899,
+              "median_ns": 60990165,
+              "p95_ns": 69147311,
+              "p99_ns": 76004297,
+              "max_ns": 179957271,
+              "mean_ns": 61481204.051167965,
+              "above30ms": 898,
+              "above40ms": 898,
+              "above100ms": 4
+            },
+            "encode_queue_worker_to_encoder": {
+              "count": 899,
+              "median_ns": 31367,
+              "p95_ns": 47356,
+              "p99_ns": 229428,
+              "max_ns": 40584756,
+              "mean_ns": 82274.07786429366,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 0
+            },
+            "encode_queue_sink_chain_wall": {
+              "count": 899,
+              "median_ns": 28075758,
+              "p95_ns": 35110831,
+              "p99_ns": 39322700,
+              "max_ns": 109726883,
+              "mean_ns": 28366951.46051168,
+              "above30ms": 154,
+              "above40ms": 5,
+              "above100ms": 1
+            },
+            "encode_queue_worker_push_wall": {
+              "count": 899,
+              "median_ns": 33072253,
+              "p95_ns": 39791229,
+              "p99_ns": 43752761,
+              "max_ns": 111265207,
+              "mean_ns": 33429383.671857618,
+              "above30ms": 855,
+              "above40ms": 42,
+              "above100ms": 2
+            },
+            "frames": 899,
+            "exact_partition": true,
+            "all_named_queue_witnesses": true,
+            "queue_worker_begins_before_sink_return": 0,
+            "non_ok_flow_counts": {
+              "encode-queue-sink": 0,
+              "encode-queue-worker": 0
+            },
+            "source_to_encoder_arrival": {
+              "count": 899,
+              "median_ns": 65675367,
+              "p95_ns": 73875307,
+              "p99_ns": 82524775,
+              "max_ns": 182340187,
+              "mean_ns": 66358649.066740826,
+              "above30ms": 899,
+              "above40ms": 899,
+              "above50ms": 898,
+              "above100ms": 5
+            },
+            "queue_capacity_proven": false,
+            "isolated_queue_residence_proven": false,
+            "no_payload_read": true,
+            "scope": "Actual named video-encodebin queue2 sink-arrival to worker-push interval includes blocking enqueue; not isolated residence/CPU, capacity, optical latency or Android parity. Every selected frame retained."
+          },
+          "consumer_wall": {
+            "encoder_sink_chain_inclusive": {
+              "count": 899,
+              "median_ns": 32995604,
+              "p95_ns": 39734197,
+              "p99_ns": 43686845,
+              "max_ns": 111207849,
+              "mean_ns": 33309714.627363738,
+              "above30ms": 852,
+              "above50ms": 4,
+              "above100ms": 1
+            },
+            "nested_encoded_output_push_total": {
+              "count": 899,
+              "median_ns": 418834,
+              "p95_ns": 943350,
+              "p99_ns": 1857585,
+              "max_ns": 7957696,
+              "mean_ns": 497917.2024471635,
+              "above30ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "encoder_chain_minus_nested_output_wall": {
+              "count": 899,
+              "median_ns": 32511104,
+              "p95_ns": 39298685,
+              "p99_ns": 43352022,
+              "max_ns": 103250153,
+              "mean_ns": 32811797.424916573,
+              "above30ms": 845,
+              "above50ms": 4,
+              "above100ms": 1
+            },
+            "first_second_encoder_chain": {
+              "count": 26,
+              "median_ns": 34216423,
+              "p95_ns": 71175909,
+              "p99_ns": 111207849,
+              "max_ns": 111207849,
+              "mean_ns": 39648048.15384615,
+              "above30ms": 23,
+              "above50ms": 4,
+              "above100ms": 1
+            },
+            "later_encoder_chain": {
+              "count": 873,
+              "median_ns": 32974163,
+              "p95_ns": 39603299,
+              "p99_ns": 42613133,
+              "max_ns": 44228945,
+              "mean_ns": 33120944.098510884,
+              "above30ms": 829,
+              "above50ms": 0,
+              "above100ms": 0
+            }
+          },
+          "nested_encoded_push_histogram": {
+            "0": 31,
+            "1": 839,
+            "2": 29
+          },
+          "zero_driver_owned_ns": 617862000
+        },
+        {
+          "sensor": "rear",
+          "fps": 29.948603057459145,
+          "max_pts_gap_seconds": 0.07833300000000001,
+          "cadence_gate": false,
+          "packets": 910,
+          "decoded_frames": 910,
+          "consecutive_exact_decoded_repeats": 0,
+          "actual_video_bitrate": 14705164,
+          "actual_audio_bitrate": 192162,
+          "audio_rate": 48000,
+          "audio_channels": 2,
+          "recording_size": [
+            1920,
+            1080
+          ],
+          "full_preview_size": [
+            1280,
+            720
+          ],
+          "GPU_preview_rotation_present": true,
+          "requested_video_bitrate": 15000000,
+          "requested_audio_bitrate": 192000,
+          "max_thermal_millidegrees": 76000,
+          "conservation": {
+            "cycle": 1,
+            "encoder_inputs": 910,
+            "encoder_outputs": 910,
+            "mp4_packets": 910,
+            "same_counts": true,
+            "encoder_relative_pts_exact": true,
+            "native_unique": 910,
+            "native_missing": 0,
+            "native_ambiguous": 0,
+            "mp4_tick_ns": 333333.3333333333,
+            "max_mux_relative_pts_residual_ns": 166625.0,
+            "mux_within_one_declared_tick": true,
+            "gate": true
+          },
+          "source_coverage": {
+            "cycle": 1,
+            "encoder_inputs": 910,
+            "native_pushes_between_recorded_endpoints": 910,
+            "native_not_forwarded_to_encoder": 0,
+            "native_driver_stamp_fps": 29.948508333658406,
+            "native_pts_fps": 29.948510381067557,
+            "encoder_pts_fps": 29.948510381067557,
+            "encoder_offset_step_histogram": {
+              "1": 909
+            },
+            "native_pts_interval_ns": {
+              "count": 909,
+              "minimum": 22557800,
+              "median": 33314774,
+              "p95": 33668913,
+              "p99": 33849612,
+              "maximum": 78340250,
+              "mean": 33390642.381738175,
+              "above40ms": 3,
+              "above50ms": 1
+            },
+            "driver_stamp_interval_ns": {
+              "count": 909,
+              "minimum": 22558000,
+              "median": 33316000,
+              "p95": 33669000,
+              "p99": 33850000,
+              "maximum": 78340000,
+              "mean": 33390644.664466448,
+              "above40ms": 3,
+              "above50ms": 1
+            },
+            "encoder_input_pts_interval_ns": {
+              "count": 909,
+              "minimum": 22557800,
+              "median": 33314774,
+              "p95": 33668913,
+              "p99": 33849612,
+              "maximum": 78340250,
+              "mean": 33390642.381738175,
+              "above40ms": 3,
+              "above50ms": 1
+            }
+          },
+          "source_to_encoder_arrival": {
+            "count": 910,
+            "median_ns": 65252268,
+            "p95_ns": 75465878,
+            "p99_ns": 81121020,
+            "max_ns": 199007480,
+            "mean_ns": 66161275.145054944,
+            "above30ms": 910,
+            "above40ms": 909,
+            "above50ms": 909,
+            "above100ms": 3
+          },
+          "encode_input_queue": {
+            "source_to_raw_output": {
+              "count": 910,
+              "median_ns": 3660318,
+              "p95_ns": 5806917,
+              "p99_ns": 8042090,
+              "max_ns": 15150251,
+              "mean_ns": 4006760.7175824177,
+              "above30ms": 0,
+              "above40ms": 0,
+              "above100ms": 0
+            },
+            "raw_output_to_encode_queue_sink": {
+              "count": 910,
+              "median_ns": 369472,
+              "p95_ns": 1518298,
+              "p99_ns": 3027450,
+              "max_ns": 115827480,
+              "mean_ns": 705515.8615384615,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 1
+            },
+            "encode_queue_sink_to_worker_begin": {
+              "count": 910,
+              "median_ns": 60378451,
+              "p95_ns": 71112861,
+              "p99_ns": 76705474,
+              "max_ns": 140741243,
+              "mean_ns": 61339957.538461536,
+              "above30ms": 909,
+              "above40ms": 908,
+              "above100ms": 2
+            },
+            "encode_queue_worker_to_encoder": {
+              "count": 910,
+              "median_ns": 30110,
+              "p95_ns": 49857,
+              "p99_ns": 334584,
+              "max_ns": 58403357,
+              "mean_ns": 109041.02747252748,
+              "above30ms": 1,
+              "above40ms": 1,
+              "above100ms": 0
+            },
+            "encode_queue_sink_chain_wall": {
+              "count": 910,
+              "median_ns": 27249921,
+              "p95_ns": 37760972,
+              "p99_ns": 40534730,
+              "max_ns": 96026676,
+              "mean_ns": 28342409.921978023,
+              "above30ms": 212,
+              "above40ms": 13,
+              "above100ms": 0
+            },
+            "encode_queue_worker_push_wall": {
+              "count": 910,
+              "median_ns": 32441920,
+              "p95_ns": 42260834,
+              "p99_ns": 44693699,
+              "max_ns": 111531060,
+              "mean_ns": 33300044.91978022,
+              "above30ms": 766,
+              "above40ms": 109,
+              "above100ms": 1
+            },
+            "frames": 910,
+            "exact_partition": true,
+            "all_named_queue_witnesses": true,
+            "queue_worker_begins_before_sink_return": 0,
+            "non_ok_flow_counts": {
+              "encode-queue-sink": 0,
+              "encode-queue-worker": 0
+            },
+            "source_to_encoder_arrival": {
+              "count": 910,
+              "median_ns": 65252268,
+              "p95_ns": 75465878,
+              "p99_ns": 81121020,
+              "max_ns": 199007480,
+              "mean_ns": 66161275.145054944,
+              "above30ms": 910,
+              "above40ms": 909,
+              "above50ms": 909,
+              "above100ms": 3
+            },
+            "queue_capacity_proven": false,
+            "isolated_queue_residence_proven": false,
+            "no_payload_read": true,
+            "scope": "Actual named video-encodebin queue2 sink-arrival to worker-push interval includes blocking enqueue; not isolated residence/CPU, capacity, optical latency or Android parity. Every selected frame retained."
+          },
+          "consumer_wall": {
+            "encoder_sink_chain_inclusive": {
+              "count": 910,
+              "median_ns": 32342756,
+              "p95_ns": 42151717,
+              "p99_ns": 44635456,
+              "max_ns": 53090870,
+              "mean_ns": 33151386.589010987,
+              "above30ms": 754,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "nested_encoded_output_push_total": {
+              "count": 910,
+              "median_ns": 383848,
+              "p95_ns": 1065923,
+              "p99_ns": 1661901,
+              "max_ns": 8183839,
+              "mean_ns": 470510.73626373627,
+              "above30ms": 0,
+              "above50ms": 0,
+              "above100ms": 0
+            },
+            "encoder_chain_minus_nested_output_wall": {
+              "count": 910,
+              "median_ns": 31835436,
+              "p95_ns": 41490348,
+              "p99_ns": 44042961,
+              "max_ns": 53090870,
+              "mean_ns": 32680875.852747254,
+              "above30ms": 700,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "first_second_encoder_chain": {
+              "count": 31,
+              "median_ns": 30902543,
+              "p95_ns": 46183278,
+              "p99_ns": 53090870,
+              "max_ns": 53090870,
+              "mean_ns": 32712976.64516129,
+              "above30ms": 21,
+              "above50ms": 1,
+              "above100ms": 0
+            },
+            "later_encoder_chain": {
+              "count": 879,
+              "median_ns": 32392032,
+              "p95_ns": 42067978,
+              "p99_ns": 44449667,
+              "max_ns": 46710909,
+              "mean_ns": 33166848.145620022,
+              "above30ms": 733,
+              "above50ms": 0,
+              "above100ms": 0
+            }
+          },
+          "nested_encoded_push_histogram": {
+            "0": 32,
+            "1": 848,
+            "2": 30
+          },
+          "zero_driver_owned_ns": 103122000
+        }
+      ],
+      "full_clip_cadence_gate": false,
+      "right_censored_controls": 42,
+      "left_censored_controls": 0,
+      "unconfirmed_gap_cases": 1,
+      "rtc": {
+        "s0i3_delta_us": 9312288,
+        "wakeup_irq": "9",
+        "functional_resume": true
+      },
+      "serial_controller_expected_running": true,
+      "host_handle_inside_suspend_proven": false
+    }
+  },
+  "harness": {
+    "original_controller_failure": "Thermal preflight raced to56C after <=55C cooldown observation, before ON cap/capture",
+    "original_failure_retained": true,
+    "off_hardware_repeated": false,
+    "on_dispatches": 1,
+    "retry_cooldown_ceiling": 52000,
+    "original_preflight_ceiling": 55000,
+    "no_threshold_weakened": true,
+    "offline_stages": 12,
+    "strict_metadata_tests_normal": 45,
+    "strict_metadata_tests_optimized": 45,
+    "consumer_wall_addendum": "Complete chain wall minus same-task nested encoder-src output push wall is not CPU/hardware/unique-lock time; nested output may belong to prior async input, zero/two pushes retained."
+  },
+  "restoration": {
+    "controls_and_settings_restored": true,
+    "sensor_and_isp_usage_zero": true,
+    "cpu_policies_restored": true,
+    "tracing_idle": true,
+    "all_serial_controllers_terminal": true,
+    "anti_idle_active": true,
+    "thermal_guard_active": true,
+    "default_launcher_unchanged": true,
+    "saved_grub_unchanged": true,
+    "scalar_aliases": 53,
+    "readable_aliases": 47,
+    "original_restricted_aliases": 6,
+    "all_alias_bytes_and_access_preserved": true,
+    "selected_kernel_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "new_reboots": 0,
+    "audible_tones": false
+  },
+  "limits": {
+    "ordinary_default_power_unprofiled_performance_proven": false,
+    "foreground_optical_android_parity_proven": false,
+    "unique_blocking_primitive_proven": false,
+    "new_candidate_native_photo_regression_executed": false,
+    "full_goal_complete": false
+  },
+  "production_binding_retired": true,
+  "default_promoted": false,
+  "full_objective_complete": false,
+  "conserved_recorded_frames": 3618,
+  "production_source_binding_retired": true,
+  "retained_private_candidate_binary_unchanged": true,
+  "retirement_workspace_tests": 102,
+  "runtime_viewfinder_restored_byte_identically_to": "8eea07bef25a3cbbff302ff5b33b1cd552779d52"
+}

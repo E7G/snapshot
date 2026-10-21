@@ -74,7 +74,6 @@ mod imp {
         pub devices: OnceCell<crate::DeviceProvider>,
         pub camera_src: RefCell<Option<gst::Element>>,
         pub camerabin: OnceCell<gst::Element>,
-        pub(crate) mipad2_encode_input_queue_bound: OnceCell<()>,
         pub(crate) mipad2_ae: OnceCell<crate::mipad2_ae::AutoExposure>,
         pub mipad2_preview: crate::PreviewFrameSampler,
         pub state_change_generation: Cell<u64>,
@@ -1805,17 +1804,6 @@ impl Viewfinder {
             log::info!(
                 "Mi Pad 2 current native CAPS recommendation enabled: only unchanged negotiated NV12 profile; initial/mode-change negotiation, ACCEPT_CAPS, allocation, events and frames unchanged"
             );
-        }
-        if crate::mipad2_encode_input_queue::enabled(
-            is_mipad2(),
-            std::env::var("MIPAD2_ENCODE_INPUT_ONE").as_deref() == Ok("1"),
-            direct,
-            std::env::var("MIPAD2_CAPTURE_CURRENT_CAPS").as_deref() == Ok("1"),
-            asynchronous,
-        ) && self.imp().mipad2_encode_input_queue_bound.get().is_none()
-        {
-            crate::mipad2_encode_input_queue::install(self.imp().camerabin())?;
-            self.imp().mipad2_encode_input_queue_bound.set(()).unwrap();
         }
         let tail = if asynchronous {
             crate::mipad2_raw_capture::CameraTail::new_async(&bin, &capsfilter)?
