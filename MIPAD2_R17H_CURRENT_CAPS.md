@@ -1,3 +1,5 @@
+> Historical implementation checkpoint below. Subsequent actual hardware results: [R17h device validation](MIPAD2_R17H_DEVICE_VALIDATION.md). Cadence passes in the controlled cohort, but persistent encoder-input queue latency is not accepted; default remains OFF.
+
 # R17h: opt-in unchanged-native CAPS recommendation (not device validated)
 
 ## Observed R26 evidence, not a completed performance fix
