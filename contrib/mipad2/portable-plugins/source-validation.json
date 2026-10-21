@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "state": "sources-prepared",
+  "upstream_version": "1.28.7",
+  "recipe_sha256": "9e6c7ed967a709c4f35bc4d5ed5061fe5d11d4fecdd6f7513992f0fbdd018706",
+  "build_abi": {},
+  "components": [
+    {
+      "name": "gst-plugins-base",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.28.7.tar.xz",
+      "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+      "patch": "encoding-eos-reset/0001-reset-stale-combiner-eos-on-ready.patch",
+      "patch_sha256": "b7ae185ba088bfbed3c8052afcc4a9f7afeaa19c02e9f4762e62e4049f66a13e",
+      "changed_file": "gst/encoding/gststreamcombiner.c",
+      "patched_sha256": "913fe07df005b41b7ebe0caa8f6451b060a94b3b6ce7ac737a3ab237b643b915",
+      "target": "gst/encoding/libgstencoding.so",
+      "compiled": false
+    },
+    {
+      "name": "gst-plugins-good",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.28.7.tar.xz",
+      "archive_sha256": "87256969c82cf3bc8574301f3e7044a90de0ac500a5a27d8ba38c4dde894dd8b",
+      "patch": "videoflip-identity/0001-initialize-default-identity-passthrough.patch",
+      "patch_sha256": "cd2bf5abbd0c40bfa30c4dc72322702705268c3a507c1382697f3487eeeed8f2",
+      "changed_file": "gst/videofilter/gstvideoflip.c",
+      "patched_sha256": "5f8ea46ea3915d568a633986f228f770cb05f2a4b435f59125f29e4aaff7f096",
+      "target": "gst/videofilter/libgstvideofilter.so",
+      "compiled": false
+    },
+    {
+      "name": "gst-plugins-bad",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.7.tar.xz",
+      "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+      "patch": "va-async-depth/0001-proposed-opt-in-live-two-frame-output.patch",
+      "patch_sha256": "3ce3a569feb997396c0f69cdcf5dec1e71a7ffb2c51a7a2582dd0a222ef8476c",
+      "changed_file": "sys/va/gstvah264enc.c",
+      "patched_sha256": "44b328c0c66bd4cf9dfa10e56ee0cadb444d2a0ac642737dc7ef7669832c7ecb",
+      "target": "sys/va/libgstva.so",
+      "compiled": false
+    }
+  ],
+  "system_install": false,
+  "diagnostic_plugins_included": false,
+  "app_included": false,
+  "launcher_changed": false,
+  "device_tested": false,
+  "image_qualified": false,
+  "tests": [
+    {
+      "optimized": false,
+      "cases": 13,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 13,
+      "exit_code": 0
+    }
+  ],
+  "host_full_build_completed": false,
+  "host_abi_rejection_preserved": true
+}

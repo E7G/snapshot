@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "scope": "four entire saved clips, per-frame tracing OFF and natural thermal policy",
+  "kernel": "6.14.0-mipad2-integrated-r26",
+  "kernel_built_commit": "6074419168fbb70aa5685e976874da6cf86d1fae",
+  "app_source": "8eea07bef25a3cbbff302ff5b33b1cd552779d52",
+  "app_binary_sha256": "9edb3036db463f770cb31599ed5d3455f0ae5d3070b754210c9b3733a0b1063c",
+  "rounds": [
+    {
+      "clips": [
+        {
+          "role": "front",
+          "metrics": {
+            "packets": 897,
+            "fps": 30.001339345506494,
+            "pts_span_seconds": 29.865333333333332,
+            "max_pts_gap_seconds": 0.034,
+            "gaps_above50ms": 0,
+            "gaps_above100ms": 0,
+            "cadence_gate": true,
+            "stream_time_base": "1/3000",
+            "guessed_r_frame_rate_used": false,
+            "actual_video_bitrate": 15285176,
+            "actual_audio_bitrate": 192038,
+            "video_size": [
+              1920,
+              1080
+            ],
+            "audio_hz": 48000,
+            "audio_channels": 2
+          },
+          "decoded_frames": 897,
+          "adjacent_exact_decoded_repeats": 0,
+          "audio_decode_code": 0,
+          "native_fps_before_after": [
+            "78125/2604",
+            "78125/2604"
+          ]
+        },
+        {
+          "role": "rear",
+          "metrics": {
+            "packets": 913,
+            "fps": 30.01151757801788,
+            "pts_span_seconds": 30.388333333333332,
+            "max_pts_gap_seconds": 0.034,
+            "gaps_above50ms": 0,
+            "gaps_above100ms": 0,
+            "cadence_gate": true,
+            "stream_time_base": "1/3000",
+            "guessed_r_frame_rate_used": false,
+            "actual_video_bitrate": 14770338,
+            "actual_audio_bitrate": 191916,
+            "video_size": [
+              1920,
+              1080
+            ],
+            "audio_hz": 48000,
+            "audio_channels": 2
+          },
+          "decoded_frames": 913,
+          "adjacent_exact_decoded_repeats": 0,
+          "audio_decode_code": 0,
+          "native_fps_before_after": [
+            "30",
+            "30"
+          ]
+        }
+      ],
+      "max_thermal_millidegrees": 65000,
+      "observed_cpu_max_khz": [
+        "1840000",
+        "2240000"
+      ],
+      "contract_tests": [
+        {
+          "optimized": false,
+          "cases": 7,
+          "exit_code": 0
+        },
+        {
+          "optimized": true,
+          "cases": 7,
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "clips": [
+        {
+          "role": "rear",
+          "metrics": {
+            "packets": 917,
+            "fps": 30.01113950593015,
+            "pts_span_seconds": 30.522,
+            "max_pts_gap_seconds": 0.034,
+            "gaps_above50ms": 0,
+            "gaps_above100ms": 0,
+            "cadence_gate": true,
+            "stream_time_base": "1/3000",
+            "guessed_r_frame_rate_used": false,
+            "actual_video_bitrate": 15269276,
+            "actual_audio_bitrate": 191827,
+            "video_size": [
+              1920,
+              1080
+            ],
+            "audio_hz": 48000,
+            "audio_channels": 2
+          },
+          "decoded_frames": 917,
+          "adjacent_exact_decoded_repeats": 0,
+          "audio_decode_code": 0,
+          "native_fps_before_after": [
+            "30",
+            "30"
+          ]
+        },
+        {
+          "role": "front",
+          "metrics": {
+            "packets": 899,
+            "fps": 30.001002260654587,
+            "pts_span_seconds": 29.932333333333332,
+            "max_pts_gap_seconds": 0.034,
+            "gaps_above50ms": 0,
+            "gaps_above100ms": 0,
+            "cadence_gate": true,
+            "stream_time_base": "1/3000",
+            "guessed_r_frame_rate_used": false,
+            "actual_video_bitrate": 15285176,
+            "actual_audio_bitrate": 192298,
+            "video_size": [
+              1920,
+              1080
+            ],
+            "audio_hz": 48000,
+            "audio_channels": 2
+          },
+          "decoded_frames": 899,
+          "adjacent_exact_decoded_repeats": 0,
+          "audio_decode_code": 0,
+          "native_fps_before_after": [
+            "78125/2604",
+            "78125/2604"
+          ]
+        }
+      ],
+      "max_thermal_millidegrees": 67000,
+      "observed_cpu_max_khz": [
+        "2240000"
+      ],
+      "contract_tests": [
+        {
+          "optimized": false,
+          "cases": 8,
+          "exit_code": 0
+        },
+        {
+          "optimized": true,
+          "cases": 8,
+          "exit_code": 0
+        }
+      ]
+    }
+  ],
+  "postflight": {
+    "protected_files_verified": 292,
+    "candidate_files_verified": 64,
+    "functional_plugins_verified": 4,
+    "isp_pm": {
+      "runtime_usage": "0",
+      "runtime_status": "suspended"
+    },
+    "scalar_aliases_preserved": 53,
+    "selected_whole_boot_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "trace_instances": [],
+    "profiler_absent": true,
+    "new_reboots": 0,
+    "new_rtc_tests": 0,
+    "audible_tones": false,
+    "default_changed": false
+  },
+  "foreground_optical_parity_proven": false,
+  "preview_negotiation_independently_observed": false,
+  "hardware_encoder_factory_independently_observed": false,
+  "source_frame_conservation_measured": false,
+  "tracer_only_causality_proven": false,
+  "source_build_abi_mismatch_preserved": true,
+  "image_integrated": false,
+  "full_objective_complete": false,
+  "raw_data_exported": false
+}
