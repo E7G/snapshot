@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "scope": "opt-in source-camera rootfs merge, minimal ABI-only native loader; NOT full boot image or foreground camera qualification",
+  "installer_sha256": "f36e0bd9767ff128d0083c676a120923889b799b108e2bc828708a9a9a1c990f",
+  "rootfs_builder_sha256": "8e07b619859664b5aee8f5eba4c5128a4da239e74efb61741059fed70a267e0a",
+  "contracts": {
+    "state": "host-contracts-and-real-payload-validation-pass",
+    "tests": [
+      {
+        "optimized": false,
+        "cases": 54,
+        "exit_code": 0
+      },
+      {
+        "optimized": true,
+        "cases": 54,
+        "exit_code": 0
+      }
+    ],
+    "real_payload_validation": {
+      "state": "source-camera-payload-validated",
+      "files": 75,
+      "elf_files": 5,
+      "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6"
+    },
+    "manifest_sha256": "183721cbc3adda8e018a1f870fe986536784c604cd4f66867077c0c38a7c2d7a",
+    "rootfs_image_built": false,
+    "real_rootfs_loader_checks_run": false,
+    "device_modified": false
+  },
+  "actual_minimal_chroot": {
+    "state": "actual-source-camera-offline-install-native-loader-pass",
+    "scope": "minimal ABI-only chroot, NOT bootable full rootfs image",
+    "runtime_software_files": 215,
+    "source_payload_files": 75,
+    "dry_run_wrote_no_receipt": true,
+    "all_five_native_loader_checks_passed": true,
+    "matched_runtime_software_unchanged": true,
+    "installed_payload_matches_original_export": true,
+    "install": {
+      "schema": 1,
+      "state": "camera-candidate-installed-rootfs-loader-pass",
+      "manifest_sha256": "183721cbc3adda8e018a1f870fe986536784c604cd4f66867077c0c38a7c2d7a",
+      "source_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+      "files": 75,
+      "runtime_abi_versions": {
+        "gst-plugins-bad-libs": "1.28.7",
+        "gst-plugins-good": "1.28.7",
+        "ffmpeg": "9.0.1",
+        "gst-plugins-base-libs": "1.28.7",
+        "gstreamer": "1.28.7"
+      },
+      "stable_default_changed": false,
+      "system_packages_changed": false,
+      "default_promotion": false,
+      "image_boot_qualified": false,
+      "loader_checks": [
+        {
+          "binary": "/usr/local/lib/mipad2-camera-source-0a7ce87affa9/bin/snapshot",
+          "exit_code": 0
+        },
+        {
+          "binary": "/usr/local/lib/mipad2-gst-aac-source/70cdda1de4fd1605348f391a50384b8533196f0949a06e89706ce025191639cc/plugin/libgstlibav.so",
+          "exit_code": 0
+        },
+        {
+          "binary": "/usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstencoding.so",
+          "exit_code": 0
+        },
+        {
+          "binary": "/usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstva.so",
+          "exit_code": 0
+        },
+        {
+          "binary": "/usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstvideofilter.so",
+          "exit_code": 0
+        }
+      ]
+    },
+    "fixture_archive_sha256": "506b2b684b0c4df069994ec4a15cca35d78a88318b2ba6500f7041dc78ffa461",
+    "real_camera_started": false,
+    "real_boot_image_built": false,
+    "image_boot_qualified": false,
+    "tablet_default_changed": false
+  },
+  "native_dpms_transaction": {
+    "state": "dpms-only-scope-restored",
+    "persistent": false,
+    "layout_change_requested": false,
+    "unlock_requested": false,
+    "application_started": false,
+    "audible_output": false,
+    "powered_on": true,
+    "screen_saver": {
+      "code": 1,
+      "timed_out": false,
+      "boolean_observed": false,
+      "active": false
+    },
+    "original_output_state_restored": true,
+    "confirmation_pending": false
+  },
+  "denial_observation": {
+    "revision": "fee449dfcbfce7b994ba1bd8930f57751494a9e5",
+    "active_mode": "official_optimized",
+    "operation": "idle",
+    "error_present": false,
+    "diagnostic_count": 0,
+    "outputs": [
+      {
+        "connected": true,
+        "enabled": true,
+        "powered": false,
+        "logical_width": 1024,
+        "logical_height": 768,
+        "scale": 2.0,
+        "transform": "270",
+        "current_mode": {
+          "height": 2048,
+          "preferred": true,
+          "refresh_millihz": 60000,
+          "width": 1536
+        }
+      }
+    ],
+    "screen_saver_GetActive_error": "org.freedesktop.DBus.Error.NoReply",
+    "screen_saver_failure_is_not_active_false": true,
+    "ordinary_window_active_gate_retained": true
+  },
+  "postflight": {
+    "state": "camera-rootfs-dpms-postflight-pass",
+    "protected_files_verified": 292,
+    "package_files_verified": 75,
+    "controls": [
+      {
+        "input": 0,
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 4
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      },
+      {
+        "input": 1,
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 250
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      }
+    ],
+    "controls_reference": "actual production-smoke pretest",
+    "no_control_values_written_by_checkpoint": true,
+    "isp_pm": {
+      "runtime_usage": "0",
+      "runtime_status": "suspended"
+    },
+    "selected_whole_boot_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "original_guards_and_boot_defaults_preserved": true,
+    "tracing_and_profilers_absent": true,
+    "free_root": 2412490752,
+    "new_reboots": 0,
+    "new_rtc_tests": 0,
+    "audible_tones": false,
+    "default_changed": false,
+    "full_objective_complete": false
+  },
+  "raw_media_logs_exported": false,
+  "user_files_included_in_runtime_fixture": false,
+  "software_fixture_not_shipped": true,
+  "full_image_built": false,
+  "default_promoted": false,
+  "full_objective_complete": false
+}
