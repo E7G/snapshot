@@ -1,3 +1,5 @@
+> Optional source-built AAC now available: [build/ABI requirements](AAC.md) and [scoped device evidence](../../../MIPAD2_SOURCE_AAC_DEVICE.md). The three-plugin default below remains unchanged; complete app/launcher/image integration is still pending.
+
 # Functional plugin source bundle (candidate, not an image package)
 
 `build_plugins.py` builds only three existing functional changes against the

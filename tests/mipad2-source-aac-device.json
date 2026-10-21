@@ -1,0 +1,320 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "scope": "four source plugins, stock V4L2 and two whole natural-power quiet clips",
+  "aac_build": {
+    "schema": 1,
+    "state": "aac-plugin-built-host-only",
+    "upstream_version": "1.28.7",
+    "archive_url": "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.28.7.tar.xz",
+    "archive_sha256": "58da51dd39ecf1cf6faade34cc6412001be2e2e145bca8ae0f45336f60a36ab2",
+    "recipe_sha256": "70cdda1de4fd1605348f391a50384b8533196f0949a06e89706ce025191639cc",
+    "helper_sha256": "854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e",
+    "gstreamer_build_abi": {
+      "gstreamer-1.0": "1.28.7",
+      "gstreamer-base-1.0": "1.28.7",
+      "gstreamer-video-1.0": "1.28.7",
+      "gstreamer-plugins-bad-1.0": "1.28.7"
+    },
+    "ffmpeg_build_abi": {
+      "libavcodec": "63.1.101",
+      "libavformat": "63.1.101",
+      "libavfilter": "12.1.101",
+      "libavutil": "61.1.101"
+    },
+    "system_install": false,
+    "sdk_libraries_deployed": false,
+    "device_tested": false,
+    "image_qualified": false,
+    "plugin": "plugins/libgstlibav.so",
+    "binary_sha256": "b122c917871b769cff7d2aa2d6fee8eedaf170fd92f33f36ea534953aa392d61",
+    "bytes": 344112,
+    "build_rpath_removed": true,
+    "needed_libraries": [
+      "libavcodec.so.63",
+      "libavfilter.so.12",
+      "libavformat.so.63",
+      "libavutil.so.61",
+      "libgstreamer-1.0.so.0",
+      "libgobject-2.0.so.0",
+      "libglib-2.0.so.0",
+      "libgstbase-1.0.so.0",
+      "libgstvideo-1.0.so.0",
+      "libgstaudio-1.0.so.0",
+      "libgstpbutils-1.0.so.0",
+      "libc.so.6"
+    ],
+    "unmodified_build_artifact_sha256": "8baba29e0eeb31e2000158b47d4a6d797b72d4b3526366e607d9289fd87c63e6"
+  },
+  "ffmpeg_source_sdk": {
+    "archive_sha256": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
+    "signature_verified": true,
+    "signing_fingerprint": "FCF986EA15E6E293A5644F10B4322F04D67658D8",
+    "versions": {
+      "libavcodec": "63.1.101",
+      "libavformat": "63.1.101",
+      "libavfilter": "12.1.101",
+      "libavutil": "61.1.101"
+    },
+    "sdk_not_deployed": true
+  },
+  "builder_tests": [
+    {
+      "optimized": false,
+      "cases": 28,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 28,
+      "exit_code": 0
+    }
+  ],
+  "stager_tests": [
+    {
+      "optimized": false,
+      "cases": 14,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 14,
+      "exit_code": 0
+    }
+  ],
+  "four_plugin_staging": {
+    "schema": 1,
+    "source_build_receipt_sha256": "fcd17ec7505804f81c764976dc335094633cb7265d47684550f2acb7ec03b1b2",
+    "recipe_sha256": "854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e",
+    "upstream_version": "1.28.7",
+    "files": {
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstencoding.so": {
+        "sha256": "7d20cbb4ec467dc50b4109789804bb7f1f402724d3a94f8a613415ac556cc006",
+        "bytes": 127784,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstpbutils-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libc.so.6"
+        ]
+      },
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstvideofilter.so": {
+        "sha256": "0715ad22b3afb7974cb5cfd68484746dcd7a6a219865444dac390e43e956d4a3",
+        "bytes": 117504,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libm.so.6"
+        ]
+      },
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstva.so": {
+        "sha256": "ff4f8702f1d521e8845e4b395d79328bbacde2dccc59ffa02366fcd761cb9b38",
+        "bytes": 764952,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstcodecs-1.0.so.0",
+          "libgstcodecparsers-1.0.so.0",
+          "libgstva-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstallocators-1.0.so.0",
+          "libva.so.2",
+          "libm.so.6",
+          "libgstpbutils-1.0.so.0",
+          "libc.so.6"
+        ]
+      },
+      "usr/local/lib/mipad2-gst-aac-source/70cdda1de4fd1605348f391a50384b8533196f0949a06e89706ce025191639cc/plugin/libgstlibav.so": {
+        "sha256": "b122c917871b769cff7d2aa2d6fee8eedaf170fd92f33f36ea534953aa392d61",
+        "bytes": 344112,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libavcodec.so.63",
+          "libavfilter.so.12",
+          "libavformat.so.63",
+          "libavutil.so.61",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstbase-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstaudio-1.0.so.0",
+          "libgstpbutils-1.0.so.0",
+          "libc.so.6"
+        ]
+      }
+    },
+    "app_included": false,
+    "aac_included": true,
+    "launcher_included": false,
+    "diagnostic_plugins_included": false,
+    "system_library_replacement": false,
+    "image_qualified": false,
+    "device_acceptance_inferred": false,
+    "aac_source_build_receipt_sha256": "910ee6fd79a00acdf7aa5ce168793ba1a4f0ac318064c7d520b6819c25984335",
+    "aac_recipe_sha256": "70cdda1de4fd1605348f391a50384b8533196f0949a06e89706ce025191639cc",
+    "aac_ffmpeg_build_abi": {
+      "libavcodec": "63.1.101",
+      "libavformat": "63.1.101",
+      "libavfilter": "12.1.101",
+      "libavutil": "61.1.101"
+    },
+    "sdk_libraries_deployed": false
+  },
+  "synthetic": {
+    "profile": "LC",
+    "audio_hz": 48000,
+    "channels": 2,
+    "packets": 101,
+    "duration": 2.154437,
+    "actual_bitrate": 188922,
+    "decode_code": 0,
+    "native_target_relocations_passed": true,
+    "rpath_absent": true,
+    "microphone_used": false,
+    "audible_output": false
+  },
+  "clips": [
+    {
+      "role": "front",
+      "metrics": {
+        "packets": 911,
+        "fps": 30.001318739285242,
+        "pts_span_seconds": 30.332,
+        "max_pts_gap_seconds": 0.036,
+        "gaps_above50ms": 0,
+        "gaps_above100ms": 0,
+        "cadence_gate": true,
+        "stream_time_base": "1/3000",
+        "guessed_r_frame_rate_used": false,
+        "actual_video_bitrate": 15266672,
+        "actual_audio_bitrate": 192373,
+        "video_size": [
+          1920,
+          1080
+        ],
+        "audio_hz": 48000,
+        "audio_channels": 2
+      },
+      "decoded_frames": 911,
+      "adjacent_exact_decoded_repeats": 0,
+      "audio_decode_code": 0,
+      "native_fps_before_after": [
+        "78125/2604",
+        "78125/2604"
+      ]
+    },
+    {
+      "role": "rear",
+      "metrics": {
+        "packets": 923,
+        "fps": 30.011718241395773,
+        "pts_span_seconds": 30.721333333333334,
+        "max_pts_gap_seconds": 0.034,
+        "gaps_above50ms": 0,
+        "gaps_above100ms": 0,
+        "cadence_gate": true,
+        "stream_time_base": "1/3000",
+        "guessed_r_frame_rate_used": false,
+        "actual_video_bitrate": 15206512,
+        "actual_audio_bitrate": 192417,
+        "video_size": [
+          1920,
+          1080
+        ],
+        "audio_hz": 48000,
+        "audio_channels": 2
+      },
+      "decoded_frames": 923,
+      "adjacent_exact_decoded_repeats": 0,
+      "audio_decode_code": 0,
+      "native_fps_before_after": [
+        "30",
+        "30"
+      ]
+    }
+  ],
+  "harness_tests": [
+    {
+      "optimized": false,
+      "cases": 8,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 8,
+      "exit_code": 0
+    }
+  ],
+  "max_thermal_millidegrees": 66000,
+  "postflight": {
+    "protected_files_verified": 292,
+    "candidate_files_verified": 64,
+    "new_functional_plugins_verified": 3,
+    "source_aac_plugin_verified": true,
+    "stock_v4l2_unchanged": true,
+    "controls": [
+      {
+        "input": 0,
+        "values": {
+          "exposure": 1976,
+          "analogue_gain": 4
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      },
+      {
+        "input": 1,
+        "values": {
+          "exposure": 2486,
+          "analogue_gain": 250
+        },
+        "pm": {
+          "runtime_usage": "0",
+          "runtime_status": "suspended"
+        }
+      }
+    ],
+    "controls_reference": "actual source-AAC trial pretest snapshot",
+    "old_boot_control_expectation_failure_retained": true,
+    "no_control_values_written_by_checkpoint": true,
+    "isp_pm": {
+      "runtime_usage": "0",
+      "runtime_status": "suspended"
+    },
+    "selected_whole_boot_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "scalar_aliases_preserved": 53,
+    "new_reboots": 0,
+    "new_rtc_tests": 0,
+    "audible_tones": false,
+    "default_changed": false
+  },
+  "source_aac_module_mapped_and_old_temp_aac_absent": true,
+  "source_frame_conservation_measured": false,
+  "exact_active_hardware_video_factory_independently_observed": false,
+  "actual_preview_negotiated_caps_observed": false,
+  "foreground_optical_parity_proven": false,
+  "app_or_launcher_packaged": false,
+  "image_qualified": false,
+  "full_objective_complete": false,
+  "raw_media_exported": false
+}
