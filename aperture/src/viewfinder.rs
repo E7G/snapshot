@@ -1795,6 +1795,16 @@ impl Viewfinder {
             std::env::var("MIPAD2_CAPTURE_RAW_ASYNC").as_deref() == Ok("1"),
             direct,
         )?;
+        if crate::mipad2_current_caps::enabled(
+            is_mipad2(),
+            std::env::var("MIPAD2_CAPTURE_CURRENT_CAPS").as_deref() == Ok("1"),
+            direct,
+        ) {
+            crate::mipad2_current_caps::install(&capsfilter)?;
+            log::info!(
+                "Mi Pad 2 current native CAPS recommendation enabled: only unchanged negotiated NV12 profile; initial/mode-change negotiation, ACCEPT_CAPS, allocation, events and frames unchanged"
+            );
+        }
         let tail = if asynchronous {
             crate::mipad2_raw_capture::CameraTail::new_async(&bin, &capsfilter)?
         } else {
