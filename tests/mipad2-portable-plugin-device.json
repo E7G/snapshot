@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "date": "2026-10-21",
+  "scope": "three source-built functional plugins plus stock V4L2, two whole quiet clips",
+  "recipe_sha256": "854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e",
+  "build": {
+    "schema": 1,
+    "state": "plugins-built-host-only",
+    "upstream_version": "1.28.7",
+    "recipe_sha256": "854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e",
+    "build_abi": {
+      "gstreamer-1.0": "1.28.7",
+      "gstreamer-base-1.0": "1.28.7",
+      "gstreamer-video-1.0": "1.28.7",
+      "gstreamer-plugins-bad-1.0": "1.28.7"
+    },
+    "components": [
+      {
+        "name": "gst-plugins-base",
+        "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.28.7.tar.xz",
+        "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+        "patch": "encoding-eos-reset/0001-reset-stale-combiner-eos-on-ready.patch",
+        "patch_sha256": "b7ae185ba088bfbed3c8052afcc4a9f7afeaa19c02e9f4762e62e4049f66a13e",
+        "changed_file": "gst/encoding/gststreamcombiner.c",
+        "patched_sha256": "913fe07df005b41b7ebe0caa8f6451b060a94b3b6ce7ac737a3ab237b643b915",
+        "target": "gst/encoding/libgstencoding.so",
+        "compiled": true,
+        "plugin": "plugins/libgstencoding.so",
+        "binary_sha256": "7d20cbb4ec467dc50b4109789804bb7f1f402724d3a94f8a613415ac556cc006",
+        "bytes": 127784,
+        "build_rpath_removed": true,
+        "needed_libraries": [
+          "libgstpbutils-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libc.so.6"
+        ],
+        "unmodified_build_artifact_sha256": "66d1a4f428d5f892111f65bd8c25c3b03b5935ba8437ea099033baede50b2f66"
+      },
+      {
+        "name": "gst-plugins-good",
+        "url": "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.28.7.tar.xz",
+        "archive_sha256": "87256969c82cf3bc8574301f3e7044a90de0ac500a5a27d8ba38c4dde894dd8b",
+        "patch": "videoflip-identity/0001-initialize-default-identity-passthrough.patch",
+        "patch_sha256": "cd2bf5abbd0c40bfa30c4dc72322702705268c3a507c1382697f3487eeeed8f2",
+        "changed_file": "gst/videofilter/gstvideoflip.c",
+        "patched_sha256": "5f8ea46ea3915d568a633986f228f770cb05f2a4b435f59125f29e4aaff7f096",
+        "target": "gst/videofilter/libgstvideofilter.so",
+        "compiled": true,
+        "plugin": "plugins/libgstvideofilter.so",
+        "binary_sha256": "0715ad22b3afb7974cb5cfd68484746dcd7a6a219865444dac390e43e956d4a3",
+        "bytes": 117504,
+        "build_rpath_removed": true,
+        "needed_libraries": [
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libm.so.6"
+        ],
+        "unmodified_build_artifact_sha256": "399783234bbc0e6974eea1b7e239af5b77f5dc042ad111446319b59fdec06b1f"
+      },
+      {
+        "name": "gst-plugins-bad",
+        "url": "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.7.tar.xz",
+        "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+        "patch": "va-async-depth/0001-proposed-opt-in-live-two-frame-output.patch",
+        "patch_sha256": "3ce3a569feb997396c0f69cdcf5dec1e71a7ffb2c51a7a2582dd0a222ef8476c",
+        "changed_file": "sys/va/gstvah264enc.c",
+        "patched_sha256": "44b328c0c66bd4cf9dfa10e56ee0cadb444d2a0ac642737dc7ef7669832c7ecb",
+        "target": "sys/va/libgstva.so",
+        "compiled": true,
+        "plugin": "plugins/libgstva.so",
+        "binary_sha256": "ff4f8702f1d521e8845e4b395d79328bbacde2dccc59ffa02366fcd761cb9b38",
+        "bytes": 764952,
+        "build_rpath_removed": true,
+        "needed_libraries": [
+          "libgstcodecs-1.0.so.0",
+          "libgstcodecparsers-1.0.so.0",
+          "libgstva-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstallocators-1.0.so.0",
+          "libva.so.2",
+          "libm.so.6",
+          "libgstpbutils-1.0.so.0",
+          "libc.so.6"
+        ],
+        "unmodified_build_artifact_sha256": "9280f2f4c6b5b70ee27a249b80ac6c0949c873c6f276a77ba3191492ef7a93a8"
+      }
+    ],
+    "system_install": false,
+    "diagnostic_plugins_included": false,
+    "app_included": false,
+    "launcher_changed": false,
+    "device_tested": false,
+    "image_qualified": false
+  },
+  "sdk": {
+    "components": [
+      {
+        "name": "gstreamer",
+        "archive_sha256": "787329b2c5758e228a71d926a6dcf960bceaacca3cadd63874ba665dfcda013e",
+        "complete": true
+      },
+      {
+        "name": "gst-plugins-base",
+        "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+        "complete": true
+      },
+      {
+        "name": "gst-plugins-bad",
+        "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+        "complete": true
+      }
+    ],
+    "versions": {
+      "gstreamer-1.0": "1.28.7",
+      "gstreamer-base-1.0": "1.28.7",
+      "gstreamer-video-1.0": "1.28.7",
+      "gstreamer-plugins-bad-1.0": "1.28.7"
+    },
+    "host_system_libraries_unchanged": true,
+    "original_library_hash_count": 4
+  },
+  "builder_contract_tests": [
+    {
+      "optimized": false,
+      "cases": 17,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 17,
+      "exit_code": 0
+    }
+  ],
+  "stager_contract_tests": [
+    {
+      "optimized": false,
+      "cases": 9,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 9,
+      "exit_code": 0
+    }
+  ],
+  "staging_receipt_sha256": "fcd17ec7505804f81c764976dc335094633cb7265d47684550f2acb7ec03b1b2",
+  "staged_payload": {
+    "schema": 1,
+    "source_build_receipt_sha256": "fcd17ec7505804f81c764976dc335094633cb7265d47684550f2acb7ec03b1b2",
+    "recipe_sha256": "854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e",
+    "upstream_version": "1.28.7",
+    "files": {
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstencoding.so": {
+        "sha256": "7d20cbb4ec467dc50b4109789804bb7f1f402724d3a94f8a613415ac556cc006",
+        "bytes": 127784,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstpbutils-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libc.so.6"
+        ]
+      },
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstvideofilter.so": {
+        "sha256": "0715ad22b3afb7974cb5cfd68484746dcd7a6a219865444dac390e43e956d4a3",
+        "bytes": 117504,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libm.so.6"
+        ]
+      },
+      "usr/local/lib/mipad2-gst-functional/854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e/plugin/libgstva.so": {
+        "sha256": "ff4f8702f1d521e8845e4b395d79328bbacde2dccc59ffa02366fcd761cb9b38",
+        "bytes": 764952,
+        "mode": "0o755",
+        "needed_libraries": [
+          "libgstcodecs-1.0.so.0",
+          "libgstcodecparsers-1.0.so.0",
+          "libgstva-1.0.so.0",
+          "libgstvideo-1.0.so.0",
+          "libgstbase-1.0.so.0",
+          "libgstreamer-1.0.so.0",
+          "libgobject-2.0.so.0",
+          "libglib-2.0.so.0",
+          "libgstallocators-1.0.so.0",
+          "libva.so.2",
+          "libm.so.6",
+          "libgstpbutils-1.0.so.0",
+          "libc.so.6"
+        ]
+      }
+    },
+    "app_included": false,
+    "aac_included": false,
+    "launcher_included": false,
+    "diagnostic_plugins_included": false,
+    "system_library_replacement": false,
+    "image_qualified": false,
+    "device_acceptance_inferred": false
+  },
+  "clips": [
+    {
+      "role": "rear",
+      "metrics": {
+        "packets": 916,
+        "fps": 30.011807924429284,
+        "pts_span_seconds": 30.488,
+        "max_pts_gap_seconds": 0.034333333333333334,
+        "gaps_above50ms": 0,
+        "gaps_above100ms": 0,
+        "cadence_gate": true,
+        "stream_time_base": "1/3000",
+        "guessed_r_frame_rate_used": false,
+        "actual_video_bitrate": 14988702,
+        "actual_audio_bitrate": 191868,
+        "video_size": [
+          1920,
+          1080
+        ],
+        "audio_hz": 48000,
+        "audio_channels": 2
+      },
+      "decoded_frames": 916,
+      "adjacent_exact_decoded_repeats": 0,
+      "audio_decode_code": 0,
+      "native_fps_before_after": [
+        "30",
+        "30"
+      ]
+    },
+    {
+      "role": "front",
+      "metrics": {
+        "packets": 899,
+        "fps": 30.001670471629822,
+        "pts_span_seconds": 29.93166666666667,
+        "max_pts_gap_seconds": 0.034333333333333334,
+        "gaps_above50ms": 0,
+        "gaps_above100ms": 0,
+        "cadence_gate": true,
+        "stream_time_base": "1/3000",
+        "guessed_r_frame_rate_used": false,
+        "actual_video_bitrate": 15287999,
+        "actual_audio_bitrate": 191974,
+        "video_size": [
+          1920,
+          1080
+        ],
+        "audio_hz": 48000,
+        "audio_channels": 2
+      },
+      "decoded_frames": 899,
+      "adjacent_exact_decoded_repeats": 0,
+      "audio_decode_code": 0,
+      "native_fps_before_after": [
+        "78125/2604",
+        "78125/2604"
+      ]
+    }
+  ],
+  "harness_tests": [
+    {
+      "optimized": false,
+      "cases": 8,
+      "exit_code": 0
+    },
+    {
+      "optimized": true,
+      "cases": 8,
+      "exit_code": 0
+    }
+  ],
+  "max_thermal_millidegrees": 63000,
+  "postflight": {
+    "protected_files_verified": 292,
+    "candidate_files_verified": 64,
+    "functional_plugins_verified": 4,
+    "new_functional_plugins_verified": 3,
+    "stock_v4l2_unchanged": true,
+    "isp_pm": {
+      "runtime_usage": "0",
+      "runtime_status": "suspended"
+    },
+    "scalar_aliases_preserved": 53,
+    "selected_whole_boot_error_counts": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "sensor_NACK": 0,
+      "stream_stop_timeout": 0
+    },
+    "new_reboots": 0,
+    "new_rtc_tests": 0,
+    "audible_tones": false,
+    "default_changed": false
+  },
+  "aac_still_external": true,
+  "app_included": false,
+  "launcher_included": false,
+  "exact_hardware_encoder_factory_observed": false,
+  "source_frame_conservation_measured": false,
+  "foreground_optical_parity_proven": false,
+  "full_camera_package": false,
+  "image_qualified": false,
+  "full_objective_complete": false,
+  "raw_data_exported": false
+}

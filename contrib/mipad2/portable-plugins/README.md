@@ -12,7 +12,7 @@ recipe. Official archive URLs are recorded in each receipt. The VA setting is
 still opt-in, not globally enabled. No Snapshot app, AAC plugin, V4L2 diagnostic
 plugin, tracer, launcher or CPU/GPU policy is installed. The working four-clip
 R17h stack still contains a private V4L2 plugin with diagnostics OFF; stock-V4L2
-equivalence and this newly built bundle require separate device validation.
+combination has since passed a scoped recording trial (below); broader qualification remains pending.
 
 ## Usage
 
@@ -28,10 +28,10 @@ python3 contrib/mipad2/portable-plugins/build_plugins.py \
 ```
 
 For compilation, use a fresh output and omit `--prepare-only`. Requires Python
-3.12+, git, Meson, Ninja, C compiler, pkg-config, GStreamer core/base/video/bad
+3.12+, git, Meson, Ninja, C compiler, patchelf, pkg-config, GStreamer core/base/video/bad
 development packages reporting **exactly1.28.7**, and VA/DRM development inputs.
 Meson uses release builds, `--wrap-mode=nofallback`, disabled auto-features/tests/
-examples/docs/NLS, and builds only each named plugin target. Default `--jobs2`;
+examples/docs/NLS, and builds only each named plugin target. Default `--jobs 2`;
 accepted1..32. No `meson install`, package-manager mutation or `/usr` write.
 
 Inputs are validated before creating output; existing output is rejected, not
@@ -46,11 +46,19 @@ python3 -m unittest discover -s contrib/mipad2/portable-plugins -v
 python3 -O -m unittest discover -s contrib/mipad2/portable-plugins -v
 ```
 
-13 contract tests pass in each mode; all three official archives/checksums and
-patch results were actually verified on2026-10-21. The current WSL build host
-reports GStreamer1.28.4 and was rejected before output creation. Source-only
-preparation succeeded; full compilation and portable-bundle device qualification
-remain pending. Existing older private plugin build/device evidence does not
-qualify this new packaging path. Do not point the default launcher or rootfs at
-this output until matching-ABI build and isolated dual-camera/recording/photo/
-reopen/resume tests have passed. Keep stable recovery and launcher unchanged.
+17 contract tests now pass normally/`-O`, including real ELF export tests. The
+original source-only checkpoint rejected the host's mixed1.28.4/1.28.6 ABI;
+that failure is retained. A private1.28.7 SDK has since been built, all three
+functional plugins compiled, and build-tree RPATH removed from exported copies
+without changing the original build artifacts. Explicit target relocation and
+gst-inspect checks pass. A fresh dual-camera quiet recording trial using the
+new three plugins and stock V4L2 passes whole-clip30fps/maxgap34.333ms checks.
+See [the scoped build/device evidence](../../../MIPAD2_PORTABLE_PLUGIN_DEVICE.md).
+
+This is still not a complete camera package. Snapshot, AAC and launcher are not
+included; AAC remains an external previously verified plugin. The first build's
+RPATH-bearing binaries and old source-only receipt remain historical evidence,
+not a deployable bundle. New exports require patchelf and reject any remaining
+RPATH or dependency filenames containing path separators. Foreground, full-native
+photo, reopen/resume and cold-boot/image qualification remain pending. No default
+launcher, system package or kernel was changed by this packaging checkpoint.

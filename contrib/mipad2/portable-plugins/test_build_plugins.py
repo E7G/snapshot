@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 import tarfile
 import tempfile
+import shutil
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -145,6 +147,43 @@ class PlanAndBuildTests(unittest.TestCase):
         self.assertIn('-Dauto_features=disabled', commands[0])
         self.assertEqual(commands[1][-1], self.item['target'])
         self.assertNotIn('install', [word for command in commands for word in command])
+
+
+@unittest.skipUnless(shutil.which('cc') and shutil.which('patchelf'), 'C compiler and patchelf required')
+class ElfExportTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.binary = self.root / 'build.so'
+        source = self.root / 'test.c'
+        source.write_text('#include <stdio.h>\nint test(void) { return puts("test"); }\n')
+        subprocess.run(['cc', '-shared', '-fPIC', str(source), '-o', str(self.binary),
+                        '-Wl,-rpath=/private/build-tree/sdk'], check=True, capture_output=True)
+        self.destination = self.root / 'export.so'
+
+    def test_real_elf_rpath_removed_without_modifying_build_artifact(self):
+        old = builder.sha256(self.binary)
+        result = builder.finalize_plugin(self.binary, self.destination)
+        self.assertTrue(result['build_rpath_removed'])
+        self.assertEqual(builder.sha256(self.binary), old)
+        self.assertEqual(result['unmodified_build_artifact_sha256'], old)
+        self.assertIn('libc.so.6', result['needed_libraries'])
+        self.assertEqual(subprocess.check_output(['patchelf', '--print-rpath', str(self.destination)], text=True).strip(), '')
+
+    def test_existing_plugin_not_overwritten(self):
+        self.destination.write_bytes(b'preserve')
+        self.assertRaises(ValueError, builder.finalize_plugin, self.binary, self.destination)
+        self.assertEqual(self.destination.read_bytes(), b'preserve')
+
+    def test_non_elf_input_rejected_before_copy(self):
+        self.binary.write_bytes(b'not ELF')
+        self.assertRaises(ValueError, builder.finalize_plugin, self.binary, self.destination)
+        self.assertFalse(self.destination.exists())
+
+    def test_remaining_rpath_cannot_be_accepted(self):
+        with patch.object(builder.subprocess, 'check_output', return_value='/still/private'):
+            self.assertRaises(ValueError, builder.finalize_plugin, self.binary, self.destination)
 
 
 if __name__ == '__main__':

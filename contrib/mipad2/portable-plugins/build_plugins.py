@@ -127,11 +127,38 @@ def verify_build_abi():
     return versions
 
 
+def finalize_plugin(binary, destination):
+    """Never ship Meson's build-tree RPATH or mutate the original build artifact."""
+    binary, destination = Path(binary), Path(destination)
+    require(binary.is_file() and not binary.is_symlink(), 'Missing compiled plugin')
+    require(not destination.exists() and not destination.is_symlink(), 'Plugin output already exists')
+    with binary.open('rb') as stream:
+        require(stream.read(4) == b'\x7fELF', 'Expected ELF plugin')
+    before = sha256(binary)
+    shutil.copyfile(binary, destination)
+    destination.chmod(0o755)
+    subprocess.run(['patchelf', '--remove-rpath', str(destination)], check=True,
+                   capture_output=True, timeout=30)
+    rpath = subprocess.check_output(['patchelf', '--print-rpath', str(destination)],
+                                    text=True, timeout=30).strip()
+    require(not rpath, 'Build RPATH remains in exported plugin')
+    needed = subprocess.check_output(['patchelf', '--print-needed', str(destination)],
+                                     text=True, timeout=30).splitlines()
+    require(all(name and '/' not in name and '\\' not in name for name in needed),
+            'Nonportable dependency filename')
+    require(sha256(binary) == before, 'Original build artifact changed during export')
+    return dict(binary_sha256=sha256(destination), bytes=destination.stat().st_size,
+                build_rpath_removed=True, needed_libraries=needed,
+                unmodified_build_artifact_sha256=before)
+
+
 def build(archive_dir, source_root, output, jobs=2, prepare_only=False):
     require(isinstance(jobs, int) and not isinstance(jobs, bool) and 1 <= jobs <= 32,
             'jobs must be in 1..32')
     output, items = plan(archive_dir, source_root, output)
     abi = {} if prepare_only else verify_build_abi()
+    if not prepare_only:
+        require(shutil.which('patchelf') is not None, 'patchelf required for portable export')
     output.mkdir(parents=True, exist_ok=False)
     work = output / 'work'
     work.mkdir()
@@ -183,13 +210,9 @@ def build(archive_dir, source_root, output, jobs=2, prepare_only=False):
                 for index, command in enumerate(commands):
                     run(command, output / (item['name'] + f'-build-{index}.log'))
                 binary = work / ('build-' + item['name']) / item['target']
-                require(binary.is_file() and not binary.is_symlink(), 'Missing compiled plugin')
                 destination = plugins / binary.name
-                require(not destination.exists(), 'Duplicate plugin filename')
-                shutil.copyfile(binary, destination)
-                destination.chmod(0o755)
-                entry.update(compiled=True, plugin='plugins/' + binary.name,
-                             binary_sha256=sha256(destination), bytes=destination.stat().st_size)
+                exported = finalize_plugin(binary, destination)
+                entry.update(compiled=True, plugin='plugins/' + binary.name, **exported)
                 save()
         receipt['state'] = 'sources-prepared' if prepare_only else 'plugins-built-host-only'
         save()
