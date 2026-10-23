@@ -91,6 +91,35 @@ class PlanAndBuildTests(unittest.TestCase):
                                   self.output, prepare_only=True)
                 self.assertFalse(self.output.exists())
 
+    def add_extra(self):
+        p = self.source / 'extra.patch'
+        p.write_text('--- /dev/null\n+++ b/extra.txt\n@@ -0,0 +1 @@\n+bounded\n')
+        self.item['extra_patches'] = [dict(patch='extra.patch',
+            patch_sha256=builder.sha256(p), changed_file='extra.txt',
+            patched_sha256=hashlib.sha256(b'bounded\n').hexdigest())]
+        return p
+
+    def test_additional_patch_is_applied_verified_and_receipted(self):
+        self.add_extra()
+        receipt = builder.build(self.archives, self.source, self.output, prepare_only=True)
+        self.assertEqual((self.output/'work'/('fixture-'+builder.VERSION)/'extra.txt').read_text(),'bounded\n')
+        self.assertEqual(receipt['components'][0]['additional_patches'],self.item['extra_patches'])
+
+    def test_additional_patch_tamper_rejected_before_output(self):
+        p = self.add_extra();p.write_text(p.read_text()+'tamper')
+        self.assertRaises(ValueError,builder.build,self.archives,self.source,self.output,prepare_only=True)
+        self.assertFalse(self.output.exists())
+
+    def test_additional_patch_source_hash_is_not_self_trusted(self):
+        self.add_extra();self.item['extra_patches'][0]['patched_sha256']='0'*64
+        self.assertRaises(ValueError,builder.build,self.archives,self.source,self.output,prepare_only=True)
+        self.assertEqual(json.loads((self.output/'receipt.json').read_text())['state'],'failed')
+
+    def test_additional_patch_symlink_rejected(self):
+        p=self.add_extra();saved=p.with_suffix('.real');p.rename(saved);p.symlink_to(saved)
+        self.assertRaises(ValueError,builder.plan,self.archives,self.source,self.output)
+        self.assertFalse(self.output.exists())
+
     def test_existing_output_is_not_overwritten(self):
         self.output.mkdir()
         sentinel = self.output / 'keep'

@@ -10,7 +10,7 @@ import tarfile
 
 ARCHIVE = 'gst-libav-1.28.7.tar.xz'
 ARCHIVE_SHA256 = '58da51dd39ecf1cf6faade34cc6412001be2e2e145bca8ae0f45336f60a36ab2'
-HELPER_SHA256 = '854e33239c0e358e708efc334d103cd4da31c743cc8feff461f0f7e325c3915e'
+HELPER_SHA256 = '74187816d9c50a673548b7b1945a3593774205319852c88b2172036b66d6aebb'
 FFMPEG_ABI = {'libavcodec': '63.1.101', 'libavformat': '63.1.101',
               'libavfilter': '12.1.101', 'libavutil': '61.1.101'}
 

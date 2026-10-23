@@ -35,6 +35,10 @@ COMPONENTS = (
      'sha256': 'dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe',
      'patch': 'va-async-depth/0001-proposed-opt-in-live-two-frame-output.patch',
      'patch_sha256': '3ce3a569feb997396c0f69cdcf5dec1e71a7ffb2c51a7a2582dd0a222ef8476c',
+     'extra_patches': [{'patch': 'va-frame-rate/0001-pack-bounded-rational-frame-rate.patch',
+                       'patch_sha256': 'ca5618cfe40717d59a08e3856b86ad4314d1e609252ed681ebf4e7f941695192',
+                       'changed_file': 'sys/va/gstvabaseenc.c',
+                       'patched_sha256': 'cd330e257d494c51eb6a10aa8def9cd939f82d8ee234df4dfcb60c2afeedfd8f'}],
      'feature': 'va', 'target': 'sys/va/libgstva.so',
      'changed_file': 'sys/va/gstvah264enc.c',
      'patched_sha256': '44b328c0c66bd4cf9dfa10e56ee0cadb444d2a0ac642737dc7ef7669832c7ecb',
@@ -98,10 +102,15 @@ def plan(archive_dir, source_root, output):
         filename = root + '.tar.xz'
         path = checked_file(archive_dir / filename, component['sha256'], 32 * 1024**2)
         patch = checked_file(source_root / component['patch'], component['patch_sha256'], 1024**2)
+        additional = []
+        for extra in component.get('extra_patches', []):
+            extra_file = checked_file(source_root / extra['patch'],
+                                      extra['patch_sha256'], 1024**2)
+            additional.append(dict(extra, patch_file=str(extra_file)))
         with tarfile.open(path, 'r:xz') as archive:
             archive_members(archive, root)
         prepared.append(dict(component, archive=str(path), patch_file=str(patch),
-                             root=root, url=f'https://gstreamer.freedesktop.org/src/{component["name"]}/{filename}'))
+                             additional_patches=additional, root=root, url=f'https://gstreamer.freedesktop.org/src/{component["name"]}/{filename}'))
     return output, prepared
 
 
@@ -194,12 +203,23 @@ def build(archive_dir, source_root, output, jobs=2, prepare_only=False):
                     command.append('--check')
                 command.append(item['patch_file'])
                 run(command, output / (item['name'] + '-patch-' + mode[2:] + '.log'), src, git_env)
+            for index, extra in enumerate(item['additional_patches']):
+                for mode in ['--check', '--apply']:
+                    command = ['git', '-c', 'core.autocrlf=false', 'apply']
+                    if mode == '--check':
+                        command.append('--check')
+                    command.append(extra['patch_file'])
+                    run(command, output / (item['name'] + f'-extra{index}-patch-' + mode[2:] + '.log'), src, git_env)
+                require(sha256(src / extra['changed_file']) == extra['patched_sha256'],
+                        'Additional patched source hash mismatch: ' + item['name'])
             require(sha256(src / item['changed_file']) == item['patched_sha256'],
                     'Patched source hash mismatch: ' + item['name'])
             entry = dict(name=item['name'], url=item['url'], archive_sha256=item['sha256'],
                          patch=item['patch'], patch_sha256=item['patch_sha256'],
                          changed_file=item['changed_file'], patched_sha256=item['patched_sha256'],
                          target=item['target'], compiled=False)
+            entry['additional_patches'] = [{k: v for k, v in extra.items() if k != 'patch_file'}
+                                           for extra in item['additional_patches']]
             receipt['components'].append(entry)
             save()
         if not prepare_only:

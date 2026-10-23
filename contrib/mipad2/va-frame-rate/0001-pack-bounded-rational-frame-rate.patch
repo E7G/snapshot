@@ -1,0 +1,94 @@
+--- a/sys/va/gstvabaseenc.c
++++ b/sys/va/gstvabaseenc.c
+@@ -1199,6 +1199,69 @@
+   return TRUE;
+ }
+ 
++/* VA packs numerator and denominator into 16 bits each. Keep the
++ * negotiated caps/PTS untouched, but approximate a larger rational for BRC.
++ * Continued fractions choose the closest representable positive rational;
++ * the final semiconvergent is compared with the previous convergent.
++ */
++static gboolean
++gst_va_base_enc_pack_frame_rate (guint fps_n, guint fps_d, guint32 * packed)
++{
++  const guint64 limit = 0xffff;
++  guint64 n = fps_n, d = fps_d, p0 = 0, q0 = 1, p1 = 1, q1 = 0;
++
++  /* GstVideoInfo uses signed positive gint fractions. These bounds also
++   * keep the cross-products below G_MAXUINT64 without floating point.
++   */
++  if (!packed || !fps_n || !fps_d || fps_n > G_MAXINT || fps_d > G_MAXINT ||
++      n > limit * d || d > limit * n)
++    return FALSE;
++
++  while (d) {
++    guint64 a = n / d, p2 = p0 + a * p1, q2 = q0 + a * q1;
++
++    if (p2 > limit || q2 > limit) {
++      guint64 k = limit;
++      guint64 p, q, error, old_error;
++
++      if (p1)
++        k = MIN (k, (limit - p0) / p1);
++      if (q1)
++        k = MIN (k, (limit - q0) / q1);
++      p = p0 + k * p1;
++      q = q0 + k * q1;
++      /* For a representable positive rate, at least one candidate is valid. */
++      if (!p || !q) {
++        p = p1;
++        q = q1;
++      } else if (p1 && q1) {
++        error = (guint64) fps_n * q > (guint64) fps_d * p ?
++            (guint64) fps_n * q - (guint64) fps_d * p :
++            (guint64) fps_d * p - (guint64) fps_n * q;
++        old_error = (guint64) fps_n * q1 > (guint64) fps_d * p1 ?
++            (guint64) fps_n * q1 - (guint64) fps_d * p1 :
++            (guint64) fps_d * p1 - (guint64) fps_n * q1;
++        if (old_error * q <= error * q1) {
++          p = p1;
++          q = q1;
++        }
++      }
++      *packed = (guint32) p | ((guint32) q << 16);
++      return TRUE;
++    }
++    p0 = p1;
++    q0 = q1;
++    p1 = p2;
++    q1 = q2;
++    a = n % d;
++    n = d;
++    d = a;
++  }
++
++  *packed = (guint32) p1 | ((guint32) q1 << 16);
++  return TRUE;
++}
++
+ gboolean
+ gst_va_base_enc_add_frame_rate_parameter (GstVaBaseEnc * base,
+     GstVaEncodePicture * picture)
+@@ -1210,13 +1273,16 @@
+     VAEncMiscParameterFrameRate fr;
+   } framerate = {
+     .type = VAEncMiscParameterTypeFrameRate,
+-    /* denominator = framerate >> 16 & 0xffff;
+-     * numerator   = framerate & 0xffff; */
+-    .fr.framerate =
+-        (GST_VIDEO_INFO_FPS_N (&base->in_info) & 0xffff) |
+-        ((GST_VIDEO_INFO_FPS_D (&base->in_info) & 0xffff) << 16)
++    .fr.framerate = 0
+   };
+   /* *INDENT-ON* */
++
++  if (!gst_va_base_enc_pack_frame_rate (
++          GST_VIDEO_INFO_FPS_N (&base->in_info),
++          GST_VIDEO_INFO_FPS_D (&base->in_info), &framerate.fr.framerate)) {
++    GST_ERROR_OBJECT (base, "Frame rate is outside the VA 16-bit rational range");
++    return FALSE;
++  }
+ 
+   if (!gst_va_encoder_add_param (base->encoder, picture,
+           VAEncMiscParameterBufferType, &framerate, sizeof (framerate))) {

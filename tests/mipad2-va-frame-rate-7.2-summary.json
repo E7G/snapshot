@@ -1,0 +1,424 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "kernel": "7.2.0-mipad2-integrated-r3",
+  "upstream_kernel_commit": "9928c7b8d00c500ee97903afa1cc76c1c36ab2bc",
+  "scope": "Actual VA rational submission fix and limited hardware bitrate validation; complete camera cadence remains FAILED",
+  "host_oracles": {
+    "state": "actual-source-parameter-host-test-pass",
+    "baseline_compiled": true,
+    "baseline_hardware_fraction": "12589/2604",
+    "desired_fraction": "78125/2604",
+    "fixed_hardware_fraction": "62494/2083",
+    "production_cases": 384,
+    "bounded_exhaustive_cases": 3969,
+    "oracle": "Independent enumerate-every-denominator nearest fraction; exact integer comparisons allow equidistant ties",
+    "actual_production_dispatch_compiled": true,
+    "sanitizers": "ASan/UBSan",
+    "invalid_rates_rejected_before_va_submission": true,
+    "va_submission_error_propagated": true,
+    "hardware_tested": false,
+    "scope": "Actual generic VA frame-rate parameter function, synthetic VA submission endpoint only; not buffer encoding, native hardware or application cadence proof"
+  },
+  "builder_tests": {
+    "normal": 21,
+    "optimized": 21
+  },
+  "recipe_sha256": "74187816d9c50a673548b7b1945a3593774205319852c88b2172036b66d6aebb",
+  "source_inputs": [
+    {
+      "name": "gst-plugins-base",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.28.7.tar.xz",
+      "archive_sha256": "ed6e5410f496d171818763af2265e7977154bc7f9b827e98acf8c5bed21dd5a7",
+      "patch": "encoding-eos-reset/0001-reset-stale-combiner-eos-on-ready.patch",
+      "patch_sha256": "b7ae185ba088bfbed3c8052afcc4a9f7afeaa19c02e9f4762e62e4049f66a13e",
+      "changed_file": "gst/encoding/gststreamcombiner.c",
+      "patched_sha256": "913fe07df005b41b7ebe0caa8f6451b060a94b3b6ce7ac737a3ab237b643b915",
+      "target": "gst/encoding/libgstencoding.so",
+      "compiled": true,
+      "additional_patches": [],
+      "plugin": "plugins/libgstencoding.so",
+      "binary_sha256": "7d20cbb4ec467dc50b4109789804bb7f1f402724d3a94f8a613415ac556cc006",
+      "bytes": 127784,
+      "build_rpath_removed": true,
+      "needed_libraries": [
+        "libgstpbutils-1.0.so.0",
+        "libgstvideo-1.0.so.0",
+        "libgstreamer-1.0.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libc.so.6"
+      ],
+      "unmodified_build_artifact_sha256": "66d1a4f428d5f892111f65bd8c25c3b03b5935ba8437ea099033baede50b2f66"
+    },
+    {
+      "name": "gst-plugins-good",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.28.7.tar.xz",
+      "archive_sha256": "87256969c82cf3bc8574301f3e7044a90de0ac500a5a27d8ba38c4dde894dd8b",
+      "patch": "videoflip-identity/0001-initialize-default-identity-passthrough.patch",
+      "patch_sha256": "cd2bf5abbd0c40bfa30c4dc72322702705268c3a507c1382697f3487eeeed8f2",
+      "changed_file": "gst/videofilter/gstvideoflip.c",
+      "patched_sha256": "5f8ea46ea3915d568a633986f228f770cb05f2a4b435f59125f29e4aaff7f096",
+      "target": "gst/videofilter/libgstvideofilter.so",
+      "compiled": true,
+      "additional_patches": [],
+      "plugin": "plugins/libgstvideofilter.so",
+      "binary_sha256": "0715ad22b3afb7974cb5cfd68484746dcd7a6a219865444dac390e43e956d4a3",
+      "bytes": 117504,
+      "build_rpath_removed": true,
+      "needed_libraries": [
+        "libgstbase-1.0.so.0",
+        "libgstreamer-1.0.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libgstvideo-1.0.so.0",
+        "libm.so.6"
+      ],
+      "unmodified_build_artifact_sha256": "399783234bbc0e6974eea1b7e239af5b77f5dc042ad111446319b59fdec06b1f"
+    },
+    {
+      "name": "gst-plugins-bad",
+      "url": "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.28.7.tar.xz",
+      "archive_sha256": "dc525383c18b2c265bbe6a43d498656cd918aaa130aa4e3abeabcdaa741c3ffe",
+      "patch": "va-async-depth/0001-proposed-opt-in-live-two-frame-output.patch",
+      "patch_sha256": "3ce3a569feb997396c0f69cdcf5dec1e71a7ffb2c51a7a2582dd0a222ef8476c",
+      "changed_file": "sys/va/gstvah264enc.c",
+      "patched_sha256": "44b328c0c66bd4cf9dfa10e56ee0cadb444d2a0ac642737dc7ef7669832c7ecb",
+      "target": "sys/va/libgstva.so",
+      "compiled": true,
+      "additional_patches": [
+        {
+          "patch": "va-frame-rate/0001-pack-bounded-rational-frame-rate.patch",
+          "patch_sha256": "ca5618cfe40717d59a08e3856b86ad4314d1e609252ed681ebf4e7f941695192",
+          "changed_file": "sys/va/gstvabaseenc.c",
+          "patched_sha256": "cd330e257d494c51eb6a10aa8def9cd939f82d8ee234df4dfcb60c2afeedfd8f"
+        }
+      ],
+      "plugin": "plugins/libgstva.so",
+      "binary_sha256": "ff5e4d0af2e339c5e4eeb0fc94bea0faf352bfbed994fd8b89fdbd9342e62cb1",
+      "bytes": 769048,
+      "build_rpath_removed": true,
+      "needed_libraries": [
+        "libgstcodecs-1.0.so.0",
+        "libgstcodecparsers-1.0.so.0",
+        "libgstva-1.0.so.0",
+        "libgstvideo-1.0.so.0",
+        "libgstbase-1.0.so.0",
+        "libgstreamer-1.0.so.0",
+        "libgobject-2.0.so.0",
+        "libglib-2.0.so.0",
+        "libgstallocators-1.0.so.0",
+        "libva.so.2",
+        "libm.so.6",
+        "libgstpbutils-1.0.so.0",
+        "libc.so.6"
+      ],
+      "unmodified_build_artifact_sha256": "28961163ceddfd5af0afb212ae9a1cba4081f440c3dbabc36e48582ad99ed608"
+    }
+  ],
+  "same_build_comparison": {
+    "state": "comparison-completed",
+    "cases": [
+      {
+        "state": "direct-hardware-encode-measured",
+        "kernel": "7.2.0-mipad2-integrated-r3",
+        "video_only_diagnostic": true,
+        "normal_app_or_preview_qualified": false,
+        "frames": 300,
+        "decoded_frames": 300,
+        "adjacent_exact_decoded_repeats": 0,
+        "fps": 27.33172857186386,
+        "max_pts_gap_seconds": 0.8636666666666667,
+        "gaps_above50ms": 1,
+        "gaps_above100ms": 1,
+        "bitrate": 84904850,
+        "size": [
+          1920,
+          1080
+        ],
+        "bytes": 116461800,
+        "max_temp": 57000,
+        "observed_cpu_limits": [
+          2240000
+        ],
+        "factory_requested": "vah264enc",
+        "exact_va_plugin_and_i965_mapped": true,
+        "in_process_frame_tracing": false,
+        "settings_or_power_policy_writes": false,
+        "original_input_restored": true,
+        "raw_timestamps_or_video_exported": false,
+        "scope": "Isolated real v4l2src -> VA H264 -> MP4, 1080p15Mbps, no preview/audio/app. Different pipeline from normal app: descriptive isolation, not single-axis causality or full Android/OEM parity.",
+        "case": "baseline"
+      },
+      {
+        "state": "direct-hardware-encode-measured",
+        "kernel": "7.2.0-mipad2-integrated-r3",
+        "video_only_diagnostic": true,
+        "normal_app_or_preview_qualified": false,
+        "frames": 300,
+        "decoded_frames": 300,
+        "adjacent_exact_decoded_repeats": 0,
+        "fps": 30.002006823198876,
+        "max_pts_gap_seconds": 0.034,
+        "gaps_above50ms": 0,
+        "gaps_above100ms": 0,
+        "bitrate": 15950839,
+        "size": [
+          1920,
+          1080
+        ],
+        "bytes": 19940740,
+        "max_temp": 59000,
+        "observed_cpu_limits": [
+          2240000
+        ],
+        "factory_requested": "vah264enc",
+        "exact_va_plugin_and_i965_mapped": true,
+        "in_process_frame_tracing": false,
+        "settings_or_power_policy_writes": false,
+        "original_input_restored": true,
+        "raw_timestamps_or_video_exported": false,
+        "scope": "Isolated real v4l2src -> VA H264 -> MP4, 1080p15Mbps, no preview/audio/app. Different pipeline from normal app: descriptive isolation, not single-axis causality or full Android/OEM parity.",
+        "case": "fixed"
+      }
+    ],
+    "hardware_frame_rate_fix_validated": true,
+    "application_cadence_fixed": false,
+    "source_caps_and_pts_not_rewritten": true,
+    "quality_bitrate_requested_unchanged": 15000000
+  },
+  "long_recipe_hardware": {
+    "state": "direct-hardware-encode-measured",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "video_only_diagnostic": true,
+    "normal_app_or_preview_qualified": false,
+    "frames": 900,
+    "decoded_frames": 900,
+    "adjacent_exact_decoded_repeats": 0,
+    "fps": 29.737358590424947,
+    "max_pts_gap_seconds": 0.30133333333333334,
+    "gaps_above50ms": 1,
+    "gaps_above100ms": 1,
+    "bitrate": 15228943,
+    "size": [
+      1920,
+      1080
+    ],
+    "bytes": 57621555,
+    "max_temp": 59000,
+    "observed_cpu_limits": [
+      2240000
+    ],
+    "factory_requested": "vah264enc",
+    "exact_va_plugin_and_i965_mapped": true,
+    "in_process_frame_tracing": false,
+    "settings_or_power_policy_writes": false,
+    "original_input_restored": true,
+    "raw_timestamps_or_video_exported": false,
+    "scope": "Isolated real v4l2src -> VA H264 -> MP4, 1080p15Mbps, no preview/audio/app. Different pipeline from normal app: descriptive isolation, not single-axis causality or full Android/OEM parity."
+  },
+  "long_recipe_gap": {
+    "state": "whole-clip-cadence-failed",
+    "packets": 900,
+    "gaps": [
+      {
+        "packet_index": 606,
+        "relative_seconds": 20.165333333333333,
+        "gap_seconds": 0.3013333333333321
+      }
+    ],
+    "windows": [
+      {
+        "start_seconds": 0,
+        "end_seconds": 1,
+        "intervals": 30,
+        "max_gap_seconds": 0.03400000000000003,
+        "gaps_above50ms": 0
+      },
+      {
+        "start_seconds": 1,
+        "end_seconds": 5,
+        "intervals": 120,
+        "max_gap_seconds": 0.033666666666666956,
+        "gaps_above50ms": 0
+      },
+      {
+        "start_seconds": 5,
+        "end_seconds": 10,
+        "intervals": 151,
+        "max_gap_seconds": 0.03399999999999981,
+        "gaps_above50ms": 0
+      },
+      {
+        "start_seconds": 10,
+        "end_seconds": 20,
+        "intervals": 300,
+        "max_gap_seconds": 0.03400000000000247,
+        "gaps_above50ms": 0
+      },
+      {
+        "start_seconds": 20,
+        "end_seconds": 31,
+        "intervals": 298,
+        "max_gap_seconds": 0.3013333333333321,
+        "gaps_above50ms": 1
+      }
+    ],
+    "startup_frames_excluded": false,
+    "raw_timestamps_exported": false,
+    "scope": "Gap positions are scalar summaries; attribution to source, VA or scheduling remains unproven."
+  },
+  "normal_foreground_before_new_va": {
+    "metrics": {
+      "packets": 909,
+      "fps": 29.93603973888388,
+      "pts_span_seconds": 30.331333333333333,
+      "max_pts_gap_seconds": 0.056666666666666664,
+      "gaps_above50ms": 3,
+      "gaps_above100ms": 0,
+      "cadence_gate": false,
+      "stream_time_base": "1/3000",
+      "guessed_r_frame_rate_used": false,
+      "actual_video_bitrate": 14889843,
+      "actual_audio_bitrate": 194358,
+      "video_size": [
+        1920,
+        1080
+      ],
+      "audio_hz": 48000,
+      "audio_channels": 2
+    },
+    "decoded_frames": 909,
+    "exact_adjacent_repeats": 0,
+    "video_and_audio_decode_pass": true,
+    "diagnostic_actions": false,
+    "background_capture": false,
+    "max_temp": 79000,
+    "source_frame_conservation_measured": false
+  },
+  "raw_v4l2": {
+    "state": "raw-front-cadence-measured",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "camera": "front",
+    "requested_frames": 900,
+    "received_frames": 900,
+    "payload_sizes": [
+      3112960
+    ],
+    "sequence_gaps": 0,
+    "sequence_nonmonotonic": 0,
+    "kernel_completion_timestamp": {
+      "frames": 900,
+      "fps": 30.00146736876552,
+      "min_interval_us": 32826,
+      "max_interval_us": 33889,
+      "p99_interval_us": 33686,
+      "intervals_above50ms": 0,
+      "intervals_above100ms": 0,
+      "intervals_below20ms": 0
+    },
+    "userspace_dequeue_timestamp": {
+      "frames": 900,
+      "fps": 30.00150341237901,
+      "min_interval_us": 32621,
+      "max_interval_us": 33866,
+      "p99_interval_us": 33766,
+      "intervals_above50ms": 0,
+      "intervals_above100ms": 0,
+      "intervals_below20ms": 0
+    },
+    "completion_to_dequeue_latency_us": {
+      "min": 50,
+      "max": 738,
+      "mean": 169.64777777777778
+    },
+    "temperature_max": 49000,
+    "observed_max_cpu_limits": [
+      2240000
+    ],
+    "fault_delta": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0
+    },
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "elapsed_seconds": 30.72609532200022,
+    "s_fmt_writes": 0,
+    "s_parm_writes": 0,
+    "sensor_control_writes": 0,
+    "raw_pixels_read_or_exported": false,
+    "raw_frame_timestamps_exported": false,
+    "physical_sensor_sof_timestamp": false,
+    "scope": "Direct 900-frame native NV12 dequeue without app/encoder/preview. AtomISP timestamps buffer completion, not sensor SOF. Absence of sequence gaps is not sensor-frame conservation proof."
+  },
+  "postflight": {
+    "state": "final-postflight-pass",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "protected_files_checked": 686,
+    "changed_protected_files": [],
+    "private_aliases_checked": 35,
+    "private_bytes_preserved": true,
+    "noidle_and_thermal_active": true,
+    "active_camera_clients": 0,
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "kernel_faults": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0,
+      "reset_failed": 0,
+      "recovery_failed": 0
+    },
+    "normal_settings_and_actual_pretest_controls_preserved": true,
+    "free": 2433019904,
+    "new_reboots": 0,
+    "new_kernel_builds": 0,
+    "raw_kernel_logs_exported": false
+  },
+  "raw_device_data_exported": false,
+  "default_changed": false,
+  "kernel_rebuilt": false,
+  "application_cadence_fixed": false,
+  "whole_objective_complete": false,
+  "combined_builder_tests": {
+    "normal": 41,
+    "optimized": 41,
+    "initial_stale_aac_helper_pin_detected_and_fixed": true
+  }
+}

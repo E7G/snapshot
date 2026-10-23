@@ -1,3 +1,5 @@
+> 7.2 rational VA frame-rate fix: [actual source, hardware bitrate proof and FAILED long cadence gate](../../../MIPAD2_VA_FRAME_RATE_7_2.md). Private candidate only; no default promotion.
+
 > Optional rootfs integration now exists: [source payload merge, native ABI tests and remaining foreground/display gates](../../../MIPAD2_CAMERA_ROOTFS.md). Default camera and boot remain unchanged; no full image qualification.
 
 > Source Snapshot app build and separate four-source-plugin launcher package now exist: [scope, tests and remaining foreground gate](../../../MIPAD2_SOURCE_APPLICATION.md). Not a promoted default or complete image.
@@ -6,12 +8,13 @@
 
 # Functional plugin source bundle (candidate, not an image package)
 
-`build_plugins.py` builds only three existing functional changes against the
+`build_plugins.py` builds three functional plugins against the
 official GStreamer **1.28.7** source archives:
 
 - base/encoding: reset stale streamcombiner EOS across camerabin READY reuse;
 - good/videofilter: initialize identity videoflip passthrough correctly;
-- bad/VA: retain the opt-in `MIPAD2_VA_ASYNC_DEPTH=2` live encoder delay proposal.
+- bad/VA: retain the opt-in `MIPAD2_VA_ASYNC_DEPTH=2` live encoder delay proposal,
+  and pack bounded rational frame-rate parameters instead of truncating them.
 
 Archive, patch and resulting changed-source SHA-256 values are pinned in the
 recipe. Official archive URLs are recorded in each receipt. The VA setting is
@@ -52,7 +55,7 @@ python3 -m unittest discover -s contrib/mipad2/portable-plugins -v
 python3 -O -m unittest discover -s contrib/mipad2/portable-plugins -v
 ```
 
-17 contract tests now pass normally/`-O`, including real ELF export tests. The
+21 contract tests now pass normally/`-O`, including real ELF export tests. The
 original source-only checkpoint rejected the host's mixed1.28.4/1.28.6 ABI;
 that failure is retained. A private1.28.7 SDK has since been built, all three
 functional plugins compiled, and build-tree RPATH removed from exported copies
