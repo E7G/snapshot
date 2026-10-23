@@ -1,0 +1,249 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "kernel": "7.2.0-mipad2-integrated-r3",
+  "source_app_commit": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+  "source_app_binary_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+  "va_plugin_sha256": "ff5e4d0af2e339c5e4eeb0fc94bea0faf352bfbed994fd8b89fdbd9342e62cb1",
+  "uninstrumented_normal": {
+    "state": "normal-app-pts-gate-failed",
+    "packets": 996,
+    "decoded_frames": 996,
+    "decode_exit": 0,
+    "adjacent_exact_decoded_repeats": 0,
+    "decode_warning_lines": 0,
+    "nonpositive_intervals": 1,
+    "gaps_above50ms": 7,
+    "min_interval_ms": 0.0,
+    "max_interval_ms": 556.6666666666666,
+    "positive_span_fps": 29.405390495704943,
+    "video": {
+      "width": 1920,
+      "height": 1080,
+      "bit_rate": "14648907",
+      "time_base": "1/3000",
+      "has_b_frames": 0,
+      "avg_frame_rate": "747000/25403",
+      "r_frame_rate": "30/1"
+    },
+    "audio": {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "bit_rate": "196754"
+    },
+    "audio_decode_exit": 0,
+    "audio_error_lines": 0,
+    "raw_timestamps_or_frames_exported": false,
+    "normal_application": true,
+    "diagnostic_actions": false,
+    "background_capture": false,
+    "fixed_va_and_i965_mapped": true,
+    "queue_topology_changed": false
+  },
+  "traced_normal": {
+    "state": "front-full-quality-normal-recording-analyzed",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "metrics": {
+      "packets": 1009,
+      "fps": 30.001488169056003,
+      "pts_span_seconds": 33.598333333333336,
+      "max_pts_gap_seconds": 0.04066666666666666,
+      "min_pts_gap_seconds": 0.027666666666666666,
+      "nonpositive_pts_intervals": 0,
+      "gaps_above50ms": 0,
+      "gaps_above100ms": 0,
+      "cadence_gate": true,
+      "stream_time_base": "1/3000",
+      "guessed_r_frame_rate_used": false,
+      "actual_video_bitrate": 15243649,
+      "actual_audio_bitrate": 195732,
+      "video_size": [
+        1920,
+        1080
+      ],
+      "audio_hz": 48000,
+      "audio_channels": 2
+    },
+    "bytes": 64915219,
+    "decoded_frames": 1009,
+    "adjacent_exact_decoded_repeats": 0,
+    "video_and_audio_decode_pass": true,
+    "normal_keyboard_accelerator": "t",
+    "diagnostic_actions": false,
+    "background_capture": false,
+    "original_candidate_settings_untouched": true,
+    "private_test_config_retained": true,
+    "normal_settings_unchanged": true,
+    "controls_restored": true,
+    "app_exit": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStatus": "0"
+    },
+    "max_temp": 75000,
+    "kernel_fault_delta": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0
+    },
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "raw_data_exported": false,
+    "optical_scene_controlled": false,
+    "source_frame_conservation_measured": false,
+    "hardware_encoder_factory_independently_observed": false,
+    "fixed_va_and_i965_mapped": true,
+    "queue_topology_changed": false,
+    "private_v4l2_trace": true,
+    "observed_cpu_limits": [
+      1600000,
+      1840000
+    ],
+    "new_reboots": 0
+  },
+  "kernel_trace": {
+    "state": "private-kernel-trace-analyzed-with-missing-completion-event",
+    "events": {
+      "v4l2_dqbuf": {
+        "events": 1048,
+        "call_arrival": {
+          "intervals": 1047,
+          "min_ms": 2.4240000002464512,
+          "max_ms": 127.00700000095821,
+          "p99_ms": 57.348000000274624,
+          "nonpositive": 0,
+          "above50ms": 49,
+          "above100ms": 1
+        },
+        "errors": 0,
+        "buffer_timestamp": {
+          "intervals": 1047,
+          "min_ms": 27.581,
+          "max_ms": 40.652,
+          "p99_ms": 33.923,
+          "nonpositive": 0,
+          "above50ms": 0,
+          "above100ms": 0
+        }
+      },
+      "v4l2_qbuf": {
+        "events": 1048,
+        "call_arrival": {
+          "intervals": 1047,
+          "min_ms": 2.005000000281143,
+          "max_ms": 128.0719999995199,
+          "p99_ms": 57.181000000127824,
+          "nonpositive": 0,
+          "above50ms": 49,
+          "above100ms": 1
+        },
+        "errors": 0
+      }
+    },
+    "ring_overruns": 0,
+    "vb2_v4l2_completion_events_observed": 0,
+    "matched_completion_dequeues": 0,
+    "unmatched_dequeues": 1048,
+    "completion_event_to_dequeue_ms": null,
+    "dqbuffer_timestamp_to_call_ms": {
+      "min": 0.06799999937356915,
+      "max": 114.18100000082632,
+      "mean": 66.17374141218818
+    },
+    "global_tracer_untouched": true,
+    "private_instance_removed": true,
+    "physical_sensor_sof_captured": false,
+    "source_to_encoded_frame_conservation_proved": false,
+    "scope": "Normal foreground source app with separate V4L2 trace instance. Completion event with minor==0 filter emitted ZERO samples, do not infer completion-to-DQ event correlation. DQ buffer timestamp is current driver software completion, NOT SOF. Counts include preview transitions; not one-to-one MP4 mapping.",
+    "raw_trace_exported": false
+  },
+  "source_audit": {
+    "gstencodebasebin_sha256": "c832c223a95ac53431a170d763490e2d8a41ba665c5896a766d2f5c93bb43480",
+    "gstcamerabin_sha256": "f58f4d23f53f1b00e686a875aa66e291d30a5535c8129652ca02064461302410",
+    "existing_encoded_output_queue_time_ns": 3000000000,
+    "existing_encoded_queue_buffers_limit": 0,
+    "existing_encoded_queue_bytes_limit": 0,
+    "new_duplicate_queue_added": false,
+    "missing_v4l2_done_trace_callers": true
+  },
+  "local_user_preference": {
+    "automatic_lock_disabled": true,
+    "automatic_dpms_disabled": true,
+    "persisted": true,
+    "observation_seconds": 315.09,
+    "login_password_changed": false,
+    "manual_lock_disabled": false,
+    "not_an_image_default": true,
+    "human_activity_not_monitored": true
+  },
+  "postflight": {
+    "state": "final-postflight-pass",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "protected_files_checked": 686,
+    "changed_protected_files": [],
+    "private_aliases_checked": 35,
+    "private_bytes_preserved": true,
+    "noidle_and_thermal_active": true,
+    "active_camera_clients": 0,
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "kernel_faults": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0,
+      "reset_failed": 0,
+      "recovery_failed": 0
+    },
+    "normal_settings_and_actual_pretest_controls_preserved": true,
+    "free": 2207309824,
+    "new_reboots": 0,
+    "new_kernel_builds": 0,
+    "raw_kernel_logs_exported": false,
+    "normal_and_traced_candidate_closed_and_settings_preserved": true,
+    "global_tracing_untouched": true,
+    "user_requested_automatic_lock_disabled": true
+  },
+  "application_cadence_fixed": false,
+  "controlled_ab_comparison": false,
+  "default_camera_changed": false,
+  "image_qualified": false,
+  "full_objective_complete": false,
+  "raw_device_data_exported": false
+}

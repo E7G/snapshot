@@ -79,3 +79,7 @@ markers, original controls/settings restored,686 protected files and35 private
 aliases/bytes unchanged, stable boot fallback preserved and no new reboot.
 Scalar evidence: [summary](tests/mipad2-recording-write-isolation-7.2-summary.json).
 Full MiPad2 task and normal app recording cadence remain incomplete.
+
+## Subsequent normal-application qualification
+
+[Actual normal foreground A/V tests and emitted kernel trace limits](MIPAD2_NORMAL_APPLICATION_7_2.md): existing encodebin queue confirmed; one uninstrumented failure and one traced pass. Overall cadence remains open.
