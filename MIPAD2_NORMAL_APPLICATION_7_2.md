@@ -91,3 +91,7 @@ rear capture and native stills, optical AE/AWB/focus and controlled-scene qualit
 preview/audio pacing, longer repeats/reopen/resume, actual7.2 audio/UCM, S0I3 and
 cold boot, and failed-reset DMA quiescence. No full image, OEM/Android parity or
 completion of the broader kernel/system task claimed.
+
+## Later copied-async normal application checkpoint
+
+[Front whole-file 60-second pass, interrupted rear and exact remaining gates](MIPAD2_NORMAL_ASYNC_LONG_7_2.md). Earlier failures above remain historical negative evidence; no default promotion.
