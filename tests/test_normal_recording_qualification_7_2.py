@@ -18,6 +18,18 @@ class StoredFileGateTests(unittest.TestCase):
     def test_measured_front_long_sample(self):
         self.assertTrue(long_stored_file_sample_pass(self.front()))
 
+    def test_later_measured_rear_long_sample(self):
+        report=json.loads(Path(__file__).with_name('mipad2-normal-rear-long-7.2-summary.json').read_text())
+        self.assertTrue(long_stored_file_sample_pass(report['rear']))
+        self.assertIs(report['previous_short_rear_and_556ms_normal_failure_preserved'],True)
+
+    def test_rear_pass_not_relabelled_as_thermal_fix_acceptance(self):
+        report=json.loads(Path(__file__).with_name('mipad2-normal-rear-long-7.2-summary.json').read_text())
+        self.assertIs(report['rear_pass_predates_thermal_guard_patch'],True)
+        self.assertIs(report['thermal_guard_causally_proven_to_fix_recording'],False)
+        self.assertIs(report['normal_app_overall_qualified'],False)
+        self.assertIs(report['default_raw_async_promoted'],False)
+
     def test_measured_rear_short_sample_not_long_acceptance(self):
         rear = self.report['rear']
         self.assertTrue(rear['metrics']['cadence_gate'])

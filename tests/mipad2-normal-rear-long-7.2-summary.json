@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "scope": "Later whole-file normal rear >=60s sample; no product/preview/optical/thermal qualification",
+  "kernel": "7.2.0-mipad2-integrated-r3",
+  "kernel_build_source": "20f0304fc024a784dd2e356bd72331c9640d382e",
+  "app_source": "0a7ce87affa902f33599819aed5c4123a548f1c6",
+  "launcher_source": "fe70dadaf149e0a269ba2cf1d9b09729bf7ceb68",
+  "app_binary_sha256": "16bd4d3ea2d4347a7c049784760b0c305150c666241700671032e9e211bf13d9",
+  "va_full_recipe_sha256": "ff5e4d0af2e339c5e4eeb0fc94bea0faf352bfbed994fd8b89fdbd9342e62cb1",
+  "rear": {
+    "camera": "rear",
+    "requested_seconds": 60,
+    "recording_completed_requested_interval": true,
+    "metrics": {
+      "packets": 1917,
+      "fps": 30.012061214579973,
+      "pts_span_seconds": 63.841,
+      "max_pts_gap_seconds": 0.034333333333333334,
+      "min_pts_gap_seconds": 0.03233333333333333,
+      "nonpositive_pts_intervals": 0,
+      "gaps_above50ms": 0,
+      "gaps_above100ms": 0,
+      "cadence_gate": true,
+      "stream_time_base": "1/3000",
+      "guessed_r_frame_rate_used": false,
+      "actual_video_bitrate": 15012413,
+      "actual_audio_bitrate": 192159,
+      "video_size": [
+        1920,
+        1080
+      ],
+      "audio_hz": 48000,
+      "audio_channels": 2
+    },
+    "bytes": 121419784,
+    "decoded_frames": 1917,
+    "adjacent_exact_decoded_repeats": 0,
+    "video_and_audio_decode_pass": true,
+    "diagnostic_actions": false,
+    "background_capture": false,
+    "normal_settings_unchanged": true,
+    "controls_restored": true,
+    "app_exit": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStatus": "0"
+    },
+    "max_temp": 79000,
+    "kernel_fault_delta": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0
+    },
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "raw_data_exported": false,
+    "optical_scene_controlled": false,
+    "source_frame_conservation_measured": false,
+    "hardware_encoder_factory_independently_observed": false,
+    "fixed_va_and_i965_mapped": true,
+    "queue_topology_changed": true,
+    "raw_async_enabled": true,
+    "private_v4l2_trace": false,
+    "observed_cpu_limits": [
+      1600000
+    ],
+    "new_reboots": 0
+  },
+  "rear_pass_predates_thermal_guard_patch": true,
+  "thermal_guard_causally_proven_to_fix_recording": false,
+  "previous_short_rear_stop_unattributed": true,
+  "previous_short_rear_and_556ms_normal_failure_preserved": true,
+  "frequency_matched_randomized_ABA": false,
+  "default_raw_async_promoted": false,
+  "normal_app_overall_qualified": false,
+  "android_or_oem_parity": false,
+  "old_hard_freeze_unresolved": true,
+  "failed_reset_dma_quiescence_unresolved": true,
+  "raw_media_or_per_frame_data_exported": false
+}

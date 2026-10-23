@@ -92,3 +92,7 @@ python3 -O -m unittest discover -s tests -p test_normal_recording_qualification_
 These are scalar-schema/negative host oracles, not reconstruction of physical
 frames or recovery of the missing rear controller stop sample. Existing flash
 staging154tests also pass normally and with Python-O; runtime defaults unchanged.
+
+## Later rear completion sample
+
+[A later normal rear >=60s stored-file cadence sample passes](MIPAD2_NORMAL_REAR_LONG_7_2.md). The interrupted rear above remains a failed historical run; no causal attribution to the separately corrected thermal guard or default promotion.
