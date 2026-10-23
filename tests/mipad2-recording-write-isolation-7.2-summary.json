@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "kernel": "7.2.0-mipad2-integrated-r3",
+  "scope": "Instrumented video-only bounded encoded-queue experiment, not normal application performance or OEM parity",
+  "source_probe": {
+    "state": "probe-built",
+    "source_sha256": "7449ad9e864ae5f1ea40cb7607e4be507ca71b5e46bc00c17b086db8cadbfd92",
+    "binary_sha256": "3905d7ebf5d5412b65091c48552eb92857721dabb3f5ac916651ffc1a4b5ff37",
+    "compiled_against": "GStreamer1.28.7",
+    "scope": "Diagnostic pad probes, preallocated memory only during capture; not production plugin or uninstrumented performance proof"
+  },
+  "queue_off60": {
+    "frames": 1800,
+    "decoded_frames": 1800,
+    "adjacent_exact_decoded_repeats": 0,
+    "fps": 29.655312625349605,
+    "max_pts_gap_seconds": 0.4816666666666667,
+    "gaps_above50ms": 2,
+    "gaps_above100ms": 2,
+    "bitrate": 15012928,
+    "max_temp": 61000,
+    "observed_cpu_limits": [
+      2240000
+    ],
+    "source_and_encoder_relative_pts_max_error_ns": 0,
+    "source": {
+      "buffers": 1800,
+      "max_pts_gap_ms": 481.586362,
+      "max_arrival_gap_ms": 689.310812,
+      "pts_gaps_above50ms": 2,
+      "arrival_gaps_above50ms": 3,
+      "buffer_offsets_valid": true,
+      "offset_nonunit_steps": 1,
+      "offset_positive_missing_estimate": 1,
+      "discont_flags": 1
+    },
+    "whole_clip_pts_cadence_pass": false,
+    "no_startup_frames_excluded": true
+  },
+  "queue_on60": {
+    "frames": 1800,
+    "decoded_frames": 1800,
+    "adjacent_exact_decoded_repeats": 0,
+    "fps": 30.001667685807995,
+    "max_pts_gap_seconds": 0.034,
+    "gaps_above50ms": 0,
+    "gaps_above100ms": 0,
+    "bitrate": 15186010,
+    "max_temp": 60000,
+    "observed_cpu_limits": [
+      2240000
+    ],
+    "source_and_encoder_relative_pts_max_error_ns": 0,
+    "source": {
+      "buffers": 1800,
+      "max_pts_gap_ms": 33.901188,
+      "max_arrival_gap_ms": 54.33913,
+      "pts_gaps_above50ms": 0,
+      "arrival_gaps_above50ms": 1,
+      "buffer_offsets_valid": true,
+      "offset_nonunit_steps": 1,
+      "offset_positive_missing_estimate": 1,
+      "discont_flags": 1
+    },
+    "whole_clip_pts_cadence_pass": true,
+    "no_startup_frames_excluded": true
+  },
+  "queue_off_recheck30": {
+    "frames": 900,
+    "decoded_frames": 900,
+    "adjacent_exact_decoded_repeats": 0,
+    "fps": 29.671599097860167,
+    "max_pts_gap_seconds": 0.38033333333333336,
+    "gaps_above50ms": 1,
+    "gaps_above100ms": 1,
+    "bitrate": 15186895,
+    "max_temp": 59000,
+    "observed_cpu_limits": [
+      2240000
+    ],
+    "source_and_encoder_relative_pts_max_error_ns": 0,
+    "source": {
+      "buffers": 900,
+      "max_pts_gap_ms": 380.1408,
+      "max_arrival_gap_ms": 587.76099,
+      "pts_gaps_above50ms": 1,
+      "arrival_gaps_above50ms": 2,
+      "buffer_offsets_valid": true,
+      "offset_nonunit_steps": 1,
+      "offset_positive_missing_estimate": 1,
+      "discont_flags": 1
+    },
+    "whole_clip_pts_cadence_pass": false,
+    "no_startup_frames_excluded": true
+  },
+  "queue": {
+    "max_buffers": 64,
+    "max_bytes": 16777216,
+    "max_time_ns": 2000000000,
+    "leaky": false,
+    "position": "after h264parse before mp4mux"
+  },
+  "observational_write_probe": {
+    "state": "write-stall-scoped-analysis",
+    "slow_calls": [
+      {
+        "syscall": "writev",
+        "fd": 8,
+        "bytes": 254137,
+        "duration_ms": 688.284,
+        "start_relative_seconds": 25.228610754082183,
+        "overlapping_source_arrival_stalls": [
+          {
+            "index": 630,
+            "start_relative_seconds": 25.427432276999753,
+            "duration_ms": 498.839763
+          }
+        ]
+      }
+    ],
+    "by_fd": {
+      "7": {
+        "calls": 214,
+        "bytes": 10664,
+        "max_ms": 1.075
+      },
+      "0": {
+        "calls": 200,
+        "bytes": 964134,
+        "max_ms": 1.8339999999999999
+      },
+      "6": {
+        "calls": 1,
+        "bytes": 8,
+        "max_ms": 0.101
+      },
+      "9": {
+        "calls": 24,
+        "bytes": 192,
+        "max_ms": 0.589
+      },
+      "10": {
+        "calls": 7,
+        "bytes": 56,
+        "max_ms": 0.076
+      },
+      "3": {
+        "calls": 151,
+        "bytes": 957659,
+        "max_ms": 0.514
+      },
+      "4": {
+        "calls": 2,
+        "bytes": 16,
+        "max_ms": 0.045000000000000005
+      },
+      "8": {
+        "calls": 540,
+        "bytes": 57850505,
+        "max_ms": 688.284
+      }
+    },
+    "video_file_bytes": 57599382,
+    "clock_alignment": "Post-capture realtime-minus-monotonic approximation; no in-capture paired calibration, not precise causality.",
+    "scope": "Tracing perturbed cadence to 24.65fps and CPU ceiling changed; do not use as normal-performance proof or causal control. A slow finalization write is not automatically a capture stall.",
+    "raw_trace_exported": false
+  },
+  "write_probe_performance_confounded": true,
+  "postflight": {
+    "state": "final-postflight-pass",
+    "kernel": "7.2.0-mipad2-integrated-r3",
+    "protected_files_checked": 686,
+    "changed_protected_files": [],
+    "private_aliases_checked": 35,
+    "private_bytes_preserved": true,
+    "noidle_and_thermal_active": true,
+    "active_camera_clients": 0,
+    "pm": {
+      "t4ka3": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "ov5693": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      },
+      "isp": {
+        "runtime_status": "suspended",
+        "runtime_usage": "0"
+      }
+    },
+    "kernel_faults": {
+      "BUG": 0,
+      "WARNING": 0,
+      "Oops": 0,
+      "GPU_HANG": 0,
+      "DDR_failure": 0,
+      "IUNIT_timeout": 0,
+      "stop_timeout": 0,
+      "SP_not_idle": 0,
+      "ISP_not_idle": 0,
+      "reset_failed": 0,
+      "recovery_failed": 0
+    },
+    "normal_settings_and_actual_pretest_controls_preserved": true,
+    "free": 2225557504,
+    "new_reboots": 0,
+    "new_kernel_builds": 0,
+    "raw_kernel_logs_exported": false
+  },
+  "normal_app_changed": false,
+  "default_changed": false,
+  "full_app_cadence_fixed": false,
+  "physical_sensor_conservation_proved": false,
+  "raw_device_data_exported": false
+}

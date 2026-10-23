@@ -93,3 +93,7 @@ are exported. Scalar evidence: [summary](tests/mipad2-va-frame-rate-7.2-summary.
 
 Do not promote this as smooth normal-app recording, a full image, OEM/Android
 parity, or completion of the broader MiPad2 kernel/system task.
+
+## Subsequent diagnostic experiment
+
+[Long-source metadata and bounded encoded writer queue experiment](MIPAD2_RECORDING_WRITE_ISOLATION_7_2.md). Includes negative controls and remaining live-delivery/application gates; not a default promotion.
