@@ -215,5 +215,20 @@ class ElfExportTests(unittest.TestCase):
             self.assertRaises(ValueError, builder.finalize_plugin, self.binary, self.destination)
 
 
+class ProductionVaCapsCacheManifestTests(unittest.TestCase):
+    def test_caps_cache_patch_is_pinned_and_scoped_to_base_transform(self):
+        va = next(c for c in builder.COMPONENTS if c['name'] == 'gst-plugins-bad')
+        entries = [p for p in va['extra_patches'] if p['changed_file'] == 'sys/va/gstvabasetransform.c']
+        self.assertEqual(len(entries), 1)
+        entry = entries[0]
+        path = Path(builder.__file__).resolve().parent.parent / entry['patch']
+        self.assertEqual(builder.sha256(path), entry['patch_sha256'])
+        text = path.read_text()
+        self.assertEqual(text.count('+++ b/sys/va/gstvabasetransform.c'), 1)
+        self.assertIn('+  gst_clear_caps (&self->priv->sinkpad_caps);', text)
+        self.assertNotIn('gstvah264enc.c', text)
+        self.assertNotIn('gstvabaseenc.c', text)
+
+
 if __name__ == '__main__':
     unittest.main()

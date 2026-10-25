@@ -1,0 +1,14 @@
+--- a/sys/va/gstvabasetransform.c
++++ b/sys/va/gstvabasetransform.c
+@@ -209,6 +209,11 @@
+     self->out_info = out_info;
+   }
+ 
++  /* A new CAPS event does not guarantee a new upstream allocation query.
++   * Never rebuild the upload pool from an older allocation proposal: it can
++   * crop larger frames or reject smaller ones after a format transition. */
++  gst_clear_caps (&self->priv->sinkpad_caps);
++
+   if (self->priv->sinkpad_pool) {
+     gst_buffer_pool_set_active (self->priv->sinkpad_pool, FALSE);
+     gst_clear_object (&self->priv->sinkpad_pool);
