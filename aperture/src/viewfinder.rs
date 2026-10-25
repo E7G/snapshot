@@ -369,8 +369,16 @@ mod imp {
                     .build();
                 capsfilter.set_property("caps", &caps);
 
+                let android_preview =
+                    std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1");
+                let gpu_preview_scale = crate::mipad2_preview_gpu_scale::requested(
+                    is_mipad2(), android_preview,
+                    std::env::var("MIPAD2_PREVIEW_GPU_SCALE").ok().as_deref(),
+                    gst::ElementFactory::find("glshader").is_some(),
+                ).then(|| crate::mipad2_preview_gpu_scale::create()
+                    .expect("Preflighted GPU preview fit elements"));
                 let preview_scaler =
-                    if std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1") {
+                    if android_preview && gpu_preview_scale.is_none() {
                         Some(
                             gst::ElementFactory::make("videoscale")
                                 .property("add-borders", true)
@@ -392,6 +400,9 @@ mod imp {
                     elements.extend([scale, size]);
                 }
                 elements.extend([&glupload, &glconvert]);
+                if let Some(fit) = gpu_preview_scale.as_ref() {
+                    elements.push(fit);
+                }
                 if let Some(flip) = gpu_preview_flip.as_ref() {
                     elements.push(flip);
                 }
