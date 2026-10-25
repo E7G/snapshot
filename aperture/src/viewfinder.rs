@@ -381,6 +381,12 @@ mod imp {
                     crate::mipad2_preview_gpu_scale::configure_camerabin(&camerabin)
                         .expect("Preflighted camerabin viewfinder-conversion flag");
                 }
+                let va_preview_scale = crate::mipad2_preview_va_scale::requested(
+                    is_mipad2(), android_preview, gpu_preview_scale.is_some(),
+                    std::env::var("MIPAD2_PREVIEW_VA_SCALE").ok().as_deref(),
+                    gst::ElementFactory::find("vapostproc").is_some(),
+                ).then(|| crate::mipad2_preview_va_scale::create()
+                    .expect("Preflighted VA preview scale elements"));
                 let preview_scaler =
                     if android_preview && gpu_preview_scale.is_none() {
                         Some(
@@ -402,6 +408,9 @@ mod imp {
                 if let (Some(scale), Some(size)) = (preview_scaler.as_ref(), preview_size.as_ref())
                 {
                     elements.extend([scale, size]);
+                }
+                if let Some(scale) = va_preview_scale.as_ref() {
+                    elements.push(scale);
                 }
                 elements.extend([&glupload, &glconvert]);
                 if let Some(fit) = gpu_preview_scale.as_ref() {

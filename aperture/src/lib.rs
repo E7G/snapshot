@@ -33,6 +33,7 @@ mod mipad2_current_caps;
 mod mipad2_encode_input_queue;
 mod mipad2_preview;
 mod mipad2_preview_gpu_scale;
+mod mipad2_preview_va_scale;
 mod mipad2_raw_capture;
 mod mipad2_recording_quality;
 mod mipad2_trace;
