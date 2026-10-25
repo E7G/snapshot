@@ -91,12 +91,40 @@ pub(crate) fn create() -> Result<gst::Element, gst::glib::BoolError> {
     bin.add_many([&shader, &output])?;
     shader.link(&output)?;
     bin.add_pad(&gst::GhostPad::with_target(&pad)?)?;
+    bin.add_pad(&gst::GhostPad::with_target(
+        &output.static_pad("src").unwrap(),
+    )?)?;
     Ok(bin.upcast())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn complete_bin_links_rotation_and_rejects_missing_src_mutation() {
+        gst::init().unwrap();
+        let upload = gst::ElementFactory::make("glupload").build().unwrap();
+        let convert = gst::ElementFactory::make("glcolorconvert").build().unwrap();
+        let fit = create().unwrap();
+        let rotate = gst::ElementFactory::make("glvideoflip").build().unwrap();
+        let display = gst::ElementFactory::make("fakesink").build().unwrap();
+        let pipeline = gst::Pipeline::new();
+        pipeline
+            .add_many([&upload, &convert, &fit, &rotate, &display])
+            .unwrap();
+        let input = fit.static_pad("sink").unwrap();
+        let output = fit.static_pad("src").unwrap();
+        assert_eq!(input.direction(), gst::PadDirection::Sink);
+        assert_eq!(output.direction(), gst::PadDirection::Src);
+        assert!(input.is::<gst::GhostPad>() && output.is::<gst::GhostPad>());
+        gst::Element::link_many([&upload, &convert, &fit, &rotate, &display]).unwrap();
+        assert!(output.is_linked());
+        // Reproduce the exact original construction defect without drawing:
+        // removing this pad must make the downstream link impossible again.
+        fit.remove_pad(&output).unwrap();
+        assert!(fit.link(&rotate).is_err());
+    }
 
     #[test]
     fn opt_in_is_exact_and_scoped() {

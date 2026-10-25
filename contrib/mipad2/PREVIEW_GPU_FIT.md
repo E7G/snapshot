@@ -1,5 +1,21 @@
 # Experimental Mi Pad 2 GPU preview fit (default OFF)
 
+## Output-pad correction (CONT36, still default OFF)
+
+The first same-binary GPU-OFF preview passes source/display trace coverage.
+The GPU-ON launch aborts before streaming: the candidate bin omitted its output
+ghost pad and could not link to glvideoflip. That run is a failure, not a zero-CPU
+success. Its core and partial trace are retained privately; original signal6 and
+controller failure1 were recorded before clearing only ended transient units.
+The empty converter output is not interpreted as zero calls.
+
+The bin now exposes both sink and src ghost pads. A fourth real-device Rust
+test builds and links GL upload -> conversion -> actual fit bin -> rotation ->
+fake display without drawing, then removes the output pad and confirms that
+the exact old missing-source defect fails linking. All4 tests pass on the
+tablet. This does not qualify live GPU-ON preview, picture quality, sustained
+performance or power. The old e779569b app package must not be promoted.
+
 Enable only in an explicit private process with `MIPAD2_PREVIEW_GPU_SCALE=1`.
 The existing Mi Pad 2 and Android-video-profile gates must also be true, and
 the `glshader` factory must exist. Without these conditions the previous CPU
