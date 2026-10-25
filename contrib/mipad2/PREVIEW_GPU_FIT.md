@@ -1,5 +1,25 @@
 # Experimental Mi Pad 2 GPU preview fit (default OFF)
 
+## Internal viewfinder converter correction (CONT36, still default OFF)
+
+After the output-pad fix, live GPU-ON preview has real native, shader and display
+flow at approximately30 fps for both cameras, but still performs1315 software
+NV12 1920x1080 ->1280x720 conversions. The retained trace identifies
+`vfbin-videoscale`, not our optional scaler, with19.929768 s exclusive elapsed
+time. That candidate is therefore NOT a demonstrated CPU/power improvement.
+
+Only when the explicit GPU branch is selected, configure camerabin at NULL using
+the registered `no-viewfinder-conversion` flag nickname. OR this into its current
+typed flags; preserve audio, video-recording and still-image conversion flags.
+GStreamer propagates it into the internal viewfinderbin before NULL->READY.
+The default CPU branch does not call this configuration helper.
+
+Six real-device Rust tests now pass. They include8 combinations of the other
+conversion flags, idempotence, late-state and wrong-element rejection, and the
+actual bin/rotation linkage plus missing-output-pad mutation. No camera is put
+into READY/PLAYING by the flag tests. Live retesting of this correction, detailed
+quality comparison and thermal/recording qualification are still required.
+
 ## Output-pad correction (CONT36, still default OFF)
 
 The first same-binary GPU-OFF preview passes source/display trace coverage.

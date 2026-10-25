@@ -59,6 +59,27 @@ fn aspect_probe(pad: &gst::Pad, shader: &gst::Element) {
     });
 }
 
+pub(crate) fn configure_camerabin(camera: &gst::Element) -> Result<(), gst::glib::BoolError> {
+    // camerabin propagates this flag into its internal viewfinderbin during
+    // NULL -> READY. Do not disable recording/image/audio conversion flags.
+    if camera.current_state() != gst::State::Null {
+        return Err(gst::glib::bool_error!(
+            "Configure GPU preview converters only at NULL"
+        ));
+    }
+    camera
+        .find_property("flags")
+        .ok_or_else(|| gst::glib::bool_error!("Missing camerabin flags"))?;
+    let current = camera.property_value("flags");
+    let class = gst::glib::FlagsClass::with_type(current.type_())
+        .ok_or_else(|| gst::glib::bool_error!("Invalid camerabin flags type"))?;
+    let next = class
+        .set_by_nick(current, "no-viewfinder-conversion")
+        .map_err(|_| gst::glib::bool_error!("Missing no-viewfinder-conversion flag"))?;
+    camera.set_property_from_value("flags", &next);
+    Ok(())
+}
+
 pub(crate) fn create() -> Result<gst::Element, gst::glib::BoolError> {
     let shader = gst::ElementFactory::make("glshader")
         .name("mipad2-preview-gpu-fit")
@@ -124,6 +145,49 @@ mod tests {
         // removing this pad must make the downstream link impossible again.
         fit.remove_pad(&output).unwrap();
         assert!(fit.link(&rotate).is_err());
+    }
+
+    #[test]
+    fn camerabin_flag_preserves_all_other_conversion_flags() {
+        gst::init().unwrap();
+        let camera = gst::ElementFactory::make("camerabin").build().unwrap();
+        let class =
+            gst::glib::FlagsClass::with_type(camera.property_value("flags").type_()).unwrap();
+        let others = [
+            "no-audio-conversion",
+            "no-video-conversion",
+            "no-image-conversion",
+        ];
+        for mask in 0..8 {
+            let mut value = class.builder().build().unwrap();
+            for (bit, name) in others.iter().enumerate() {
+                if mask & (1 << bit) != 0 {
+                    value = class.set_by_nick(value, name).unwrap();
+                }
+            }
+            camera.set_property_from_value("flags", &value);
+            assert!(
+                !class.is_set_by_nick(&camera.property_value("flags"), "no-viewfinder-conversion")
+            );
+            configure_camerabin(&camera).unwrap();
+            configure_camerabin(&camera).unwrap(); // idempotent
+            let after = camera.property_value("flags");
+            assert!(class.is_set_by_nick(&after, "no-viewfinder-conversion"));
+            for (bit, name) in others.iter().enumerate() {
+                assert_eq!(class.is_set_by_nick(&after, name), mask & (1 << bit) != 0);
+            }
+            assert_eq!(camera.current_state(), gst::State::Null);
+        }
+    }
+
+    #[test]
+    fn converter_policy_rejects_late_state_without_opening_a_camera() {
+        gst::init().unwrap();
+        let identity = gst::ElementFactory::make("identity").build().unwrap();
+        identity.set_state(gst::State::Ready).unwrap();
+        assert!(configure_camerabin(&identity).is_err());
+        identity.set_state(gst::State::Null).unwrap();
+        assert!(configure_camerabin(&identity).is_err()); // wrong element type
     }
 
     #[test]

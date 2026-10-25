@@ -377,6 +377,10 @@ mod imp {
                     gst::ElementFactory::find("glshader").is_some(),
                 ).then(|| crate::mipad2_preview_gpu_scale::create()
                     .expect("Preflighted GPU preview fit elements"));
+                if gpu_preview_scale.is_some() {
+                    crate::mipad2_preview_gpu_scale::configure_camerabin(&camerabin)
+                        .expect("Preflighted camerabin viewfinder-conversion flag");
+                }
                 let preview_scaler =
                     if android_preview && gpu_preview_scale.is_none() {
                         Some(
