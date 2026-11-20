@@ -68,6 +68,40 @@ pub(crate) fn source_allocation_guard() -> Result<gst::Element, gst::glib::BoolE
         .build()
 }
 
+pub(crate) fn native_source_allocation_guard() -> Result<gst::Element, gst::glib::BoolError> {
+    let guard = source_allocation_guard()?;
+    guard
+        .static_pad("sink")
+        .expect("identity has a sink pad")
+        .add_probe(gst::PadProbeType::QUERY_DOWNSTREAM, |_, info| {
+            let Some(gst::QueryViewMut::Allocation(query)) =
+                info.query_mut().map(|query| query.view_mut())
+            else {
+                return gst::PadProbeReturn::Ok;
+            };
+            let (Some(caps), _) = query.get() else {
+                return gst::PadProbeReturn::Ok;
+            };
+            let Ok(video) = gst_video::VideoInfo::from_caps(caps) else {
+                return gst::PadProbeReturn::Ok;
+            };
+            if video.format() != gst_video::VideoFormat::Nv12
+                || query.allocation_pools().next().is_some()
+            {
+                return gst::PadProbeReturn::Ok;
+            }
+            let Ok(size) = u32::try_from(video.size()) else {
+                return gst::PadProbeReturn::Ok;
+            };
+
+            // Keep allocation local to v4l2src. Its MMAP pool budgets two
+            // more buffers than this request for dequeue and requeue.
+            query.add_allocation_pool(None::<&gst::BufferPool>, size, 6, 0);
+            gst::PadProbeReturn::Handled
+        });
+    Ok(guard)
+}
+
 /// Explicit source scheduling experiments; production defaults remain disabled.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum QueueMode {
@@ -137,6 +171,36 @@ mod tests {
         Arc,
         atomic::{AtomicBool, Ordering},
     };
+
+    #[test]
+    fn native_allocation_hint_keeps_the_pool_owned_by_v4l2src() {
+        gst::init().unwrap();
+        let source = gst::ElementFactory::make("identity").build().unwrap();
+        let guard = native_source_allocation_guard().unwrap();
+        source.link(&guard).unwrap();
+        let upstream = source.static_pad("src").unwrap();
+        let downstream = guard.static_pad("sink").unwrap();
+        upstream.set_active(true).unwrap();
+        downstream.set_active(true).unwrap();
+
+        for format in [gst_video::VideoFormat::Nv12, gst_video::VideoFormat::I420] {
+            let video = gst_video::VideoInfo::builder(format, 1920, 1080)
+                .build()
+                .unwrap();
+            let caps = video.to_caps().unwrap();
+            let mut query = gst::query::Allocation::new(Some(&caps), true);
+            let supported = format == gst_video::VideoFormat::Nv12;
+            assert_eq!(upstream.peer_query(&mut query), supported);
+            let pools = query.allocation_pools().collect::<Vec<_>>();
+            if supported {
+                assert_eq!(pools, vec![(None, 3_110_400, 6, 0)]);
+            } else {
+                assert!(pools.is_empty());
+            }
+        }
+        downstream.set_active(false).unwrap();
+        upstream.set_active(false).unwrap();
+    }
     struct Owned {
         data: Vec<u8>,
         released: Arc<AtomicBool>,

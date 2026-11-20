@@ -1780,7 +1780,11 @@ impl Viewfinder {
             log::info!(
                 "Mi Pad 2 copied native allocation boundary enabled: allocation-query=false frames=unchanged"
             );
-            Some(crate::mipad2_capture_copy::source_allocation_guard()?)
+            Some(if native_atomisp {
+                crate::mipad2_capture_copy::native_source_allocation_guard()?
+            } else {
+                crate::mipad2_capture_copy::source_allocation_guard()?
+            })
         } else {
             None
         };
