@@ -20,15 +20,6 @@ use crate::code_detector::QrCodeDetector;
 const DEFAULT_BITRATE: u32 = 2048; // kbps, used by VA/x264 encoders
 const DEFAULT_BITRATE_BPS: u32 = DEFAULT_BITRATE * 1000;
 const PROVIDER_TIMEOUT: u64 = 2;
-const MIPAD2_PREVIEW_RATE: i32 = 15;
-fn mipad2_preview_rate() -> i32 {
-    if is_mipad2() && std::env::var("MIPAD2_ANDROID_VIDEO_PROFILE").as_deref() == Ok("1") {
-        30
-    } else {
-        MIPAD2_PREVIEW_RATE
-    }
-}
-
 fn is_mipad2() -> bool {
     let vendor = fs::read_to_string("/sys/class/dmi/id/sys_vendor").unwrap_or_default();
     let product = fs::read_to_string("/sys/class/dmi/id/product_name").unwrap_or_default();
@@ -346,7 +337,7 @@ mod imp {
                 let bin = gst::Bin::default();
                 let videorate = gst::ElementFactory::make("videorate")
                     .property("drop-only", true)
-                    .property("max-rate", mipad2_preview_rate())
+                    .property("max-rate", crate::mipad2_preview::MAX_DISPLAY_RATE)
                     .build()
                     .expect("Missing GStreamer Base Plug-ins");
                 let glupload = gst::ElementFactory::make("glupload")
@@ -363,7 +354,9 @@ mod imp {
                     .field("format", "RGBA")
                     .field(
                         "framerate",
-                        crate::mipad2_preview::display_rate_range(mipad2_preview_rate()),
+                        crate::mipad2_preview::display_rate_range(
+                            crate::mipad2_preview::MAX_DISPLAY_RATE,
+                        ),
                     )
                     .field("texture-target", "2D")
                     .build();
@@ -1476,7 +1469,7 @@ impl Viewfinder {
             // only the optional display branch after its leaky queue.
             camerabin.set_property("viewfinder-caps", gst::Caps::new_any());
             log::info!(
-                "Mi Pad 2 Android-profile candidate: video 1920x1080/30, preview 1280x720/30; 1440p failure not reclassified"
+                "Mi Pad 2 Android profile: capture 1920x1080 at 30fps, display preview capped at 15fps"
             );
         } else {
             camerabin.set_property(

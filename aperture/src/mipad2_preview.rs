@@ -198,12 +198,14 @@ pub(crate) fn display_rate_range(max_rate: i32) -> gst::FractionRange {
     )
 }
 
+pub(crate) const MAX_DISPLAY_RATE: i32 = 15;
+
 pub(crate) fn android_display_caps() -> gst::Caps {
     gst::Caps::builder("video/x-raw")
         .field("format", "NV12")
         .field("width", 1280i32)
         .field("height", 720i32)
-        .field("framerate", display_rate_range(30))
+        .field("framerate", display_rate_range(MAX_DISPLAY_RATE))
         .build()
 }
 
@@ -251,7 +253,7 @@ fn drop_only_display_accepts_native_still_without_fake_30fps() {
             .unwrap();
         let vr = gst::ElementFactory::make("videorate")
             .property("drop-only", true)
-            .property("max-rate", 30i32)
+            .property("max-rate", MAX_DISPLAY_RATE)
             .build()
             .unwrap();
         let scale = gst::ElementFactory::make("videoscale")
@@ -282,19 +284,20 @@ fn drop_only_display_accepts_native_still_without_fake_30fps() {
         let caps = negotiated.unwrap();
         let info = gst_video::VideoInfo::from_caps(&caps).unwrap();
         assert_eq!((info.width(), info.height()), (1280, 720));
-        assert_eq!(info.fps(), gst::Fraction::new(rate, 1));
+        let display_rate = rate.min(MAX_DISPLAY_RATE);
+        assert_eq!(info.fps(), gst::Fraction::new(display_rate, 1));
         assert_eq!(duplicates, 0);
-        assert_eq!(produced, 4);
+        assert_eq!(produced, 4 * display_rate as u64 / rate as u64);
         // GL output's rate constraint must also contain this physical rate.
         let gl = gst::Caps::builder("video/x-raw")
             .features(["memory:GLMemory"])
             .field("format", "RGBA")
-            .field("framerate", display_rate_range(30))
+            .field("framerate", display_rate_range(MAX_DISPLAY_RATE))
             .build();
         let exact = gst::Caps::builder("video/x-raw")
             .features(["memory:GLMemory"])
             .field("format", "RGBA")
-            .field("framerate", gst::Fraction::new(rate, 1))
+            .field("framerate", gst::Fraction::new(display_rate, 1))
             .build();
         assert!(exact.is_subset(&gl));
     }
