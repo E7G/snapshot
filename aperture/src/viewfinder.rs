@@ -1453,10 +1453,25 @@ impl Viewfinder {
             );
         }
         let camerabin = self.imp().camerabin();
-        if crate::mipad2_preview::android_profile_requested(
+        let android_profile = crate::mipad2_preview::android_profile_requested(
             self.video_format() == VideoFormat::H264Mp4,
             self.enable_hw_encoding(),
-        ) {
+        );
+        if is_mipad2()
+            && std::env::var("MIPAD2_DIRECT_NV12_RECORDING").as_deref() == Ok("1")
+            && camerabin.current_state() == gst::State::Null
+        {
+            let flags = camerabin.property_value("flags");
+            let flags_class =
+                glib::FlagsClass::with_type(flags.type_()).expect("camerabin flags type");
+            let flags = if android_profile {
+                flags_class.set_by_nick(flags, "no-video-conversion")
+            } else {
+                flags_class.unset_by_nick(flags, "no-video-conversion")
+            };
+            camerabin.set_property_from_value("flags", &flags.expect("camerabin video flag"));
+        }
+        if android_profile {
             // Native source is fixed before initial PLAYING. Keep recorder's
             // caps unrestricted to avoid a synchronous start-capture resize.
             camerabin.set_property(
