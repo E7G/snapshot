@@ -1,69 +1,92 @@
 name: Build Mi Pad 2 Snapshot
+run-name: Mi Pad 2 7.2 Snapshot replay (${{ inputs.variant }})
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - mipad2-camera
+    inputs:
+      variant:
+        description: 'Build the installed 15fps preview or an isolated camera candidate'
+        required: true
+        default: preview15
+        type: choice
+        options: [preview15, preview-conversion, capture-pool, direct-nv12]
 
 permissions:
   contents: read
 
+concurrency:
+  group: snapshot-72-replay-${{ inputs.variant }}
+  cancel-in-progress: false
+
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build in Arch Linux
+      - name: Resolve the published Snapshot source
+        id: source
         shell: bash
+        env:
+          VARIANT: ${{ inputs.variant }}
         run: |
-          set -euxo pipefail
-          docker run --rm \
-            -e CARGO_TERM_COLOR=always \
-            -v "$GITHUB_WORKSPACE:/work" \
-            -w /work \
-            archlinux:base-devel \
-            bash -lc '
-              set -euxo pipefail
+          set -euo pipefail
+          prefix=/usr/local/lib/mipad2-camera-preview15
+          case "$VARIANT" in
+            preview15) source=18ce2f64348d521993a322e0244a49cdeaaa0b9f ;;
+            preview-conversion) source=1c8204ae39fb34bca7cf7b670efabcb991fcc87b ;;
+            capture-pool)
+              source=1e13361f8dc7955d13876bee46be56415b028854
+              prefix=/usr/local/lib/mipad2-camera-capture-pool
+              ;;
+            direct-nv12) source=bc843a84661e5816524768017070107df1446d77 ;;
+            *) exit 1 ;;
+          esac
+          printf 'sha=%s\nprefix=%s\n' "$source" "$prefix" >> "$GITHUB_OUTPUT"
+      - name: Checkout the pinned source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.sha }}
+          persist-credentials: false
+      - name: Build and test the selected variant from scratch on Arch
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+          INSTALL_PREFIX: ${{ steps.source.outputs.prefix }}
+          VARIANT: ${{ inputs.variant }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          docker pull archlinux:base-devel
+          image="$(docker image inspect --format '{{index .RepoDigests 0}}' archlinux:base-devel)"
+          docker run --rm -e SOURCE_SHA -e INSTALL_PREFIX -e VARIANT \
+            -e CARGO_BUILD_JOBS=2 -e CARGO_TERM_COLOR=never \
+            -v "$GITHUB_WORKSPACE:/work" -w /work "$image" bash -ec '
+              set -euo pipefail
               pacman -Syu --noconfirm --needed \
                 git rust meson ninja pkgconf gettext desktop-file-utils appstream \
                 snapshot v4l-utils gst-plugins-good zstd
-
-              rustc --version
-              cargo --version
-              meson --version
-              pkg-config --modversion gtk4 libadwaita-1 gstreamer-1.0
-
-              meson setup build --prefix=/usr --buildtype=release
-              ninja -C build -j"$(nproc)"
-
-              rm -rf pkgroot dist
+              cargo fetch --locked --target x86_64-unknown-linux-gnu
+              export CARGO_NET_OFFLINE=true
+              meson setup build --prefix="$INSTALL_PREFIX" --buildtype=release -Dx11=disabled
+              meson compile -C build -j2
+              CARGO_TARGET_DIR="$PWD/build/cargo-target" cargo test --locked --offline \
+                --release -p aperture --lib mipad2_preview::
               DESTDIR="$PWD/pkgroot" meson install -C build --no-rebuild
-              test -x pkgroot/usr/bin/snapshot
-
-              mkdir -p dist
-              tar --zstd -C pkgroot \
-                -cf dist/snapshot-mipad2-50.0-x86_64.tar.zst usr
-              sha256sum dist/snapshot-mipad2-50.0-x86_64.tar.zst \
-                > dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+              test -x "pkgroot$INSTALL_PREFIX/bin/snapshot"
+              mkdir dist
+              archive="snapshot-mipad2-72-$VARIANT.tar.zst"
+              tar --zstd -C pkgroot -cf "dist/$archive" "${INSTALL_PREFIX#/}"
+              sha256sum "pkgroot$INSTALL_PREFIX/bin/snapshot" > dist/binary.sha256
+              printf "%s\n" "$SOURCE_SHA" > dist/source-commit.txt
+              pacman -Q > dist/build-packages.txt
+              (cd dist; sha256sum "$archive" > "$archive.sha256"; sha256sum -c "$archive.sha256")
             '
-
-      - name: Show artifact contents
-        shell: bash
-        run: |
-          ls -lh dist/
-          tar --zstd -tf dist/snapshot-mipad2-50.0-x86_64.tar.zst | sed -n '1,80p'
-
-      - name: Upload Mi Pad 2 build
+          printf '%s\n' "$image" > dist/arch-builder-image.txt
+      - name: Upload the package and reproducibility receipt
         uses: actions/upload-artifact@v4
         with:
-          name: snapshot-mipad2-50.0-x86_64
-          path: |
-            dist/snapshot-mipad2-50.0-x86_64.tar.zst
-            dist/snapshot-mipad2-50.0-x86_64.tar.zst.sha256
+          name: snapshot-mipad2-72-${{ inputs.variant }}-${{ steps.source.outputs.sha }}
+          path: dist/
           if-no-files-found: error
           compression-level: 0
+          retention-days: 90
