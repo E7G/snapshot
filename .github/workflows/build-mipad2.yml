@@ -58,20 +58,20 @@ jobs:
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
           docker pull archlinux:base-devel
           image="$(docker image inspect --format '{{index .RepoDigests 0}}' archlinux:base-devel)"
-          docker run --rm -e SOURCE_SHA -e INSTALL_PREFIX -e VARIANT \
+          docker run --rm -i -e SOURCE_SHA -e INSTALL_PREFIX -e VARIANT \
             -e CARGO_BUILD_JOBS=2 -e CARGO_TERM_COLOR=never \
-            -v "$GITHUB_WORKSPACE:/work" -w /work "$image" bash -ec '
+            -v "$GITHUB_WORKSPACE:/work" -w /work "$image" bash -se <<'ARCH_BUILD'
               set -euo pipefail
               pacman -Syu --noconfirm --needed \
                 git rust meson ninja pkgconf gettext desktop-file-utils appstream \
                 snapshot v4l-utils gst-plugins-good zstd
               meson setup build --prefix="$INSTALL_PREFIX" --buildtype=release -Dx11=disabled
               # Meson deliberately isolates Cargo from the container's default cache.
-              export CARGO_HOME="$PWD/build/cargo-home"
+              export CARGO_HOME=/work/build/cargo-home
               cargo fetch --locked --target x86_64-unknown-linux-gnu
               export CARGO_NET_OFFLINE=true
               meson compile -C build -j2
-              CARGO_TARGET_DIR="$PWD/build/cargo-target" cargo test --locked --offline \
+              CARGO_TARGET_DIR=/work/build/cargo-target cargo test --locked --offline \
                 --release -p aperture --lib mipad2_preview::
               DESTDIR="$PWD/pkgroot" meson install -C build --no-rebuild
               test -x "pkgroot$INSTALL_PREFIX/bin/snapshot"
@@ -82,7 +82,7 @@ jobs:
               printf "%s\n" "$SOURCE_SHA" > dist/source-commit.txt
               pacman -Q > dist/build-packages.txt
               (cd dist; sha256sum "$archive" > "$archive.sha256"; sha256sum -c "$archive.sha256")
-            '
+          ARCH_BUILD
           printf '%s\n' "$image" > dist/arch-builder-image.txt
       - name: Upload the package and reproducibility receipt
         uses: actions/upload-artifact@v4
