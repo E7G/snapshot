@@ -65,9 +65,11 @@ jobs:
               pacman -Syu --noconfirm --needed \
                 git rust meson ninja pkgconf gettext desktop-file-utils appstream \
                 snapshot v4l-utils gst-plugins-good zstd
+              meson setup build --prefix="$INSTALL_PREFIX" --buildtype=release -Dx11=disabled
+              # Meson deliberately isolates Cargo from the container's default cache.
+              export CARGO_HOME="$PWD/build/cargo-home"
               cargo fetch --locked --target x86_64-unknown-linux-gnu
               export CARGO_NET_OFFLINE=true
-              meson setup build --prefix="$INSTALL_PREFIX" --buildtype=release -Dx11=disabled
               meson compile -C build -j2
               CARGO_TARGET_DIR="$PWD/build/cargo-target" cargo test --locked --offline \
                 --release -p aperture --lib mipad2_preview::
