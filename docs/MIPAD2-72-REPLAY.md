@@ -1,24 +1,25 @@
-# Rebuild the Mi Pad 2 7.2 camera variants
+# Rebuild the Mi Pad 2 camera variants
 
-This workflow keeps the 15 fps display-only preview used on the physical
-tablet separate from the experiments. It does not install anything, alter
-the default camera launcher, or test a camera device.
+The live LPAT31 tablet was rechecked on 2026-11-28: its default launcher
+executes `/usr/local/lib/mipad2-snapshot-native-ae-r6/bin/snapshot`. The observed
+binary SHA-256 is `f16944d2b075af0ad6aa75e465036a5520fb00a74b0180d4bf433968f6a6b3d6`.
+The 15 fps binary has a historical install receipt, but it is not the active
+launcher target. These builds do not install or activate anything.
 
 | Variant | Source |
 | --- | --- |
-| preview15 (default) | 18ce2f64348d521993a322e0244a49cdeaaa0b9f, the 15 fps local installation recipe |
+| native-ae-r6 (current default) | db794b2fe85c72dd77710880bbc45ca3909ace1a, explicit native pipeline shutdown |
+| preview15 | 18ce2f64348d521993a322e0244a49cdeaaa0b9f, separately qualified 15 fps display preview |
 | preview-conversion | 1c8204ae39fb34bca7cf7b670efabcb991fcc87b, display scaling after rate limiting |
-| capture-pool | 1e13361f8dc7955d13876bee46be56415b028854, independent larger native buffer pool |
-| direct-nv12 | bc843a84661e5816524768017070107df1446d77, opt-in unqualified recording experiment |
+| capture-pool | 1e13361f8dc7955d13876bee46be56415b028854, separate larger buffer pool |
+| direct-nv12 | bc843a84661e5816524768017070107df1446d77, opt-in experiment |
 
 ```bash
 gh workflow run build-mipad2.yml -R E7G/snapshot \
-  --ref codex/mipad2-72-snapshot-replay -f variant=preview15
+  --ref codex/mipad2-72-snapshot-replay -f variant=native-ae-r6
 ```
 
-The job checks out the exact source commit, downloads the crates in Cargo.lock,
-builds the matching Meson profile, runs the camera preview tests and checks the
-archive SHA-256. The receipt records the installed binary hash and Arch dependency
-versions for comparison. The rolling base image and dependency repositories do
-not promise byte-identical packages. The physical installation recorded binary
-SHA-256 e237f69ca6282f41fdda39285ebc7b1f823718658528f4df5eac469117bb760f.
+The workflow pins the source and Cargo.lock; the receipt records the
+dependencies, image digest, archive and binary hashes. A new build can differ
+at the byte level from the installed binary. Host tests do not replace a new
+front/rear-camera or clean-close test on a physical tablet.

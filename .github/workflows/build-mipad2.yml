@@ -5,11 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       variant:
-        description: 'Build the installed 15fps preview or an isolated camera candidate'
+        description: 'Build the installed native-AE r6 camera or a separate candidate'
         required: true
-        default: preview15
+        default: native-ae-r6
         type: choice
-        options: [preview15, preview-conversion, capture-pool, direct-nv12]
+        options: [native-ae-r6, preview15, preview-conversion, capture-pool, direct-nv12]
 
 permissions:
   contents: read
@@ -32,6 +32,10 @@ jobs:
           set -euo pipefail
           prefix=/usr/local/lib/mipad2-camera-preview15
           case "$VARIANT" in
+            native-ae-r6)
+              source=db794b2fe85c72dd77710880bbc45ca3909ace1a
+              prefix=/usr/local/lib/mipad2-snapshot-native-ae-r6
+              ;;
             preview15) source=18ce2f64348d521993a322e0244a49cdeaaa0b9f ;;
             preview-conversion) source=1c8204ae39fb34bca7cf7b670efabcb991fcc87b ;;
             capture-pool)
